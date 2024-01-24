@@ -13,6 +13,8 @@ use Webgriffe\SyliusPagolightPlugin\Payum\PagolightGatewayFactory;
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
+    $containerConfigurator->import('services/*.php');
+
     $services->set('webgriffe_sylius_pagolight.gateway_factory_builder', GatewayFactoryBuilder::class)
         ->args([
             PagolightGatewayFactory::class,
