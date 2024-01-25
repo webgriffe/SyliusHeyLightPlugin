@@ -4,37 +4,54 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Client;
 
+use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
+use GuzzleHttp\Exception\GuzzleException;
+use GuzzleHttp\Psr7\ServerRequest;
+use const JSON_THROW_ON_ERROR;
 use JsonException;
-use Psr\Http\Client\ClientExceptionInterface;
-use Psr\Http\Client\ClientInterface as PsrClientInterface;
-use Psr\Http\Message\RequestFactoryInterface;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
+use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
 
-/**
- * @psalm-suppress UnusedClass
- */
 final class Client implements ClientInterface
 {
     public function __construct(
-        private readonly PsrClientInterface $httpClient,
-        private readonly RequestFactoryInterface $requestFactory,
-        private readonly bool $sandbox = false,
+        private readonly GuzzleHttpClientInterface $httpClient,
+        private bool $sandbox = false,
     ) {
+    }
+
+    public function setSandbox(bool $isSandBox): void
+    {
+        $this->sandbox = $isSandBox;
     }
 
     public function auth(string $merchantKey): string
     {
-        $request = $this->requestFactory->createRequest(
+        try {
+            $bodyParams = json_encode(['merchant_key' => $merchantKey], JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new AuthFailedException(
+                sprintf('Malformed auth request body: "%s".', $merchantKey),
+                0,
+                $e,
+            );
+        }
+        $request = new ServerRequest(
             'POST',
             $this->getAuthUrl(),
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+            ],
+            $bodyParams,
         );
-        $request->withHeader('Content-Type', 'application/json');
-        $request->withHeader('Accept', 'application/json');
 
         try {
-            $response = $this->httpClient->sendRequest($request);
-        } catch (ClientExceptionInterface $e) {
+            $response = $this->httpClient->send($request);
+        } catch (GuzzleException $e) {
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
         if ($response->getStatusCode() !== 200) {
@@ -54,7 +71,7 @@ final class Client implements ClientInterface
                 $response->getBody()->getContents(),
                 true,
                 512,
-                \JSON_THROW_ON_ERROR,
+                JSON_THROW_ON_ERROR,
             );
         } catch (JsonException $e) {
             throw new AuthFailedException(
@@ -92,9 +109,95 @@ final class Client implements ClientInterface
         return $serializedResponse['data']['token'];
     }
 
+    public function contractCreate(Contract $contract, string $bearerToken): ContractCreateResult
+    {
+        try {
+            $bodyParams = json_encode($contract->toArrayParams(), JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new ContractCreateFailedException(
+                'Malformed contract create request body.',
+                0,
+                $e,
+            );
+        }
+
+        $request = new ServerRequest(
+            'POST',
+            $this->getContractCreateUrl(),
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $bearerToken,
+            ],
+            $bodyParams,
+        );
+
+        try {
+            $response = $this->httpClient->send($request);
+        } catch (GuzzleException $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
+        if ($response->getStatusCode() !== 201) {
+            throw new ContractCreateFailedException(
+                sprintf(
+                    'Unexpected contract create response status code: %s - "%s".',
+                    $response->getStatusCode(),
+                    $response->getReasonPhrase(),
+                ),
+                $response->getStatusCode(),
+            );
+        }
+
+        try {
+            /** @var array{action: 'REDIRECT', redirect_url: string, external_contract_uuid: string} $serializedResponse */
+            $serializedResponse = json_decode(
+                $response->getBody()->getContents(),
+                true,
+                512,
+                JSON_THROW_ON_ERROR,
+            );
+        } catch (JsonException $e) {
+            throw new ContractCreateFailedException(
+                sprintf(
+                    'Malformed contract create response body: "%s".',
+                    $response->getBody()->getContents(),
+                ),
+                $response->getStatusCode(),
+                $e,
+            );
+        }
+        if (!array_key_exists('action', $serializedResponse) || $serializedResponse['action'] !== 'REDIRECT') {
+            throw new ContractCreateFailedException(
+                sprintf(
+                    'Unexpected contract create response body: "%s".',
+                    $response->getBody()->getContents(),
+                ),
+                $response->getStatusCode(),
+            );
+        }
+        if (!array_key_exists('redirect_url', $serializedResponse) ||
+            !is_string($serializedResponse['redirect_url'])
+        ) {
+            throw new ContractCreateFailedException(
+                sprintf(
+                    'Redirect url is missing from contract create response: "%s".',
+                    $response->getBody()->getContents(),
+                ),
+                $response->getStatusCode(),
+            );
+        }
+
+        return new ContractCreateResult($serializedResponse['redirect_url']);
+    }
+
     private function getAuthUrl(): string
     {
-        return sprintf('%s/auth/%s/generate', $this->getBaseUrl(), $this->getVersion());
+        return sprintf('%s/auth/%s/generate/', $this->getBaseUrl(), $this->getVersion());
+    }
+
+    private function getContractCreateUrl(): string
+    {
+        return sprintf('%s/api/checkout/%s/init/', $this->getBaseUrl(), $this->getVersion());
     }
 
     private function getBaseUrl(): string

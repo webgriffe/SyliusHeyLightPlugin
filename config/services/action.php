@@ -1,0 +1,33 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Symfony\Component\DependencyInjection\Loader\Configurator;
+
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\ConvertPaymentAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
+
+return static function (ContainerConfigurator $containerConfigurator) {
+    $services = $containerConfigurator->services();
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.capture', CaptureAction::class)
+        ->public()
+        ->args([
+            service('webgriffe_sylius_pagolight.client'),
+        ])
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.capture'])
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.status', StatusAction::class)
+        ->public()
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.convert_payment', ConvertPaymentAction::class)
+        ->public()
+        ->args([
+            service('webgriffe_sylius_pagolight.converter.contract'),
+        ])
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.convert_payment'])
+    ;
+};

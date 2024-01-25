@@ -23,4 +23,9 @@ final class PagolightApi
     {
         return $this->config['merchant_key'];
     }
+
+    public function isSandBox(): bool
+    {
+        return $this->config['sandbox'];
+    }
 }

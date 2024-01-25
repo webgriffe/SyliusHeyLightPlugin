@@ -6,8 +6,6 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder;
 use Webgriffe\SyliusPagolightPlugin\Form\Type\SyliusPagolightGatewayConfigurationType;
-use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
-use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightGatewayFactory;
 
 return static function (ContainerConfigurator $containerConfigurator) {
@@ -25,17 +23,5 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $services->set('webgriffe_sylius_pagolight.form.type.gateway_configuration', SyliusPagolightGatewayConfigurationType::class)
         ->tag('sylius.gateway_configuration_type', ['type' => 'pagolight', 'label' => 'Pagolight'])
         ->tag('form.type')
-    ;
-
-    $services->set('webgriffe_sylius_pagolight.payum.action.capture', CaptureAction::class)
-        ->public()
-        ->args([
-            service('sylius.http_client'),
-        ])
-        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.capture'])
-    ;
-
-    $services->set('webgriffe_sylius_pagolight.payum.action.status', StatusAction::class)
-        ->public()
     ;
 };

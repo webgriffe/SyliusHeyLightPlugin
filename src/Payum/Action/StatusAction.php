@@ -7,10 +7,14 @@ namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetStatusInterface;
+use Sylius\Bundle\PayumBundle\Request\GetStatus;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 
 final class StatusAction implements ActionInterface
 {
+    /**
+     * @param GetStatus $request
+     */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -20,14 +24,14 @@ final class StatusAction implements ActionInterface
 
         $details = $payment->getDetails();
 
-        if (200 === $details['status']) {
-            $request->markCaptured();
+        if ([] === $details) {
+            $request->markCanceled();
 
             return;
         }
 
-        if (400 === $details['status']) {
-            $request->markFailed();
+        if (200 === $details['status']) {
+            $request->markCaptured();
 
             return;
         }
