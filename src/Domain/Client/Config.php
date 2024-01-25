@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client;
+namespace Webgriffe\SyliusPagolightPlugin\Domain\Client;
 
 final class Config
 {

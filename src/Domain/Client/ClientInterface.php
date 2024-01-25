@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client;
+namespace Webgriffe\SyliusPagolightPlugin\Domain\Client;
 
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
 
 interface ClientInterface
 {

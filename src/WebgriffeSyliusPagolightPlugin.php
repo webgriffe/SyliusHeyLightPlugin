@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin;
 
+use function dirname;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
 
@@ -13,6 +14,6 @@ final class WebgriffeSyliusPagolightPlugin extends Bundle
 
     public function getPath(): string
     {
-        return \dirname(__DIR__);
+        return dirname(__DIR__);
     }
 }

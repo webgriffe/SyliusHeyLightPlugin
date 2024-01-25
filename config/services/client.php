@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use GuzzleHttp\Client as GuzzleHttpClient;
-use Webgriffe\SyliusPagolightPlugin\Client\Client;
-use Webgriffe\SyliusPagolightPlugin\Client\ClientInterface;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Client;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ClientInterface;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();

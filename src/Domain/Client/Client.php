@@ -2,18 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client;
+namespace Webgriffe\SyliusPagolightPlugin\Domain\Client;
 
 use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\ServerRequest;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
 
 final class Client implements ClientInterface
 {

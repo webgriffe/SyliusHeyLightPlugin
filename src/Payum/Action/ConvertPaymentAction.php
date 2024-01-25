@@ -9,8 +9,8 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Converter\ContractConverterInterface;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverterInterface;
 use Webmozart\Assert\Assert;
 
 final class ConvertPaymentAction implements ActionInterface

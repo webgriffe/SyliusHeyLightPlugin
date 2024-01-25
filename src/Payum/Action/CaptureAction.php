@@ -17,9 +17,9 @@ use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\ClientInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ClientInterface;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webmozart\Assert\Assert;
 
