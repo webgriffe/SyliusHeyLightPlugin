@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\CancelAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\ConvertPaymentAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\FailAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
 
 return static function (ContainerConfigurator $containerConfigurator) {
@@ -29,5 +31,15 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('webgriffe_sylius_pagolight.converter.contract'),
         ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.convert_payment'])
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.cancel', CancelAction::class)
+        ->public()
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.cancel'])
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.fail', FailAction::class)
+        ->public()
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.fail'])
     ;
 };

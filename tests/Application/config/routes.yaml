@@ -1,9 +1,2 @@
-webgriffe_sylius_pagolight_shop:
-    resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.yml"
-    prefix: /{_locale}
-    requirements:
-        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
-
-webgriffe_sylius_pagolight_admin:
-    resource: "@WebgriffeSyliusPagolightPlugin/config/admin_routing.yml"
-    prefix: /admin
+webgriffe_sylius_pagolight_payum:
+    resource: "@WebgriffeSyliusPagolightPlugin/config/payum_routing.php"
