@@ -11,9 +11,6 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
     $services->set('webgriffe_sylius_pagolight.converter.contract', ContractConverter::class)
-        ->args([
-            service('payum'),
-        ])
     ;
 
     $services->alias(ContractConverterInterface::class, 'webgriffe_sylius_pagolight.converter.contract');

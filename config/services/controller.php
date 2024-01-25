@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Webgriffe\SyliusPagolightPlugin\Controller\PagolightController;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\Controller\PagolightController;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();

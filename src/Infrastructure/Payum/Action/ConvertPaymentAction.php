@@ -2,12 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\Capture;
 use Payum\Core\Request\Convert;
+use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverterInterface;
@@ -33,10 +34,14 @@ final class ConvertPaymentAction implements ActionInterface
         $payment = $capture->getModel();
         Assert::isInstanceOf($payment, PaymentInterface::class);
 
+        $token = $capture->getToken();
+        Assert::isInstanceOf($token, TokenInterface::class);
+
         $contract = $this->contractConverter->convertFromPayment(
             $payment,
-            $capture->getToken(),
-            null,
+            $token->getTargetUrl(),
+            $token->getTargetUrl(),
+            $token->getTargetUrl(),
         );
 
         $request->setResult($contract);

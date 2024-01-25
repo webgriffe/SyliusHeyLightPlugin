@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Form\Type;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CheckboxType;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -20,7 +20,7 @@ use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ClientInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\PagolightApi;
 use Webmozart\Assert\Assert;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface

@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Fail;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Fail;
 
 final class FailAction implements ActionInterface
 {

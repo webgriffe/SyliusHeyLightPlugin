@@ -12,7 +12,8 @@ interface ContractConverterInterface
 {
     public function convertFromPayment(
         PaymentInterface $payment,
-        TokenInterface $captureToken,
-        ?TokenInterface $webhookToken = null,
+        string $successUrl,
+        string $failureUrl,
+        ?string $cancelUrl = null,
     ): Contract;
 }

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Request;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request;
 
 use Payum\Core\Request\Generic;
 

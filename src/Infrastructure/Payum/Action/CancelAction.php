@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Request\Cancel;

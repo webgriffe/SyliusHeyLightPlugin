@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum;
 
 final class PagolightApi
 {

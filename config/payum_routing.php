@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Symfony\Component\Routing\Loader\Configurator\RoutingConfigurator;
-use Webgriffe\SyliusPagolightPlugin\Controller\PagolightController;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\Controller\PagolightController;
 
 return static function (RoutingConfigurator $routes): void {
 

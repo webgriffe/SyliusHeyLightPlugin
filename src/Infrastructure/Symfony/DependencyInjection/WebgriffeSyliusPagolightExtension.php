@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\DependencyInjection;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
@@ -15,10 +15,9 @@ final class WebgriffeSyliusPagolightExtension extends AbstractResourceExtension 
 {
     use PrependDoctrineMigrationsTrait;
 
-    /** @psalm-suppress UnusedVariable */
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
+        $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../../../config'));
 
         $loader->load('services.php');
     }

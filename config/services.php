@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder;
-use Webgriffe\SyliusPagolightPlugin\Form\Type\SyliusPagolightGatewayConfigurationType;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightGatewayFactory;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\PagolightGatewayFactory;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\Form\Type\SyliusPagolightGatewayConfigurationType;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();

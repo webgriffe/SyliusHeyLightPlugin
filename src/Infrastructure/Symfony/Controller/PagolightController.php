@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Controller;
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\Controller;
 
 use Payum\Core\Payum;
 use Payum\Core\Request\Cancel;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Fail;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Fail;
 
 final class PagolightController extends AbstractController
 {
