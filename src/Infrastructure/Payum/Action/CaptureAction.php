@@ -12,15 +12,17 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
-use Payum\Core\Request\Convert;
-use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Security\TokenInterface;
-use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ClientInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Domain\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\PagolightApi;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\ApplicationStatus;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\CreateContract;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
 
 final class CaptureAction implements ActionInterface, ApiAwareInterface, GatewayAwareInterface
@@ -34,14 +36,12 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
     }
 
     /**
+     * @param Capture $request
      * @throws ClientException
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
-
-        // This is needed to populate the http request with GET and POST params from current request
-        $this->gateway->execute($httpRequest = new GetHttpRequest());
 
         /** @var SyliusPaymentInterface $payment */
         $payment = $request->getModel();
@@ -49,18 +49,42 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
         $token = $request->getToken();
         Assert::isInstanceOf($token, TokenInterface::class);
 
-        $order = $payment->getOrder();
-        Assert::isInstanceOf($order, OrderInterface::class);
+        $paymentDetails = $payment->getDetails();
+        PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
-        $this->client->setSandbox($this->api->isSandBox());
+        if ($paymentDetails !== []) {
+            $contractUuid = PaymentDetailsHelper::getContractUuid($paymentDetails);
 
-        $bearerToken = $this->client->auth($this->api->getMerchantKey());
+            $applicationStatus = new ApplicationStatus([$contractUuid]);
+            $this->gateway->execute($applicationStatus);
+            $applicationStatusResult = $applicationStatus->getResult();
+            Assert::isInstanceOf($applicationStatusResult, ApplicationStatusResult::class);
 
-        $this->gateway->execute($contractConverted = new Convert($request, Contract::class));
+            $paymentDetails = PaymentDetailsHelper::addPaymentStatus(
+                $paymentDetails,
+                $applicationStatusResult->getStatusByContractUuid($contractUuid),
+            );
+            $payment->setDetails($paymentDetails);
 
-        $response = $this->client->contractCreate($contractConverted->getResult(), $bearerToken);
+            return;
+        }
 
-        throw new HttpRedirect($response->getRedirectUrl());
+        $captureUrl = $token->getTargetUrl();
+        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $captureUrl, $captureUrl);
+        $this->gateway->execute($convertPaymentToContract);
+        $contract = $convertPaymentToContract->getContract();
+
+
+        $createContract = new CreateContract($contract);
+        $this->gateway->execute($createContract);
+        $contractCreateResult = $createContract->getResult();
+        Assert::isInstanceOf($contractCreateResult, ContractCreateResult::class);
+
+        $payment->setDetails(
+            PaymentDetailsHelper::createFromContractCreateResult($contractCreateResult),
+        );
+
+        throw new HttpRedirect($contractCreateResult->getRedirectUrl());
     }
 
     public function supports($request): bool

@@ -12,9 +12,10 @@ use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverterInterface;
+use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
 
-final class ConvertPaymentAction implements ActionInterface
+final class ConvertPaymentToContractAction implements ActionInterface
 {
     public function __construct(
         private readonly ContractConverterInterface $contractConverter,
@@ -22,37 +23,24 @@ final class ConvertPaymentAction implements ActionInterface
     }
 
     /**
-     * @param Convert $request
+     * @param ConvertPaymentToContract $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
 
-        /** @var Capture $capture */
-        $capture = $request->getSource();
-
-        $payment = $capture->getModel();
-        Assert::isInstanceOf($payment, PaymentInterface::class);
-
-        $token = $capture->getToken();
-        Assert::isInstanceOf($token, TokenInterface::class);
-
         $contract = $this->contractConverter->convertFromPayment(
-            $payment,
-            $token->getTargetUrl(),
-            $token->getTargetUrl(),
-            $token->getTargetUrl(),
+            $request->getPayment(),
+            $request->getSuccessUrl(),
+            $request->getFailureUrl(),
+            $request->getCancelUrl(),
         );
 
-        $request->setResult($contract);
+        $request->setContract($contract);
     }
 
     public function supports($request): bool
     {
-        return
-            $request instanceof Convert &&
-            $request->getSource() instanceof Capture &&
-            $request->getTo() === Contract::class
-        ;
+        return $request instanceof ConvertPaymentToContract;
     }
 }

@@ -7,6 +7,7 @@ namespace Webgriffe\SyliusPagolightPlugin\Domain\Client;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
 
@@ -27,4 +28,6 @@ interface ClientInterface
      * @throws ContractCreateFailedException
      */
     public function contractCreate(Contract $contract, string $bearerToken): ContractCreateResult;
+
+    public function applicationStatus(array $getContractsUuid, string $bearerToken): ApplicationStatusResult;
 }

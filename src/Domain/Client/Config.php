@@ -13,4 +13,6 @@ final class Config
     public const MINOR_UNIT = 'MINOR_UNIT';
 
     public const DECIMAL = 'DECIMAL';
+
+    public const CONTRACT_EXPIRATION_DELAY = '2 hour';
 }

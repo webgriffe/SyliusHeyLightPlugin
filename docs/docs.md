@@ -24,4 +24,5 @@ Poi, si torna a contattare la capture che, a questo punto avrà i dettagli setta
 
 TODO
 - [ ] Salvare in cache il bearer token
-- [ ] 
+- [ ] Creare delle Payum API che siano univoche per ogni gateway/sandbox/PRO
+- [ ] Aggiungere regola di validazione univocità gateway/sandbox/PRO

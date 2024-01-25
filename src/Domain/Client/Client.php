@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Domain\Client;
 
+use DateTimeImmutable;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\ServerRequest;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
@@ -187,7 +189,16 @@ final class Client implements ClientInterface
             );
         }
 
-        return new ContractCreateResult($serializedResponse['redirect_url']);
+        return new ContractCreateResult(
+            $serializedResponse['redirect_url'],
+            $serializedResponse['external_contract_uuid'],
+            new DateTimeImmutable(),
+        );
+    }
+
+    public function applicationStatus(array $getContractsUuid, string $bearerToken): ApplicationStatusResult
+    {
+        // @TODO
     }
 
     private function getAuthUrl(): string

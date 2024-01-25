@@ -1,0 +1,35 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api;
+
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
+
+final class ApplicationStatus
+{
+    private ?ApplicationStatusResult $result = null;
+
+    /**
+     * @param string[] $contractsUuid
+     */
+    public function __construct(
+        private readonly array $contractsUuid,
+    ) {
+    }
+
+    public function getContractsUuid(): array
+    {
+        return $this->contractsUuid;
+    }
+
+    public function getResult(): ?ApplicationStatusResult
+    {
+        return $this->result;
+    }
+
+    public function setResult(ApplicationStatusResult $result): void
+    {
+        $this->result = $result;
+    }
+}
