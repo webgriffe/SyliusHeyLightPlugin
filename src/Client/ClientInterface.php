@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Client;
 
+use Webgriffe\SyliusPagolightPlugin\Client\Exception\ApplicationStatusFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
@@ -31,6 +32,9 @@ interface ClientInterface
 
     /**
      * @param string[] $contractsUuid
+     *
+     * @throws ClientException
+     * @throws ApplicationStatusFailedException
      */
     public function applicationStatus(array $contractsUuid, string $bearerToken): ApplicationStatusResult;
 }

@@ -10,6 +10,7 @@ use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\ServerRequest;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
+use Webgriffe\SyliusPagolightPlugin\Client\Exception\ApplicationStatusFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
@@ -157,19 +158,85 @@ final class Client implements ClientInterface
 
     public function applicationStatus(array $contractsUuid, string $bearerToken): ApplicationStatusResult
     {
-        //@TODO
+        try {
+            $bodyParams = json_encode(['external_contract_uuids' => $contractsUuid], JSON_THROW_ON_ERROR);
+        } catch (JsonException $e) {
+            throw new ApplicationStatusFailedException(
+                sprintf('Malformed application status request body: "%s".', implode(', ', $contractsUuid)),
+                0,
+                $e,
+            );
+        }
+        $request = new ServerRequest(
+            'POST',
+            $this->getApplicationStatusUrl(),
+            [
+                'Content-Type' => 'application/json',
+                'Accept' => 'application/json',
+                'Authorization' => 'Bearer ' . $bearerToken,
+            ],
+            $bodyParams,
+        );
 
-        return new ApplicationStatusResult([new ApplicationStatus($contractsUuid[0], PaymentState::SUCCESS)]);
+        try {
+            $response = $this->httpClient->send($request);
+        } catch (GuzzleException $e) {
+            throw new ClientException($e->getMessage(), $e->getCode(), $e);
+        }
+        if ($response->getStatusCode() !== 200) {
+            throw new ApplicationStatusFailedException(
+                sprintf(
+                    'Unexpected application status response status code: %s - "%s".',
+                    $response->getStatusCode(),
+                    $response->getReasonPhrase(),
+                ),
+                $response->getStatusCode(),
+            );
+        }
+
+        try {
+            /** @var array{statuses: list<array{external_contract_uuid: string, status: string}>} $serializedResponse */
+            $serializedResponse = json_decode(
+                $response->getBody()->getContents(),
+                true,
+                512,
+                JSON_THROW_ON_ERROR,
+            );
+        } catch (JsonException $e) {
+            throw new ApplicationStatusFailedException(
+                sprintf(
+                    'Unexpected application status response body: "%s".',
+                    $response->getBody()->getContents(),
+                ),
+                $response->getStatusCode(),
+                $e,
+            );
+        }
+
+        $applicationStatuses = [];
+        foreach ($serializedResponse['statuses'] as $applicationStatus) {
+            $applicationStatuses[] = new ApplicationStatus(
+                $applicationStatus['external_contract_uuid'],
+                $applicationStatus['status'],
+            );
+        }
+
+        return new ApplicationStatusResult($applicationStatuses);
     }
 
     private function getAuthUrl(): string
     {
-        return sprintf('%s/auth/%s/generate/', $this->getBaseUrl(), $this->getVersion());
+        return sprintf('%s/auth/%s/generate/', $this->getBaseUrl(), $this->getVersion1());
     }
 
     private function getContractCreateUrl(): string
     {
-        return sprintf('%s/api/checkout/%s/init/', $this->getBaseUrl(), $this->getVersion());
+        return sprintf('%s/api/checkout/%s/init/', $this->getBaseUrl(), $this->getVersion1());
+    }
+
+    private function getApplicationStatusUrl(): string
+    {
+        return sprintf('%s/api/checkout/%s/status/', $this->getBaseUrl(), $this->getVersion2());
     }
 
     private function getBaseUrl(): string
@@ -177,8 +244,13 @@ final class Client implements ClientInterface
         return $this->sandbox ? Config::SANDBOX_BASE_URL : Config::PRODUCTION_BASE_URL;
     }
 
-    private function getVersion(): string
+    private function getVersion1(): string
     {
         return 'v1';
+    }
+
+    private function getVersion2(): string
+    {
+        return 'v2';
     }
 }
