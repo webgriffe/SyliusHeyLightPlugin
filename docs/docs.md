@@ -1,5 +1,7 @@
 # First raw doc
 
+> Sorry, this is a raw doc. It will be translated in english soon.
+
 Il metodo di pagamento Pagolight offre un gateway esterno. Per poter accedere a questo gateway è necessario innanzitutto autenticarsi
 tramite la merchant key. Una volta ottenuto il token si può aprire un nuovo contratto. Il contratto dura 2 ore, successivamente scade.
 
@@ -23,6 +25,10 @@ Poi, si torna a contattare la capture che, a questo punto avrà i dettagli setta
 
 
 TODO
-- [ ] Salvare in cache il bearer token
-- [ ] Creare delle Payum API che siano univoche per ogni gateway/sandbox/PRO
+- [x] Salvare in cache il bearer token
+- [x] Creare delle Payum API che siano univoche per ogni gateway/sandbox/PRO
 - [ ] Aggiungere regola di validazione univocità gateway/sandbox/PRO
+- [ ] Comletare il contract
+- [ ] Aggiungere il webhook
+- [ ] Valutare pagina di stato con JS che pinga il server
+- [ ] Documentazione
