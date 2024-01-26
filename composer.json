@@ -90,6 +90,12 @@
         "ecs": "vendor/bin/ecs check",
         "phpstan": "vendor/bin/phpstan analyse",
         "psalm": "vendor/bin/psalm",
-        "unit": "vendor/bin/phpunit"
+        "unit": "vendor/bin/phpunit",
+        "tests": [
+            "@ecs",
+            "@phpstan",
+            "@psalm",
+            "@unit"
+        ]
     }
 }
