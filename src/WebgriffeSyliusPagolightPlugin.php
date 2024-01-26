@@ -7,7 +7,6 @@ namespace Webgriffe\SyliusPagolightPlugin;
 use function dirname;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Webgriffe\SyliusPagolightPlugin\DependencyInjection\WebgriffeSyliusPagolightExtension;
 
 final class WebgriffeSyliusPagolightPlugin extends Bundle
 {
@@ -16,10 +15,5 @@ final class WebgriffeSyliusPagolightPlugin extends Bundle
     public function getPath(): string
     {
         return dirname(__DIR__);
-    }
-
-    protected function getContainerExtensionClass(): string
-    {
-        return WebgriffeSyliusPagolightExtension::class;
     }
 }
