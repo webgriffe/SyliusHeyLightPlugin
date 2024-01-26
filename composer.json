@@ -1,4 +1,6 @@
 {
+    "name": "webgriffe/sylius-pagolight-plugin",
+    "description": "Sylius plugin for Pagolight and Pagolight Pro payment gateway",
     "type": "sylius-plugin",
     "keywords": [
         "sylius",
