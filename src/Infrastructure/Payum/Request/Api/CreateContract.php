@@ -25,6 +25,7 @@ final class CreateContract
     {
         return $this->result;
     }
+
     public function setResult(ContractCreateResult $result): void
     {
         $this->result = $result;

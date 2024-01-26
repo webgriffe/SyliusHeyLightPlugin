@@ -37,6 +37,7 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
 
     /**
      * @param Capture $request
+     *
      * @throws ClientException
      */
     public function execute($request): void
@@ -73,7 +74,6 @@ final class CaptureAction implements ActionInterface, ApiAwareInterface, Gateway
         $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $captureUrl, $captureUrl);
         $this->gateway->execute($convertPaymentToContract);
         $contract = $convertPaymentToContract->getContract();
-
 
         $createContract = new CreateContract($contract);
         $this->gateway->execute($createContract);

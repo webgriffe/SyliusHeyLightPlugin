@@ -33,7 +33,7 @@ final class ApplicationStatusResult
         }
 
         throw new InvalidArgumentException(
-            sprintf('Contract with UUID "%s" not found in application status result', $contractUuid)
+            sprintf('Contract with UUID "%s" not found in application status result', $contractUuid),
         );
     }
 }

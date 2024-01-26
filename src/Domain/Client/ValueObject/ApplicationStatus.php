@@ -12,17 +12,11 @@ final class ApplicationStatus
     ) {
     }
 
-    /**
-     * @return string
-     */
     public function getStatus(): string
     {
         return $this->status;
     }
 
-    /**
-     * @return string
-     */
     public function getContractUuid(): string
     {
         return $this->contractUuid;

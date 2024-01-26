@@ -9,6 +9,7 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\Request\GetStatusInterface;
 use Sylius\Bundle\PayumBundle\Request\GetStatus;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\PaymentState;
 use Webgriffe\SyliusPagolightPlugin\Domain\PaymentDetailsHelper;
 
 final class StatusAction implements ActionInterface
@@ -27,16 +28,28 @@ final class StatusAction implements ActionInterface
 
         PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
-        if ([] === $details) {
+        $paymentStatus = PaymentDetailsHelper::getPaymentStatus($paymentDetails);
+
+        if ($paymentStatus === PaymentState::CANCELLED) {
             $request->markCanceled();
 
             return;
         }
 
-        if (200 === $details['status']) {
-            $request->markCaptured();
+        if ($paymentStatus === PaymentState::PENDING) {
+            $request->markPending();
 
             return;
+        }
+
+        if ($paymentStatus === PaymentState::AWAITING_CONFIRMATION) {
+            $request->markPending();
+
+            return;
+        }
+
+        if ($paymentStatus === PaymentState::SUCCESS) {
+            $request->markCaptured();
         }
     }
 

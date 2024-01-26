@@ -8,12 +8,12 @@ use DateTimeImmutable;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\ServerRequest;
-use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
 

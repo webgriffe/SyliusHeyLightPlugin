@@ -43,7 +43,6 @@ final class ApplicationStatusAction implements ActionInterface, GatewayAwareInte
         $applicationStatus = $this->client->applicationStatus($request->getContractsUuid(), $bearerToken);
 
         $request->setResult($applicationStatus);
-
     }
 
     public function supports($request): bool
