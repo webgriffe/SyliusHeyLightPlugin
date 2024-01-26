@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum;
 
-use Payum\Core\Bridge\Spl\ArrayObject;
+use ArrayObject;
+use Payum\Core\Bridge\Spl\ArrayObject as PayumArrayObject;
 use Payum\Core\GatewayFactory;
 
 final class PagolightProGatewayFactory extends GatewayFactory
 {
-    protected function populateConfig(ArrayObject $config): void
+    protected function populateConfig(PayumArrayObject $config): void
     {
         $config->defaults([
             'payum.factory_name' => 'pagolight_pro',
@@ -23,7 +24,12 @@ final class PagolightProGatewayFactory extends GatewayFactory
             $config['payum.default_options'] = $defaultOptions;
             $config['payum.required_options'] = ['merchant_key', 'sandbox'];
 
-            $config['payum.api'] = static fn (\ArrayObject $config): PagolightApi => new PagolightApi((array) $config);
+            /**
+             * @psalm-suppress MixedArgumentTypeCoercion
+             *
+             * @phpstan-ignore-next-line
+             */
+            $config['payum.api'] = static fn (ArrayObject $config): PagolightApi => new PagolightApi((array) $config);
         }
     }
 }

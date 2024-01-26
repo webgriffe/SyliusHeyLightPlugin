@@ -18,6 +18,9 @@ final class ApplicationStatus
     ) {
     }
 
+    /**
+     * @return string[]
+     */
     public function getContractsUuid(): array
     {
         return $this->contractsUuid;

@@ -1,2 +1,0 @@
-webgriffe_sylius_pagolight_payum:
-    resource: "@WebgriffeSyliusPagolightPlugin/config/payum_routing.php"

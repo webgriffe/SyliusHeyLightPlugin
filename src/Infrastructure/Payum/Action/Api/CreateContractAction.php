@@ -16,6 +16,9 @@ use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\Auth;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\CreateContract;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
+ */
 final class CreateContractAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait, ApiAwareTrait;

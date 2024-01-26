@@ -24,6 +24,8 @@ use Webmozart\Assert\Assert;
 
 /**
  * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, expire_at: string, status?: string}
+ *
+ * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
  */
 final class CaptureAction implements ActionInterface, GatewayAwareInterface
 {
@@ -50,6 +52,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface
 
         if ($paymentDetails !== []) {
             PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
+            /** @psalm-suppress InvalidArgument */
             $contractUuid = PaymentDetailsHelper::getContractUuid($paymentDetails);
 
             $applicationStatus = new ApplicationStatus([$contractUuid]);
@@ -57,6 +60,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface
             $applicationStatusResult = $applicationStatus->getResult();
             Assert::isInstanceOf($applicationStatusResult, ApplicationStatusResult::class);
 
+            /** @psalm-suppress InvalidArgument */
             $paymentDetails = PaymentDetailsHelper::addPaymentStatus(
                 $paymentDetails,
                 $applicationStatusResult->getStatusByContractUuid($contractUuid),

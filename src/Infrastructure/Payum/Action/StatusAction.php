@@ -39,6 +39,7 @@ final class StatusAction implements ActionInterface
 
         PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
+        /** @psalm-suppress InvalidArgument */
         $paymentStatus = PaymentDetailsHelper::getPaymentStatus($paymentDetails);
 
         if ($paymentStatus === PaymentState::CANCELLED) {

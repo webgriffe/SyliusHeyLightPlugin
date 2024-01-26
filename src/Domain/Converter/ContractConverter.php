@@ -42,7 +42,7 @@ final class ContractConverter implements ContractConverterInterface
         Assert::isInstanceOf($customer, CustomerInterface::class);
 
         $emailAddress = $customer->getEmail();
-        Assert::email($emailAddress, 'Email is required to create a contract on Pagolight');
+        Assert::stringNotEmpty($emailAddress, 'Email is required to create a contract on Pagolight');
 
         return new Contract(
             new Amount((string) $payment->getAmount(), $currency),

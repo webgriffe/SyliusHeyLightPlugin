@@ -10,6 +10,9 @@ final class PagolightApi
 
     private const API_URL_LIVE = 'https://origination.heidipay.com';
 
+    /**
+     * @param array{sandbox: bool, merchant_key: string} $config
+     */
     public function __construct(private readonly array $config)
     {
     }

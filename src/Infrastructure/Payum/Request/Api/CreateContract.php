@@ -9,7 +9,7 @@ use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResu
 
 final class CreateContract
 {
-    private ?ContractCreateResult $result;
+    private ?ContractCreateResult $result = null;
 
     public function __construct(
         private readonly Contract $contract,

@@ -16,6 +16,9 @@ use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\Application
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\Auth;
 use Webmozart\Assert\Assert;
 
+/**
+ * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
+ */
 final class ApplicationStatusAction implements ActionInterface, GatewayAwareInterface, ApiAwareInterface
 {
     use GatewayAwareTrait, ApiAwareTrait;
