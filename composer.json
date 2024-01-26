@@ -90,12 +90,17 @@
         "ecs": "vendor/bin/ecs check",
         "phpstan": "vendor/bin/phpstan analyse",
         "psalm": "vendor/bin/psalm",
-        "unit": "vendor/bin/phpunit",
+        "phpspec": "vendor/bin/phpspec run --ansi -f progress --no-interaction",
+        "unit": "vendor/bin/phpunit --colors=always",
+        "behat": "vendor/bin/behat --colors --strict -vvv --no-interaction || vendor/bin/behat --colors --strict -vvv --no-interaction --rerun",
         "tests": [
+            "composer validate --ansi --strict",
             "@ecs",
             "@phpstan",
             "@psalm",
-            "@unit"
+            "@phpspec",
+            "@unit",
+            "@behat"
         ]
     }
 }
