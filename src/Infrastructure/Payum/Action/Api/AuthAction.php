@@ -11,6 +11,7 @@ use Symfony\Contracts\Cache\ItemInterface;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ClientInterface;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\PagolightApi;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\Api\Auth;
+use Webmozart\Assert\Assert;
 
 /**
  * This action is responsible for authenticating the client against the Pagolight API.
@@ -25,11 +26,12 @@ final class AuthAction implements ActionInterface
     }
 
     /**
-     * @param Auth $request
+     * @param Auth|mixed $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+        Assert::isInstanceOf($request, Auth::class);
 
         $pagolightApi = $request->getPagolightApi();
         $client = $this->client;
@@ -41,6 +43,7 @@ final class AuthAction implements ActionInterface
 
             return $this->client->auth($pagolightApi->getMerchantKey());
         });
+        Assert::stringNotEmpty($bearerToken);
 
         $request->setBearerToken($bearerToken);
     }

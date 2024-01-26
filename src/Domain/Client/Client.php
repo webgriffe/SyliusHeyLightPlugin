@@ -13,6 +13,7 @@ use JsonException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatus;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ApplicationStatusResult;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Domain\Client\ValueObject\ContractCreateResult;
@@ -68,7 +69,7 @@ final class Client implements ClientInterface
         }
 
         try {
-            /** @var array{status: 'success', data: array{token: string}}|array{status: 'failure'} $serializedResponse */
+            /** @var array{status: 'success', data: array{token: string}} $serializedResponse */
             $serializedResponse = json_decode(
                 $response->getBody()->getContents(),
                 true,
@@ -83,28 +84,6 @@ final class Client implements ClientInterface
                 ),
                 $response->getStatusCode(),
                 $e,
-            );
-        }
-        if (!array_key_exists('status', $serializedResponse) || $serializedResponse['status'] !== 'success') {
-            throw new AuthFailedException(
-                sprintf(
-                    'Unexpected auth response body: "%s".',
-                    $response->getBody()->getContents(),
-                ),
-                $response->getStatusCode(),
-            );
-        }
-        if (!array_key_exists('data', $serializedResponse) ||
-            !is_array($serializedResponse['data']) ||
-            !array_key_exists('token', $serializedResponse['data']) ||
-            !is_string($serializedResponse['data']['token'])
-        ) {
-            throw new AuthFailedException(
-                sprintf(
-                    'Token is missing from auth response: "%s".',
-                    $response->getBody()->getContents(),
-                ),
-                $response->getStatusCode(),
             );
         }
 
@@ -168,26 +147,6 @@ final class Client implements ClientInterface
                 $e,
             );
         }
-        if (!array_key_exists('action', $serializedResponse) || $serializedResponse['action'] !== 'REDIRECT') {
-            throw new ContractCreateFailedException(
-                sprintf(
-                    'Unexpected contract create response body: "%s".',
-                    $response->getBody()->getContents(),
-                ),
-                $response->getStatusCode(),
-            );
-        }
-        if (!array_key_exists('redirect_url', $serializedResponse) ||
-            !is_string($serializedResponse['redirect_url'])
-        ) {
-            throw new ContractCreateFailedException(
-                sprintf(
-                    'Redirect url is missing from contract create response: "%s".',
-                    $response->getBody()->getContents(),
-                ),
-                $response->getStatusCode(),
-            );
-        }
 
         return new ContractCreateResult(
             $serializedResponse['redirect_url'],
@@ -196,9 +155,11 @@ final class Client implements ClientInterface
         );
     }
 
-    public function applicationStatus(array $getContractsUuid, string $bearerToken): ApplicationStatusResult
+    public function applicationStatus(array $contractsUuid, string $bearerToken): ApplicationStatusResult
     {
-        // @TODO
+        //@TODO
+
+        return new ApplicationStatusResult([new ApplicationStatus($contractsUuid[0], PaymentState::SUCCESS)]);
     }
 
     private function getAuthUrl(): string

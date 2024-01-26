@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Domain\Converter;
 
+use Sylius\Component\Core\Model\CustomerInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
@@ -37,6 +38,12 @@ final class ContractConverter implements ContractConverterInterface
         $paymentMethod = $payment->getMethod();
         Assert::isInstanceOf($paymentMethod, PaymentMethodInterface::class);
 
+        $customer = $order->getCustomer();
+        Assert::isInstanceOf($customer, CustomerInterface::class);
+
+        $emailAddress = $customer->getEmail();
+        Assert::email($emailAddress, 'Email is required to create a contract on Pagolight');
+
         return new Contract(
             new Amount((string) $payment->getAmount(), $currency),
             Config::MINOR_UNIT,
@@ -46,12 +53,12 @@ final class ContractConverter implements ContractConverterInterface
                 $cancelUrl,
             ),
             new CustomerDetails(
-                $order->getCustomer()->getEmail(),
+                $emailAddress,
                 null,
-                $order->getCustomer()->getFirstName(),
-                $order->getCustomer()->getLastName(),
-                $order->getCustomer()->getBirthday(),
-                $order->getCustomer()->getPhoneNumber(),
+                $customer->getFirstName(),
+                $customer->getLastName(),
+                $customer->getBirthday(),
+                $customer->getPhoneNumber(),
                 $billingAddress?->getCompany(),
                 $billingAddress?->getStreet(),
                 '',

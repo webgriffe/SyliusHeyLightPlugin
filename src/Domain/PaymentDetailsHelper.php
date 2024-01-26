@@ -42,8 +42,6 @@ final class PaymentDetailsHelper
      */
     public static function assertPaymentDetailsAreValid(array $paymentDetails): void
     {
-        Assert::isArray($paymentDetails);
-
         Assert::keyExists($paymentDetails, self::CONTRACT_UUID_KEY);
         Assert::stringNotEmpty($paymentDetails[self::CONTRACT_UUID_KEY]);
 

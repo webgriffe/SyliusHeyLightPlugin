@@ -29,5 +29,8 @@ interface ClientInterface
      */
     public function contractCreate(Contract $contract, string $bearerToken): ContractCreateResult;
 
-    public function applicationStatus(array $getContractsUuid, string $bearerToken): ApplicationStatusResult;
+    /**
+     * @param string[] $contractsUuid
+     */
+    public function applicationStatus(array $contractsUuid, string $bearerToken): ApplicationStatusResult;
 }

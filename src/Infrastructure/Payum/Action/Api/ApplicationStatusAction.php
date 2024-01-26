@@ -27,17 +27,19 @@ final class ApplicationStatusAction implements ActionInterface, GatewayAwareInte
     }
 
     /**
-     * @param ApplicationStatus $request
+     * @param ApplicationStatus|mixed $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+        Assert::isInstanceOf($request, ApplicationStatus::class);
 
         $pagolightApi = $this->api;
         Assert::isInstanceOf($pagolightApi, PagolightApi::class);
 
         $this->gateway->execute($auth = new Auth($pagolightApi));
         $bearerToken = $auth->getBearerToken();
+        Assert::stringNotEmpty($bearerToken);
 
         $this->client->setSandbox($pagolightApi->isSandBox());
         $applicationStatus = $this->client->applicationStatus($request->getContractsUuid(), $bearerToken);

@@ -18,9 +18,6 @@ return static function (ContainerConfigurator $containerConfigurator) {
 
     $services->set('webgriffe_sylius_pagolight.payum.action.capture', CaptureAction::class)
         ->public()
-        ->args([
-            service('webgriffe_sylius_pagolight.client'),
-        ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.capture'])
     ;
 
@@ -34,16 +31,6 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('webgriffe_sylius_pagolight.converter.contract'),
         ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.convert_payment_to_contract'])
-    ;
-
-    $services->set('webgriffe_sylius_pagolight.payum.action.cancel', CancelAction::class)
-        ->public()
-        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.cancel'])
-    ;
-
-    $services->set('webgriffe_sylius_pagolight.payum.action.fail', FailAction::class)
-        ->public()
-        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.fail'])
     ;
 
     $services->set('webgriffe_sylius_pagolight.payum.action.api.auth', AuthAction::class)

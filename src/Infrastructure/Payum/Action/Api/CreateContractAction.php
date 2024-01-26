@@ -27,17 +27,19 @@ final class CreateContractAction implements ActionInterface, GatewayAwareInterfa
     }
 
     /**
-     * @param CreateContract $request
+     * @param CreateContract|mixed $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+        Assert::isInstanceOf($request, CreateContract::class);
 
         $pagolightApi = $this->api;
         Assert::isInstanceOf($pagolightApi, PagolightApi::class);
 
         $this->gateway->execute($auth = new Auth($pagolightApi));
         $bearerToken = $auth->getBearerToken();
+        Assert::stringNotEmpty($bearerToken);
 
         $this->client->setSandbox($pagolightApi->isSandBox());
         $contractCreateResult = $this->client->contractCreate($request->getContract(), $bearerToken);

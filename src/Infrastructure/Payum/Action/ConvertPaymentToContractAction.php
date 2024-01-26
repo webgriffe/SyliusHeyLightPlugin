@@ -8,6 +8,7 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverterInterface;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Request\ConvertPaymentToContract;
+use Webmozart\Assert\Assert;
 
 final class ConvertPaymentToContractAction implements ActionInterface
 {
@@ -17,11 +18,12 @@ final class ConvertPaymentToContractAction implements ActionInterface
     }
 
     /**
-     * @param ConvertPaymentToContract $request
+     * @param ConvertPaymentToContract|mixed $request
      */
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
+        Assert::isInstanceOf($request, ConvertPaymentToContract::class);
 
         $contract = $this->contractConverter->convertFromPayment(
             $request->getPayment(),
