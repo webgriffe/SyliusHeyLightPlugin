@@ -32,3 +32,5 @@ TODO
 - [ ] Aggiungere il webhook
 - [ ] Valutare pagina di stato con JS che pinga il server
 - [ ] Documentazione
+- [ ] A cosa corrispondono i vari stati della transazione di Pagolight?
+- [ ] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?

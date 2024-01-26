@@ -49,7 +49,7 @@ final class StatusAction implements ActionInterface
         }
 
         if ($paymentStatus === PaymentState::PENDING) {
-            $request->markPending();
+            $request->markNew();
 
             return;
         }
