@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverter;
-use Webgriffe\SyliusPagolightPlugin\Domain\Converter\ContractConverterInterface;
+use Webgriffe\SyliusPagolightPlugin\Converter\ContractConverter;
+use Webgriffe\SyliusPagolightPlugin\Converter\ContractConverterInterface;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();

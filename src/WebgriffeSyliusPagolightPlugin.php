@@ -7,7 +7,7 @@ namespace Webgriffe\SyliusPagolightPlugin;
 use function dirname;
 use Sylius\Bundle\CoreBundle\Application\SyliusPluginTrait;
 use Symfony\Component\HttpKernel\Bundle\Bundle;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Symfony\DependencyInjection\WebgriffeSyliusPagolightExtension;
+use Webgriffe\SyliusPagolightPlugin\DependencyInjection\WebgriffeSyliusPagolightExtension;
 
 final class WebgriffeSyliusPagolightPlugin extends Bundle
 {

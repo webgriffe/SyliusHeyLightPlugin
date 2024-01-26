@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\Api\ApplicationStatusAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\Api\AuthAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\Api\CreateContractAction;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\CancelAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\CaptureAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\ConvertPaymentToContractAction;
 use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\FailAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\StatusAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\ApplicationStatusAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\AuthAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\CreateContractAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\ConvertPaymentToContractAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
