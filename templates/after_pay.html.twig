@@ -1,0 +1,14 @@
+{% extends '@SyliusShop/layout.html.twig' %}
+
+{% block content %}
+    <h1>Stiamo processando il tuo pagamento!</h1>
+
+    <p>Per favore, attendi fino a quando non vedrai una nuova pagina di stato!</p>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+
+    <script>window.afterUrl = "{{ afterUrl }}";</script>
+    <script src="{{ asset('bundles/WebgriffeSyliusPagolightPlugin/poll_payment.js') }}"></script>
+{% endblock %}

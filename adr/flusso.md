@@ -7,7 +7,7 @@ Per fare questo sono necessarie le seguenti operazioni:
 
 - [x] La cancel url deve essere la cancel action di Payum per essere certi che il pagamento venga cancellato in maniera
   istantanea
-- [ ] La capture action non si occuperà più di chiedere lo stato dell'esito del pagamento, ma mostrerà una pagina che
+- [x] La capture action non si occuperà più di chiedere lo stato dell'esito del pagamento, ma mostrerà una pagina che
   conterrà un JS
   che invierà una richiesta in polling a una rotta custom che dirà se il pagamento è stato catturato. Quando il
   pagamento è stato catturato allora

@@ -9,17 +9,17 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
+use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
+use Twig\Environment;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ApplicationStatusResult;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\ApplicationStatus;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
@@ -32,6 +32,11 @@ use Webmozart\Assert\Assert;
 final class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
     use GatewayAwareTrait, GenericTokenFactoryAwareTrait;
+
+    public function __construct(
+        private readonly Environment $twig,
+    ) {
+    }
 
     /**
      * @param Capture|mixed $request
@@ -53,23 +58,10 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $paymentDetails = $payment->getDetails();
 
         if ($paymentDetails !== []) {
-            PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
-            /** @psalm-suppress InvalidArgument */
-            $contractUuid = PaymentDetailsHelper::getContractUuid($paymentDetails);
-
-            $applicationStatus = new ApplicationStatus([$contractUuid]);
-            $this->gateway->execute($applicationStatus);
-            $applicationStatusResult = $applicationStatus->getResult();
-            Assert::isInstanceOf($applicationStatusResult, ApplicationStatusResult::class);
-
-            /** @psalm-suppress InvalidArgument */
-            $paymentDetails = PaymentDetailsHelper::addPaymentStatus(
-                $paymentDetails,
-                $applicationStatusResult->getStatusByContractUuid($contractUuid),
-            );
-            $payment->setDetails($paymentDetails);
-
-            return;
+            throw new HttpResponse($this->twig->render(
+                '@WebgriffeSyliusPagolightPlugin/after_pay.html.twig',
+                ['afterUrl' => $token->getAfterUrl()],
+            ));
         }
 
         $captureUrl = $token->getTargetUrl();

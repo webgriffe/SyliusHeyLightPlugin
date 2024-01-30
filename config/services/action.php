@@ -17,6 +17,9 @@ return static function (ContainerConfigurator $containerConfigurator) {
 
     $services->set('webgriffe_sylius_pagolight.payum.action.capture', CaptureAction::class)
         ->public()
+        ->args([
+            service('twig'),
+        ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.capture'])
     ;
 
