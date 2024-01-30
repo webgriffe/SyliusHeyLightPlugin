@@ -10,6 +10,7 @@ use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\CreateContractAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\CancelAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\ConvertPaymentToContractAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\NotifyAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
 
 return static function (ContainerConfigurator $containerConfigurator) {
@@ -31,6 +32,11 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $services->set('webgriffe_sylius_pagolight.payum.action.cancel', CancelAction::class)
         ->public()
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.cancel'])
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.notify', NotifyAction::class)
+        ->public()
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.notify'])
     ;
 
     $services->set('webgriffe_sylius_pagolight.payum.action.convert_payment_to_contract', ConvertPaymentToContractAction::class)

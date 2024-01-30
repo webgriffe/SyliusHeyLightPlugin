@@ -14,6 +14,7 @@ final class Contract
         private readonly string $amountFormat,
         private readonly RedirectUrls $redirectUrls,
         private readonly CustomerDetails $customerDetails,
+        private readonly ?Webhooks $webhooks = null,
     ) {
         Assert::oneOf($this->amountFormat, [Config::MINOR_UNIT, Config::DECIMAL]);
     }
@@ -38,12 +39,17 @@ final class Contract
         return $this->customerDetails;
     }
 
+    public function getWebhooks(): ?Webhooks
+    {
+        return $this->webhooks;
+    }
+
     /**
      * @return array<string, mixed> The array representation of the contract to send to Pagolight API
      */
     public function toArrayParams(): array
     {
-        return [
+        $contractParams = [
             'amount' => [
                 'currency' => $this->amount->getCurrency(),
                 'amount' => $this->amount->getAmount(),
@@ -66,5 +72,14 @@ final class Contract
                 'additional_data' => $this->getCustomerDetails()->getAdditionalData(),
             ],
         ];
+        if ($this->getWebhooks() !== null) {
+            $contractParams['webhooks'] = [
+                'status_url' => $this->getWebhooks()->getStatusUrl(),
+                'mapping_scheme' => $this->getWebhooks()->getMappingScheme(),
+                'token' => $this->getWebhooks()->getToken(),
+            ];
+        }
+
+        return $contractParams;
     }
 }

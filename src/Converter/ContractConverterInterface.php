@@ -14,5 +14,7 @@ interface ContractConverterInterface
         string $successUrl,
         string $failureUrl,
         ?string $cancelUrl = null,
+        ?string $webhookUrl = null,
+        ?string $webhookToken = null,
     ): Contract;
 }

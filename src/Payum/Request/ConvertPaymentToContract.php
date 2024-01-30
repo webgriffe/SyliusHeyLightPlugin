@@ -16,6 +16,8 @@ final class ConvertPaymentToContract
         private readonly string $successUrl,
         private readonly string $failureUrl,
         private readonly ?string $cancelUrl = null,
+        private readonly ?string $webhookUrl = null,
+        private readonly ?string $webhookToken = null,
     ) {
     }
 
@@ -37,6 +39,16 @@ final class ConvertPaymentToContract
     public function getCancelUrl(): ?string
     {
         return $this->cancelUrl;
+    }
+
+    public function getWebhookUrl(): ?string
+    {
+        return $this->webhookUrl;
+    }
+
+    public function getWebhookToken(): ?string
+    {
+        return $this->webhookToken;
     }
 
     public function getContract(): ?Contract

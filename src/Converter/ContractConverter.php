@@ -13,6 +13,7 @@ use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Amount;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\CustomerDetails;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\RedirectUrls;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Webhooks;
 use Webmozart\Assert\Assert;
 
 final class ContractConverter implements ContractConverterInterface
@@ -26,6 +27,8 @@ final class ContractConverter implements ContractConverterInterface
         string $successUrl,
         string $failureUrl,
         ?string $cancelUrl = null,
+        ?string $webhookUrl = null,
+        ?string $webhookToken = null,
     ): Contract {
         $currency = $payment->getCurrencyCode();
         Assert::notNull($currency);
@@ -43,6 +46,11 @@ final class ContractConverter implements ContractConverterInterface
 
         $emailAddress = $customer->getEmail();
         Assert::stringNotEmpty($emailAddress, 'Email is required to create a contract on Pagolight');
+
+        $webhooks = null;
+        if ($webhookUrl !== null && $webhookToken !== null) {
+            $webhooks = new Webhooks($webhookUrl, $webhookToken);
+        }
 
         return new Contract(
             new Amount((string) $payment->getAmount(), $currency),
@@ -63,6 +71,7 @@ final class ContractConverter implements ContractConverterInterface
                 $billingAddress?->getStreet(),
                 '',
             ),
+            $webhooks,
         );
     }
 }

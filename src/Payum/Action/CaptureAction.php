@@ -54,8 +54,8 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         /** @var SyliusPaymentInterface $payment */
         $payment = $request->getModel();
 
-        $token = $request->getToken();
-        Assert::isInstanceOf($token, TokenInterface::class);
+        $captureToken = $request->getToken();
+        Assert::isInstanceOf($captureToken, TokenInterface::class);
 
         /** @var PaymentDetails|array{} $paymentDetails */
         $paymentDetails = $payment->getDetails();
@@ -70,18 +70,21 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             throw new HttpResponse($this->twig->render(
                 '@WebgriffeSyliusPagolightPlugin/after_pay.html.twig',
                 [
-                    'afterUrl' => $token->getAfterUrl(),
+                    'afterUrl' => $captureToken->getAfterUrl(),
                     'paymentStatusUrl' => $paymentStatusUrl,
                 ],
             ));
         }
 
-        $captureUrl = $token->getTargetUrl();
+        $captureUrl = $captureToken->getTargetUrl();
 
-        $cancelToken = $this->tokenFactory->createToken($token->getGatewayName(), $token->getDetails(), 'payum_cancel_do', [], $token->getAfterUrl());
+        $cancelToken = $this->tokenFactory->createToken($captureToken->getGatewayName(), $captureToken->getDetails(), 'payum_cancel_do', [], $captureToken->getAfterUrl());
         $cancelUrl = $cancelToken->getTargetUrl();
 
-        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $cancelUrl, $cancelUrl);
+        $notifyToken = $this->tokenFactory->createNotifyToken($captureToken->getGatewayName(), $captureToken->getDetails());
+        $notifyUrl = $notifyToken->getTargetUrl();
+
+        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $cancelUrl, $cancelUrl, $notifyUrl, 'pagolight');
         $this->gateway->execute($convertPaymentToContract);
         $contract = $convertPaymentToContract->getContract();
         Assert::isInstanceOf($contract, Contract::class);
