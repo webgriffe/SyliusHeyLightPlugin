@@ -9,6 +9,9 @@
 {% block javascripts %}
     {{ parent() }}
 
-    <script>window.afterUrl = "{{ afterUrl }}";</script>
+    <script>
+        window.afterUrl = "{{ afterUrl }}";
+        window.paymentStatusUrl = "{{ paymentStatusUrl }}";
+    </script>
     <script src="{{ asset('bundles/WebgriffeSyliusPagolightPlugin/poll_payment.js') }}"></script>
 {% endblock %}

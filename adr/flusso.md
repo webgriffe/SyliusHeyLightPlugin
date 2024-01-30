@@ -12,7 +12,7 @@ Per fare questo sono necessarie le seguenti operazioni:
   che invierà una richiesta in polling a una rotta custom che dirà se il pagamento è stato catturato. Quando il
   pagamento è stato catturato allora
   farà un redirect automatico alla rotta after url del token (?).
-- [ ] La rotta custom che viene chiamata in polling deve essere in grado di capire se il pagamento è stato catturato o meno
+- [x] La rotta custom che viene chiamata in polling deve essere in grado di capire se il pagamento è stato catturato o meno
   e di ritornare un json con il risultato
 - [ ] Deve essere implementata la notify action che verrà chiamata dal webhook di pagolight e che si occuperà di aggiornare
   lo stato del pagamento

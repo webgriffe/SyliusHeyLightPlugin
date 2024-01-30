@@ -19,6 +19,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
         ->public()
         ->args([
             service('twig'),
+            service('router'),
         ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.capture'])
     ;

@@ -15,6 +15,8 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
@@ -35,6 +37,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
 
     public function __construct(
         private readonly Environment $twig,
+        private readonly RouterInterface $router,
     ) {
     }
 
@@ -58,9 +61,18 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $paymentDetails = $payment->getDetails();
 
         if ($paymentDetails !== []) {
+            $paymentStatusUrl = $this->router->generate(
+                'webgriffe_sylius_pagolight_plugin.payment.status',
+                ['paymentId' => $payment->getId()],
+                UrlGeneratorInterface::ABSOLUTE_URL,
+            );
+
             throw new HttpResponse($this->twig->render(
                 '@WebgriffeSyliusPagolightPlugin/after_pay.html.twig',
-                ['afterUrl' => $token->getAfterUrl()],
+                [
+                    'afterUrl' => $token->getAfterUrl(),
+                    'paymentStatusUrl' => $paymentStatusUrl,
+                ],
             ));
         }
 

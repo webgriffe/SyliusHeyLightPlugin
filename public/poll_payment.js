@@ -1,11 +1,17 @@
-
 const afterUrl = window.afterUrl
-let cont = 0;
+const paymentStatusUrl = window.paymentStatusUrl
 
-function refresh() {
-  cont++;
-  if (cont >= 3) {
-    window.location.replace(afterUrl);
+async function refresh() {
+  try {
+    const response = await fetch(paymentStatusUrl);
+    const data = await response.json();
+
+    if (data.captured) {
+      window.location.replace(afterUrl)
+      return
+    }
+  } catch (e) {
+    console.log(e)
   }
 
   setTimeout(refresh, 5000);
