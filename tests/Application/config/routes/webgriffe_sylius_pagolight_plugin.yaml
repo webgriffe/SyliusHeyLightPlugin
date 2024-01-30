@@ -1,0 +1,2 @@
+webgriffe_sylius_pagolight_plugin:
+    resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"

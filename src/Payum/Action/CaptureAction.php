@@ -10,6 +10,8 @@ use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
 use Payum\Core\Request\Capture;
+use Payum\Core\Security\GenericTokenFactoryAwareInterface;
+use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
@@ -27,9 +29,9 @@ use Webmozart\Assert\Assert;
  *
  * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
  */
-final class CaptureAction implements ActionInterface, GatewayAwareInterface
+final class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
 {
-    use GatewayAwareTrait;
+    use GatewayAwareTrait, GenericTokenFactoryAwareTrait;
 
     /**
      * @param Capture|mixed $request
@@ -71,7 +73,11 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface
         }
 
         $captureUrl = $token->getTargetUrl();
-        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $captureUrl, $captureUrl);
+
+        $cancelToken = $this->tokenFactory->createToken($token->getGatewayName(), $token->getDetails(), 'payum_cancel_do', [], $token->getAfterUrl());
+        $cancelUrl = $cancelToken->getTargetUrl();
+
+        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $cancelUrl, $cancelUrl);
         $this->gateway->execute($convertPaymentToContract);
         $contract = $convertPaymentToContract->getContract();
         Assert::isInstanceOf($contract, Contract::class);

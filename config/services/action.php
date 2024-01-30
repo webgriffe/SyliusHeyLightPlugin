@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\CancelAction;
-use Webgriffe\SyliusPagolightPlugin\Infrastructure\Payum\Action\FailAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\ApplicationStatusAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\AuthAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\Api\CreateContractAction;
+use Webgriffe\SyliusPagolightPlugin\Payum\Action\CancelAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\CaptureAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\ConvertPaymentToContractAction;
 use Webgriffe\SyliusPagolightPlugin\Payum\Action\StatusAction;
@@ -23,6 +22,11 @@ return static function (ContainerConfigurator $containerConfigurator) {
 
     $services->set('webgriffe_sylius_pagolight.payum.action.status', StatusAction::class)
         ->public()
+    ;
+
+    $services->set('webgriffe_sylius_pagolight.payum.action.cancel', CancelAction::class)
+        ->public()
+        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.cancel'])
     ;
 
     $services->set('webgriffe_sylius_pagolight.payum.action.convert_payment_to_contract', ConvertPaymentToContractAction::class)
