@@ -11,26 +11,16 @@ fase di creazione del contratto.
 @TODO: Non conosciamo ancora il metodo in cui il gateway risponde con successo al pagamento. Anche in questo caso
 potrebbe essere una GET senza parametri alla rotta specificata in fase di creazione del contratto.
 
-## Prima ipotesi
-
-Ci agganciamo alla capture action. Questa genera due token: capture e after.
-Il flusso rimane quello classico, ma il gateway non ritornerà in maniera diretta sulla capture.
-
-Prima, introduciamo 2 rotte (3 in caso anche il success sia una GET). 
-Queste due rotte lanceranno rispettive action molto simili alla status action per marcare come fallito o cancellato (o pagato) il pagamento.
-Poi, si torna a contattare la capture che, a questo punto avrà i dettagli settati. 
-
-
-
-
 
 TODO
 - [x] Salvare in cache il bearer token
-- [x] Creare delle Payum API che siano univoche per ogni gateway/sandbox/PRO
-- [ ] Aggiungere regola di validazione univocità gateway/sandbox/PRO
-- [ ] Comletare il contract
+- [x] Creare delle Payum API che siano univoche per ogni gateway normale/PRO
+- [ ] Aggiungere regola di validazione univocità gateway normale/PRO
+- [ ] Completare il contract
 - [ ] Aggiungere il webhook
 - [ ] Valutare pagina di stato con JS che pinga il server
 - [ ] Documentazione
 - [ ] A cosa corrispondono i vari stati della transazione di Pagolight?
 - [ ] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?
+- [ ] Riprendendo la URL ripartiamo dall'ultimo stato? O ricomincia?
+- [ ] Il webhook di successo parte subito? O dopo un tot di tempo?
