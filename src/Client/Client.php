@@ -146,7 +146,8 @@ final class Client implements ClientInterface
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $this->logger->debug('Create contract request response: ' . $response->getBody()->getContents());
+        $bodyContents = $response->getBody()->getContents();
+        $this->logger->debug('Create contract request response: ' . $bodyContents);
 
         if ($response->getStatusCode() !== 201) {
             $message = sprintf(
@@ -165,7 +166,7 @@ final class Client implements ClientInterface
         try {
             /** @var array{action: 'REDIRECT', redirect_url: string, external_contract_uuid: string} $serializedResponse */
             $serializedResponse = json_decode(
-                $response->getBody()->getContents(),
+                $bodyContents,
                 true,
                 512,
                 JSON_THROW_ON_ERROR,
@@ -173,7 +174,7 @@ final class Client implements ClientInterface
         } catch (JsonException $e) {
             $message = sprintf(
                 'Malformed contract create response body: "%s".',
-                $response->getBody()->getContents(),
+                $bodyContents,
             );
             $this->logger->error($message, ['exception' => $e]);
 

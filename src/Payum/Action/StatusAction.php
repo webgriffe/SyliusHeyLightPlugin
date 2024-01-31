@@ -26,7 +26,7 @@ final class StatusAction implements ActionInterface
         Assert::isInstanceOf($request, GetStatus::class);
 
         /** @var SyliusPaymentInterface $payment */
-        $payment = $request->getModel();
+        $payment = $request->getFirstModel();
 
         /** @var PaymentDetails|array{} $paymentDetails */
         $paymentDetails = $payment->getDetails();
@@ -64,7 +64,7 @@ final class StatusAction implements ActionInterface
     {
         return
             $request instanceof GetStatus &&
-            $request->getModel() instanceof SyliusPaymentInterface
+            $request->getFirstModel() instanceof SyliusPaymentInterface
         ;
     }
 }
