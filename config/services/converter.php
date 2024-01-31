@@ -10,8 +10,7 @@ use Webgriffe\SyliusPagolightPlugin\Converter\ContractConverterInterface;
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
-    $services->set('webgriffe_sylius_pagolight.converter.contract', ContractConverter::class)
-    ;
+    $services->set('webgriffe_sylius_pagolight.converter.contract', ContractConverter::class);
 
     $services->alias(ContractConverterInterface::class, 'webgriffe_sylius_pagolight.converter.contract');
 };

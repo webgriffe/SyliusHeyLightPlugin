@@ -9,6 +9,10 @@ use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 
 interface ContractConverterInterface
 {
+    /**
+     * @param int[] $allowedTerms
+     * @param array<string, string> $additionalData
+     */
     public function convertFromPayment(
         PaymentInterface $payment,
         string $successUrl,
@@ -16,5 +20,7 @@ interface ContractConverterInterface
         ?string $cancelUrl = null,
         ?string $webhookUrl = null,
         ?string $webhookToken = null,
+        array $allowedTerms = [],
+        array $additionalData = [],
     ): Contract;
 }

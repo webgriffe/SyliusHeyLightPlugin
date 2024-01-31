@@ -32,6 +32,8 @@ final class ConvertPaymentToContractAction implements ActionInterface
             $request->getCancelUrl(),
             $request->getWebhookUrl(),
             $request->getWebhookToken(),
+            $request->getAllowedTerms(),
+            $request->getAdditionalData(),
         );
 
         $request->setContract($contract);

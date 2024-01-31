@@ -22,5 +22,7 @@ TODO
 - [ ] Documentazione
 - [ ] A cosa corrispondono i vari stati della transazione di Pagolight?
 - [ ] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?
-- [ ] Riprendendo la URL ripartiamo dall'ultimo stato? O ricomincia?
+- [ ] Riprendendo la URL ripartiamo dall'ultimo stato? No
 - [ ] Il webhook di successo parte subito? O dopo un tot di tempo?
+- [ ] Fare in modo che il pagamento sia visibile solo in italia o svizzera e solo per euro o franchi svizzeri
+

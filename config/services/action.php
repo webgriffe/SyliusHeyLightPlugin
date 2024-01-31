@@ -63,12 +63,4 @@ return static function (ContainerConfigurator $containerConfigurator) {
         ])
         ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.api.create_contract'])
     ;
-
-    $services->set('webgriffe_sylius_pagolight.payum.action.api.application_status', ApplicationStatusAction::class)
-        ->public()
-        ->args([
-            service('webgriffe_sylius_pagolight.client'),
-        ])
-        ->tag('payum.action', ['factory' => 'pagolight', 'alias' => 'payum.action.api.application_status'])
-    ;
 };

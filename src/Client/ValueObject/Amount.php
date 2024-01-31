@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject;
 
+use Webgriffe\SyliusPagolightPlugin\Client\Config;
 use Webmozart\Assert\Assert;
 
 final class Amount
@@ -12,7 +13,7 @@ final class Amount
         private readonly string $amount,
         private readonly string $currency,
     ) {
-        Assert::oneOf($currency, ['CHF', 'EUR', 'GBP']);
+        Assert::oneOf($currency, Config::ALLOWED_CURRENCY_CODES);
     }
 
     public function getAmount(): string

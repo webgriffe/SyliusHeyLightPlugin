@@ -20,14 +20,14 @@ use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
 
 /**
- * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, expire_at: string, status?: string}
+ * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, status?: string}
  *
  * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
  */
@@ -84,7 +84,16 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $notifyToken = $this->tokenFactory->createNotifyToken($captureToken->getGatewayName(), $captureToken->getDetails());
         $notifyUrl = $notifyToken->getTargetUrl();
 
-        $convertPaymentToContract = new ConvertPaymentToContract($payment, $captureUrl, $cancelUrl, $cancelUrl, $notifyUrl, 'pagolight');
+        $convertPaymentToContract = new ConvertPaymentToContract(
+            $payment,
+            $captureUrl,
+            $cancelUrl,
+            $cancelUrl,
+            $notifyUrl,
+            'pagolight',
+            [3, 6, 12, 24],
+            [],
+        );
         $this->gateway->execute($convertPaymentToContract);
         $contract = $convertPaymentToContract->getContract();
         Assert::isInstanceOf($contract, Contract::class);

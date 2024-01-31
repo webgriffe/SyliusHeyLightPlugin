@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Webgriffe\SyliusPagolightPlugin\Payum\Request\Api;
 
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 
 final class CreateContract
 {

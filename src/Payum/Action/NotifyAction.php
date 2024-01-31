@@ -15,7 +15,7 @@ use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webmozart\Assert\Assert;
 
 /**
- * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, expire_at: string, status?: string}
+ * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, status?: string}
  */
 final class NotifyAction implements ActionInterface, GatewayAwareInterface
 {

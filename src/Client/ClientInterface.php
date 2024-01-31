@@ -8,9 +8,9 @@ use Webgriffe\SyliusPagolightPlugin\Client\Exception\ApplicationStatusFailedExce
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ApplicationStatusResult;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ApplicationStatusResult;
+use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 
 interface ClientInterface
 {

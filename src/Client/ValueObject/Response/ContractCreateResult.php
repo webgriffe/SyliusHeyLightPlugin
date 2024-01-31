@@ -2,10 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject;
+namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response;
 
 use DateTimeImmutable;
-use Webgriffe\SyliusPagolightPlugin\Client\Config;
 
 final class ContractCreateResult
 {
@@ -29,10 +28,5 @@ final class ContractCreateResult
     public function getCreatedAt(): DateTimeImmutable
     {
         return $this->createdAt;
-    }
-
-    public function getExpireAt(): DateTimeImmutable
-    {
-        return $this->createdAt->modify(Config::CONTRACT_EXPIRATION_DELAY);
     }
 }
