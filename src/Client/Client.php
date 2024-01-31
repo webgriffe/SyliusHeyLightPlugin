@@ -8,6 +8,7 @@ use DateTimeImmutable;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
 use GuzzleHttp\Exception\GuzzleException;
 use GuzzleHttp\Psr7\ServerRequest;
+use Psr\Log\LoggerInterface;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ApplicationStatusFailedException;
@@ -23,6 +24,7 @@ final class Client implements ClientInterface
 {
     public function __construct(
         private readonly GuzzleHttpClientInterface $httpClient,
+        private readonly LoggerInterface $logger,
         private bool $sandbox = false,
     ) {
     }
@@ -37,12 +39,18 @@ final class Client implements ClientInterface
         try {
             $bodyParams = json_encode(['merchant_key' => $merchantKey], JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
+            $message = sprintf('Malformed auth request body: "%s".', $merchantKey);
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new AuthFailedException(
-                sprintf('Malformed auth request body: "%s".', $merchantKey),
+                $message,
                 0,
                 $e,
             );
         }
+
+        $this->logger->debug('Auth request body: ' . $bodyParams);
+
         $request = new ServerRequest(
             'POST',
             $this->getAuthUrl(),
@@ -56,15 +64,23 @@ final class Client implements ClientInterface
         try {
             $response = $this->httpClient->send($request);
         } catch (GuzzleException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
+
+        $this->logger->debug('Auth request response: ' . $response->getBody()->getContents());
+
         if ($response->getStatusCode() !== 200) {
+            $message = sprintf(
+                'Unexpected auth response status code: %s - "%s".',
+                $response->getStatusCode(),
+                $response->getReasonPhrase(),
+            );
+            $this->logger->error($message);
+
             throw new AuthFailedException(
-                sprintf(
-                    'Unexpected auth response status code: %s - "%s".',
-                    $response->getStatusCode(),
-                    $response->getReasonPhrase(),
-                ),
+                $message,
                 $response->getStatusCode(),
             );
         }
@@ -78,11 +94,14 @@ final class Client implements ClientInterface
                 JSON_THROW_ON_ERROR,
             );
         } catch (JsonException $e) {
+            $message = sprintf(
+                'Unexpected auth response body: "%s".',
+                $response->getBody()->getContents(),
+            );
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new AuthFailedException(
-                sprintf(
-                    'Unexpected auth response body: "%s".',
-                    $response->getBody()->getContents(),
-                ),
+                $message,
                 $response->getStatusCode(),
                 $e,
             );
@@ -96,12 +115,17 @@ final class Client implements ClientInterface
         try {
             $bodyParams = json_encode($contract->toArrayParams(), JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
+            $message = 'Malformed contract create request body.';
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new ContractCreateFailedException(
-                'Malformed contract create request body.',
+                $message,
                 0,
                 $e,
             );
         }
+
+        $this->logger->debug('Create contract request body: ' . $bodyParams);
 
         $request = new ServerRequest(
             'POST',
@@ -117,15 +141,23 @@ final class Client implements ClientInterface
         try {
             $response = $this->httpClient->send($request);
         } catch (GuzzleException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
+
+        $this->logger->debug('Create contract request response: ' . $response->getBody()->getContents());
+
         if ($response->getStatusCode() !== 201) {
+            $message = sprintf(
+                'Unexpected contract create response status code: %s - "%s".',
+                $response->getStatusCode(),
+                $response->getReasonPhrase(),
+            );
+            $this->logger->error($message);
+
             throw new ContractCreateFailedException(
-                sprintf(
-                    'Unexpected contract create response status code: %s - "%s".',
-                    $response->getStatusCode(),
-                    $response->getReasonPhrase(),
-                ),
+                $message,
                 $response->getStatusCode(),
             );
         }
@@ -139,11 +171,14 @@ final class Client implements ClientInterface
                 JSON_THROW_ON_ERROR,
             );
         } catch (JsonException $e) {
+            $message = sprintf(
+                'Malformed contract create response body: "%s".',
+                $response->getBody()->getContents(),
+            );
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new ContractCreateFailedException(
-                sprintf(
-                    'Malformed contract create response body: "%s".',
-                    $response->getBody()->getContents(),
-                ),
+                $message,
                 $response->getStatusCode(),
                 $e,
             );
@@ -161,12 +196,18 @@ final class Client implements ClientInterface
         try {
             $bodyParams = json_encode(['external_contract_uuids' => $contractsUuid], JSON_THROW_ON_ERROR);
         } catch (JsonException $e) {
+            $message = sprintf('Malformed application status request body: "%s".', implode(', ', $contractsUuid));
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new ApplicationStatusFailedException(
-                sprintf('Malformed application status request body: "%s".', implode(', ', $contractsUuid)),
+                $message,
                 0,
                 $e,
             );
         }
+
+        $this->logger->debug('Application status request body: ' . $bodyParams);
+
         $request = new ServerRequest(
             'POST',
             $this->getApplicationStatusUrl(),
@@ -181,15 +222,23 @@ final class Client implements ClientInterface
         try {
             $response = $this->httpClient->send($request);
         } catch (GuzzleException $e) {
+            $this->logger->error($e->getMessage(), ['exception' => $e]);
+
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
+
+        $this->logger->debug('Application status request response: ' . $response->getBody()->getContents());
+
         if ($response->getStatusCode() !== 200) {
+            $message = sprintf(
+                'Unexpected application status response status code: %s - "%s".',
+                $response->getStatusCode(),
+                $response->getReasonPhrase(),
+            );
+            $this->logger->error($message);
+
             throw new ApplicationStatusFailedException(
-                sprintf(
-                    'Unexpected application status response status code: %s - "%s".',
-                    $response->getStatusCode(),
-                    $response->getReasonPhrase(),
-                ),
+                $message,
                 $response->getStatusCode(),
             );
         }
@@ -203,11 +252,14 @@ final class Client implements ClientInterface
                 JSON_THROW_ON_ERROR,
             );
         } catch (JsonException $e) {
+            $message = sprintf(
+                'Unexpected application status response body: "%s".',
+                $response->getBody()->getContents(),
+            );
+            $this->logger->error($message, ['exception' => $e]);
+
             throw new ApplicationStatusFailedException(
-                sprintf(
-                    'Unexpected application status response body: "%s".',
-                    $response->getBody()->getContents(),
-                ),
+                $message,
                 $response->getStatusCode(),
                 $e,
             );

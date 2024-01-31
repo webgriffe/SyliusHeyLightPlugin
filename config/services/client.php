@@ -16,6 +16,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $services->set('webgriffe_sylius_pagolight.client', Client::class)
         ->args([
             service('webgriffe_sylius_pagolight.http_client'),
+            service('webgriffe_sylius_pagolight.logger'),
         ])
     ;
 
