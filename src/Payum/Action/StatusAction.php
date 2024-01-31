@@ -26,7 +26,7 @@ final class StatusAction implements ActionInterface
         Assert::isInstanceOf($request, GetStatus::class);
 
         /** @var SyliusPaymentInterface $payment */
-        $payment = $request->getFirstModel();
+        $payment = $request->getModel();
 
         /** @var PaymentDetails|array{} $paymentDetails */
         $paymentDetails = $payment->getDetails();
@@ -37,31 +37,26 @@ final class StatusAction implements ActionInterface
             return;
         }
 
+        if (!$request->isNew()) {
+            // Payment status already set
+            return;
+        }
+
         PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
         /** @psalm-suppress InvalidArgument */
         $paymentStatus = PaymentDetailsHelper::getPaymentStatus($paymentDetails);
 
-        if ($paymentStatus === PaymentState::CANCELLED) {
+        if (in_array($paymentStatus, [PaymentState::CANCELLED, PaymentState::PENDING], true)) {
             $request->markCanceled();
 
             return;
         }
 
-        if ($paymentStatus === PaymentState::PENDING) {
-            $request->markNew();
-
-            return;
-        }
-
-        if ($paymentStatus === PaymentState::AWAITING_CONFIRMATION) {
-            $request->markPending();
-
-            return;
-        }
-
-        if ($paymentStatus === PaymentState::SUCCESS) {
+        if (in_array($paymentStatus, [PaymentState::SUCCESS, PaymentState::AWAITING_CONFIRMATION], true)) {
             $request->markCaptured();
+
+            return;
         }
     }
 
@@ -69,7 +64,7 @@ final class StatusAction implements ActionInterface
     {
         return
             $request instanceof GetStatus &&
-            $request->getFirstModel() instanceof SyliusPaymentInterface
+            $request->getModel() instanceof SyliusPaymentInterface
         ;
     }
 }
