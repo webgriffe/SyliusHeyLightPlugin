@@ -149,7 +149,7 @@ final class Contract
                 'title' => $this->getCustomerDetails()->getTitle(),
                 'first_name' => $this->getCustomerDetails()->getFirstName(),
                 'last_name' => $this->getCustomerDetails()->getLastName(),
-                'date_of_birth' => $this->getCustomerDetails()->getDateOfBirth(),
+                'date_of_birth' => $this->getCustomerDetails()->getDateOfBirth()?->format('Y-m-d'),
                 'contact_number' => $this->getCustomerDetails()->getContactNumber(),
                 'company_name' => $this->getCustomerDetails()->getCompanyName(),
                 'residence' => $this->getCustomerDetails()->getResidence(),
