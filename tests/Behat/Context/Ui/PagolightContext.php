@@ -38,8 +38,6 @@ final class PagolightContext implements Context
 
     /**
      * @When I complete the payment on Pagolight
-     *
-     * @throws JsonException
      */
     public function iCompleteThePaymentOnPagolight(): void
     {
@@ -48,6 +46,18 @@ final class PagolightContext implements Context
 
         // Simulate coming back from Pagolight after completed checkout
         $this->session->getDriver()->visit($paymentCaptureSecurityToken->getTargetUrl());
+    }
+
+    /**
+     * @Given I cancel the payment on Pagolight
+     */
+    public function iCancelThePaymentOnPagolight(): void
+    {
+        $payment = $this->getCurrentPayment();
+        [$paymentCaptureSecurityToken, $paymentNotifySecurityToken, $paymentCancelSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+
+        // Simulate coming back from Pagolight after clicking on cancel link
+        $this->session->getDriver()->visit($paymentCancelSecurityToken->getTargetUrl());
     }
 
     /**
