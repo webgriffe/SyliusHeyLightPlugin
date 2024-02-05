@@ -37,7 +37,7 @@ final class StatusAction implements ActionInterface
             return;
         }
 
-        if (!$request->isNew()) {
+        if (!$request->isNew() && !$request->isUnknown()) {
             // Payment status already set
             return;
         }

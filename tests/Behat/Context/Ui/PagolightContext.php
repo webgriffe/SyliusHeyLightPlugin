@@ -1,0 +1,87 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Ui;
+
+use Behat\Behat\Context\Context;
+use Behat\Mink\Session;
+use JsonException;
+use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
+use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
+use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
+use Sylius\Component\Resource\Repository\RepositoryInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RequestContext;
+use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\PayumPaymentTrait;
+use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payum\Capture\PayumCaptureDoPageInterface;
+use Webmozart\Assert\Assert;
+
+final class PagolightContext implements Context
+{
+    use PayumPaymentTrait;
+
+    /**
+     * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
+     */
+    public function __construct(
+        private readonly RepositoryInterface $paymentTokenRepository,
+        private readonly PaymentRepositoryInterface $paymentRepository,
+        private readonly UrlGeneratorInterface $urlGenerator,
+        private readonly Session $session,
+        private readonly PayumCaptureDoPageInterface $payumCaptureDoPage,
+        private readonly ThankYouPageInterface $thankYouPage,
+    ) {
+        // TODO: Why config parameters are not loaded?
+        $this->urlGenerator->setContext(new RequestContext('', 'GET', '127.0.0.1:8080', 'https'));
+    }
+
+    /**
+     * @When I complete the payment on Pagolight
+     *
+     * @throws JsonException
+     */
+    public function iCompleteThePaymentOnPagolight(): void
+    {
+        $payment = $this->getCurrentPayment();
+        [$paymentCaptureSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+
+        // Simulate coming back from Pagolight after completed checkout
+        $this->session->getDriver()->visit($paymentCaptureSecurityToken->getTargetUrl());
+    }
+
+    /**
+     * @Then I should be on the capture payment page
+     */
+    public function iShouldBeOnTheCapturePaymentPage(): void
+    {
+        $payment = $this->getCurrentPayment();
+        [$paymentCaptureSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+
+        $this->payumCaptureDoPage->verify([
+            'payum_token' => $paymentCaptureSecurityToken->getHash(),
+        ]);
+    }
+
+    /**
+     * @Then /^I should be redirected to the thank you page$/
+     */
+    public function iShouldBeRedirectedToTheThankYouPage(): void
+    {
+        $this->payumCaptureDoPage->waitForRedirect();
+        Assert::true($this->thankYouPage->hasThankYouMessage());
+    }
+
+    protected function getPaymentRepository(): PaymentRepositoryInterface
+    {
+        return $this->paymentRepository;
+    }
+
+    /**
+     * @return RepositoryInterface<PaymentSecurityTokenInterface>
+     */
+    protected function getPaymentTokenRepository(): RepositoryInterface
+    {
+        return $this->paymentTokenRepository;
+    }
+}
