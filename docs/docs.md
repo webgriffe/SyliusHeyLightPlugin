@@ -16,13 +16,13 @@ TODO
 - [x] Salvare in cache il bearer token
 - [x] Creare delle Payum API che siano univoche per ogni gateway normale/PRO
 - [ ] Aggiungere regola di validazione univocità gateway normale/PRO
-- [ ] Completare il contract
-- [ ] Aggiungere il webhook
-- [ ] Valutare pagina di stato con JS che pinga il server
+- [x] Completare il contract
+- [x] Aggiungere il webhook
+- [x] Valutare pagina di stato con JS che pinga il server
 - [ ] Documentazione
-- [ ] A cosa corrispondono i vari stati della transazione di Pagolight?
-- [ ] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?
-- [ ] Riprendendo la URL ripartiamo dall'ultimo stato? No
-- [ ] Il webhook di successo parte subito? O dopo un tot di tempo?
+- [x] A cosa corrispondono i vari stati della transazione di Pagolight?
+- [x] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?
+- [x] Riprendendo la URL ripartiamo dall'ultimo stato? No
+- [x] Il webhook di successo parte subito? O dopo un tot di tempo?
 - [ ] Fare in modo che il pagamento sia visibile solo in italia o svizzera e solo per euro o franchi svizzeri
 
