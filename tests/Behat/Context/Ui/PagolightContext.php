@@ -9,6 +9,8 @@ use Behat\Mink\Session;
 use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
+use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -32,6 +34,7 @@ final class PagolightContext implements Context
         private readonly PayumCaptureDoPageInterface $payumCaptureDoPage,
         private readonly ThankYouPageInterface $thankYouPage,
         private readonly ShowPageInterface $orderShowPage,
+        private readonly OrderRepositoryInterface $orderRepository,
     ) {
         // TODO: Why config parameters are not loaded?
         $this->urlGenerator->setContext(new RequestContext('', 'GET', '127.0.0.1:8080', 'https'));
@@ -91,6 +94,18 @@ final class PagolightContext implements Context
     {
         $this->orderShowPage->pay();
         $this->iCompleteThePaymentOnPagolight();
+    }
+
+    /**
+     * @Then /^I should be redirected to the order page page$/
+     */
+    public function iShouldBeRedirectedToTheOrderPagePage(): void
+    {
+        $this->payumCaptureDoPage->waitForRedirect();
+        $orders = $this->orderRepository->findAll();
+        $order = reset($orders);
+        Assert::isInstanceOf($order, OrderInterface::class);
+        Assert::true($this->orderShowPage->isOpen(['tokenValue' => $order->getTokenValue()]));
     }
 
     protected function getPaymentRepository(): PaymentRepositoryInterface

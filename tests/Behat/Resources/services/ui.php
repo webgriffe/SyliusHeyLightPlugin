@@ -19,6 +19,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('webgriffe_sylius_pagolight.behat.page.shop.payum.capture.do'),
             service('sylius.behat.page.shop.order.thank_you'),
             service('sylius.behat.page.shop.order.show'),
+            service('sylius.repository.order'),
         ])
     ;
 };

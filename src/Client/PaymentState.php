@@ -11,9 +11,9 @@ final class PaymentState
 {
     public const SUCCESS = 'success';
 
-    public const PENDING = 'pending'; // Rimane pending per 4/12 ore fino a quando arriva il pending
+    public const PENDING = 'pending';
 
-    public const AWAITING_CONFIRMATION = 'awaiting_confirmation'; // Non ce lo abbiamo, ma è confermato
+    public const AWAITING_CONFIRMATION = 'awaiting_confirmation';
 
     public const CANCELLED = 'cancelled';
 

@@ -30,6 +30,21 @@ Feature: Paying with Pagolight during checkout
         When I am viewing the summary of my last order
         Then I should see its payment status as "Completed"
 
+    @ui @javascript
+    Scenario: Failed payment
+        Given I added product "PHP T-Shirt" to the cart
+        And I am at the checkout addressing step
+        And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
+        And I complete the addressing step
+        And I proceeded with "Free" shipping method and "Pagolight" payment
+        When I confirm my order
+        And I complete the payment on Pagolight
+        Then I should be on the capture payment page
+        When Pagolight notify the store about the failed payment
+        Then I should be redirected to the order page page
+        And I should be notified that my payment has been cancelled
+        And I should be able to pay again
+
     @ui
     Scenario: Cancelling the payment
         Given I added product "PHP T-Shirt" to the cart

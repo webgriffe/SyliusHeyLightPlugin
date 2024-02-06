@@ -45,6 +45,20 @@ final class PagolightContext implements Context
         ]);
     }
 
+    /**
+     * @When /^Pagolight notify the store about the failed payment$/
+     */
+    public function pagolightNotifyTheStoreAboutTheFailedPayment(): void
+    {
+        $payment = $this->getCurrentPayment();
+        [$paymentCaptureSecurityToken, $paymentNotifySecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+
+        $this->notifyPaymentState($paymentNotifySecurityToken, [
+            'status' => PaymentState::CANCELLED,
+            'token' => 'pagolight',
+        ]);
+    }
+
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;
