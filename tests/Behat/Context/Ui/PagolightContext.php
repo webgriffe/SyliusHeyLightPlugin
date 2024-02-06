@@ -6,7 +6,6 @@ namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
-use JsonException;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
