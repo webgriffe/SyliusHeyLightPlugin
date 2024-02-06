@@ -69,7 +69,8 @@ final class Client implements ClientInterface
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $this->logger->debug('Auth request response: ' . $response->getBody()->getContents());
+        $bodyContents = $response->getBody()->getContents();
+        $this->logger->debug('Auth request response: ' . $bodyContents);
 
         if ($response->getStatusCode() !== 200) {
             $message = sprintf(
@@ -88,7 +89,7 @@ final class Client implements ClientInterface
         try {
             /** @var array{status: 'success', data: array{token: string}} $serializedResponse */
             $serializedResponse = json_decode(
-                $response->getBody()->getContents(),
+                $bodyContents,
                 true,
                 512,
                 JSON_THROW_ON_ERROR,
@@ -96,7 +97,7 @@ final class Client implements ClientInterface
         } catch (JsonException $e) {
             $message = sprintf(
                 'Unexpected auth response body: "%s".',
-                $response->getBody()->getContents(),
+                $bodyContents,
             );
             $this->logger->error($message, ['exception' => $e]);
 
@@ -228,7 +229,8 @@ final class Client implements ClientInterface
             throw new ClientException($e->getMessage(), $e->getCode(), $e);
         }
 
-        $this->logger->debug('Application status request response: ' . $response->getBody()->getContents());
+        $bodyContents = $response->getBody()->getContents();
+        $this->logger->debug('Application status request response: ' . $bodyContents);
 
         if ($response->getStatusCode() !== 200) {
             $message = sprintf(
@@ -247,7 +249,7 @@ final class Client implements ClientInterface
         try {
             /** @var array{statuses: list<array{external_contract_uuid: string, status: string}>} $serializedResponse */
             $serializedResponse = json_decode(
-                $response->getBody()->getContents(),
+                $bodyContents,
                 true,
                 512,
                 JSON_THROW_ON_ERROR,
@@ -255,7 +257,7 @@ final class Client implements ClientInterface
         } catch (JsonException $e) {
             $message = sprintf(
                 'Unexpected application status response body: "%s".',
-                $response->getBody()->getContents(),
+                $bodyContents,
             );
             $this->logger->error($message, ['exception' => $e]);
 

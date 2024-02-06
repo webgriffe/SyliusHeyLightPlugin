@@ -84,6 +84,10 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $notifyToken = $this->tokenFactory->createNotifyToken($captureToken->getGatewayName(), $captureToken->getDetails());
         $notifyUrl = $notifyToken->getTargetUrl();
 
+        $additionalData = [];
+        if ($payment->getMethod()?->getCode() === 'pagolight_pro') {
+            $additionalData['pricing_structure_code'] = 'PC6';
+        }
         $convertPaymentToContract = new ConvertPaymentToContract(
             $payment,
             $captureUrl,
@@ -92,7 +96,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             $notifyUrl,
             'pagolight',
             [3, 6, 12, 24],
-            [],
+            $additionalData,
         );
         $this->gateway->execute($convertPaymentToContract);
         $contract = $convertPaymentToContract->getContract();

@@ -32,6 +32,7 @@ final class Contract
         private readonly ?string $config = null,
         private readonly ?string $merchantUserUuid = null,
         private readonly ?bool $delayFinalisation = null,
+        private readonly ?string $pricingStructureCode = null,
     ) {
         Assert::oneOf($this->amountFormat, [Config::MINOR_UNIT, Config::DECIMAL]);
         Assert::oneOf($this->language, Config::ALLOWED_LANGUAGE_CODES);
@@ -126,6 +127,11 @@ final class Contract
     public function getDelayFinalisation(): ?bool
     {
         return $this->delayFinalisation;
+    }
+
+    public function getPricingStructureCode(): ?string
+    {
+        return $this->pricingStructureCode;
     }
 
     /**
