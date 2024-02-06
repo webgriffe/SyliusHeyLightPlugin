@@ -6,6 +6,7 @@ namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Ui;
 
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
+use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
@@ -30,6 +31,7 @@ final class PagolightContext implements Context
         private readonly Session $session,
         private readonly PayumCaptureDoPageInterface $payumCaptureDoPage,
         private readonly ThankYouPageInterface $thankYouPage,
+        private readonly ShowPageInterface $orderShowPage,
     ) {
         // TODO: Why config parameters are not loaded?
         $this->urlGenerator->setContext(new RequestContext('', 'GET', '127.0.0.1:8080', 'https'));
@@ -48,7 +50,8 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @Given I cancel the payment on Pagolight
+     * @Given I have cancelled Pagolight payment
+     * @When I cancel the payment on Pagolight
      */
     public function iCancelThePaymentOnPagolight(): void
     {
@@ -79,6 +82,15 @@ final class PagolightContext implements Context
     {
         $this->payumCaptureDoPage->waitForRedirect();
         Assert::true($this->thankYouPage->hasThankYouMessage());
+    }
+
+    /**
+     * @When I try to pay again with Pagolight
+     */
+    public function iTryToPayAgainWithPagolight(): void
+    {
+        $this->orderShowPage->pay();
+        $this->iCompleteThePaymentOnPagolight();
     }
 
     protected function getPaymentRepository(): PaymentRepositoryInterface

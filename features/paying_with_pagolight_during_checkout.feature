@@ -41,3 +41,17 @@ Feature: Paying with Pagolight during checkout
         And I cancel the payment on Pagolight
         Then I should be notified that my payment has been cancelled
         And I should be able to pay again
+
+    @ui @javascript
+    Scenario: Retrying the payment with success
+        Given I added product "PHP T-Shirt" to the cart
+        And I am at the checkout addressing step
+        And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
+        And I complete the addressing step
+        And I proceeded with "Free" shipping method and "Pagolight" payment
+        And I have confirmed order
+        But I have cancelled Pagolight payment
+        When I try to pay again with Pagolight
+        And Pagolight notify the store about the successful payment
+        Then I should be redirected to the thank you page
+        And I should be notified that my payment has been completed

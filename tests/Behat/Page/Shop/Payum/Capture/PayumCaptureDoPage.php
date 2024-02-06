@@ -16,7 +16,7 @@ final class PayumCaptureDoPage extends SymfonyPage implements PayumCaptureDoPage
 
     public function waitForRedirect(): void
     {
-        $this->getDocument()->waitFor(5, function (DocumentElement $document) {
+        $this->getDocument()->waitFor(6, function (DocumentElement $document) {
             return !str_contains($document->getContent(), 'Stiamo processando il tuo pagamento');
         });
     }
