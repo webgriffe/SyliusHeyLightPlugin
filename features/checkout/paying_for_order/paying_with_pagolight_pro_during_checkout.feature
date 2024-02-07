@@ -10,7 +10,7 @@ Feature: Paying with Pagolight PRO during checkout
         And the store ships to "Italy"
         And there is a user "john@example.com" identified by "password123"
         And the store has a payment method "Pagolight PRO" with a code "PAGOLIGHT_PRO_PAYMENT_METHOD" and Pagolight Payment Checkout gateway
-        And the store has a product "PHP T-Shirt" priced at "$19.99"
+        And the store has a product "PHP T-Shirt" priced at "€109.99"
         And the store ships everywhere for free
         And I am logged in as "john@example.com"
 

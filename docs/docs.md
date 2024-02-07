@@ -24,5 +24,5 @@ TODO
 - [x] Se annullo il checkout lo stato è pending?? Come gestiamo il caso? Annulliamo il pagamento?
 - [x] Riprendendo la URL ripartiamo dall'ultimo stato? No
 - [x] Il webhook di successo parte subito? O dopo un tot di tempo?
-- [ ] Fare in modo che il pagamento sia visibile solo in italia o svizzera e solo per euro o franchi svizzeri
+- [x] Fare in modo che il pagamento sia visibile solo in italia o svizzera e solo per euro o franchi svizzeri
 

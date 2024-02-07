@@ -55,4 +55,6 @@ final class Config
         self::EN_GB_LANGUAGE_CODE,
         self::IT_LANGUAGE_CODE,
     ];
+
+    public const PAGOLIGHT_PRO_MINIMUM_AMOUNT = 100;
 }

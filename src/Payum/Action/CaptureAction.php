@@ -22,6 +22,7 @@ use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
@@ -85,7 +86,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $notifyUrl = $notifyToken->getTargetUrl();
 
         $additionalData = [];
-        if ($payment->getMethod()?->getCode() === 'pagolight_pro') {
+        if ($payment->getMethod()?->getCode() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE) {
             $additionalData['pricing_structure_code'] = 'PC6';
         }
         $convertPaymentToContract = new ConvertPaymentToContract(

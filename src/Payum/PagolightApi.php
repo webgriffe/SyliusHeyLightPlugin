@@ -6,6 +6,10 @@ namespace Webgriffe\SyliusPagolightPlugin\Payum;
 
 final class PagolightApi
 {
+    public const PAGOLIGHT_GATEWAY_CODE = 'pagolight';
+
+    public const PAGOLIGHT_PRO_GATEWAY_CODE = 'pagolight_pro';
+
     /**
      * @param array{sandbox: bool, merchant_key: string} $config
      */

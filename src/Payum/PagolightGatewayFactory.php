@@ -13,7 +13,7 @@ final class PagolightGatewayFactory extends GatewayFactory
     protected function populateConfig(PayumArrayObject $config): void
     {
         $config->defaults([
-            'payum.factory_name' => 'pagolight',
+            'payum.factory_name' => PagolightApi::PAGOLIGHT_GATEWAY_CODE,
             'payum.factory_title' => 'Pagolight',
             'payum.action.status' => '@webgriffe_sylius_pagolight.payum.action.status',
         ]);

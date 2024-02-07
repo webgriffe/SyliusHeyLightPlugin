@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Setup\PaymentContext;
+use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
@@ -17,8 +18,8 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('sylius.fixture.example_factory.payment_method'),
             service('sylius.manager.payment_method'),
             [
-                'pagolight' => 'Pagolight',
-                'pagolight_pro' => 'Pagolight PRO',
+                PagolightApi::PAGOLIGHT_GATEWAY_CODE => 'Pagolight',
+                PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE => 'Pagolight PRO',
             ],
         ])
     ;

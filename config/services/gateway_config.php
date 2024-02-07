@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Payum\Core\Bridge\Symfony\Builder\GatewayFactoryBuilder;
+use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightGatewayFactory;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightProGatewayFactory;
 
@@ -16,8 +17,8 @@ return static function (ContainerConfigurator $containerConfigurator) {
             PagolightGatewayFactory::class,
             PagolightProGatewayFactory::class,
         ])
-        ->tag('payum.gateway_factory_builder', ['factory' => 'pagolight'])
-        ->tag('payum.gateway_factory_builder', ['factory' => 'pagolight_pro'])
+        ->tag('payum.gateway_factory_builder', ['factory' => PagolightApi::PAGOLIGHT_GATEWAY_CODE])
+        ->tag('payum.gateway_factory_builder', ['factory' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE])
     ;
 
 };

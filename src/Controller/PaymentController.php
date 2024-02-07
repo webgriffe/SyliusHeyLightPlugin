@@ -11,6 +11,7 @@ use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webmozart\Assert\Assert;
 
 /**
@@ -41,7 +42,7 @@ final class PaymentController extends AbstractController
         if (!$paymentGatewayConfig instanceof GatewayConfigInterface) {
             throw $this->createAccessDeniedException();
         }
-        if (!in_array($paymentGatewayConfig->getGatewayName(), ['pagolight', 'pagolight_pro'])) {
+        if (!in_array($paymentGatewayConfig->getGatewayName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
             throw $this->createAccessDeniedException();
         }
 
