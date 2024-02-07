@@ -15,7 +15,7 @@ potrebbe essere una GET senza parametri alla rotta specificata in fase di creazi
 TODO
 - [x] Salvare in cache il bearer token
 - [x] Creare delle Payum API che siano univoche per ogni gateway normale/PRO
-- [ ] Aggiungere regola di validazione univocità gateway normale/PRO
+- [x] Aggiungere regola di validazione univocità gateway normale/PRO
 - [x] Completare il contract
 - [x] Aggiungere il webhook
 - [x] Valutare pagina di stato con JS che pinga il server

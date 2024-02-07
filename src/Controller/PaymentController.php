@@ -42,7 +42,7 @@ final class PaymentController extends AbstractController
         if (!$paymentGatewayConfig instanceof GatewayConfigInterface) {
             throw $this->createAccessDeniedException();
         }
-        if (!in_array($paymentGatewayConfig->getGatewayName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
+        if (!in_array($paymentGatewayConfig->getFactoryName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
             throw $this->createAccessDeniedException();
         }
 

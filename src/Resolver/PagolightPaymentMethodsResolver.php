@@ -57,7 +57,7 @@ final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInt
                 if ($gatewayConfig === null) {
                     return false;
                 }
-                if (!in_array($gatewayConfig->getGatewayName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
+                if (!in_array($gatewayConfig->getFactoryName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
                     return true;
                 }
                 if (!in_array($billingAddress->getCountryCode(), Config::ALLOWED_COUNTRY_CODES, true)) {
@@ -70,7 +70,7 @@ final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInt
                     return false;
                 }
                 if ($orderAmount <= (Config::PAGOLIGHT_PRO_MINIMUM_AMOUNT * 100) &&
-                    $gatewayConfig->getGatewayName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
+                    $gatewayConfig->getFactoryName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
                 ) {
                     return false;
                 }
