@@ -44,9 +44,9 @@ final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
         $payment->getOrder()->willReturn($order);
         $payment->getMethod()->willReturn($pagolightPaymentMethod);
 
-        $pagolightGatewayConfig->getGatewayName()->willReturn(PagolightApi::PAGOLIGHT_GATEWAY_CODE);
-        $pagolightProGatewayConfig->getGatewayName()->willReturn(PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE);
-        $otherGatewayConfig->getGatewayName()->willReturn('other');
+        $pagolightGatewayConfig->getFactoryName()->willReturn(PagolightApi::PAGOLIGHT_GATEWAY_CODE);
+        $pagolightProGatewayConfig->getFactoryName()->willReturn(PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE);
+        $otherGatewayConfig->getFactoryName()->willReturn('other');
 
         $pagolightPaymentMethod->getCode()->willReturn('PAGOLIGHT_PAYMENT_METHOD_CODE');
         $pagolightPaymentMethod->getGatewayConfig()->willReturn($pagolightGatewayConfig);

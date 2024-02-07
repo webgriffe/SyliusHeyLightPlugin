@@ -35,6 +35,7 @@ final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
         }
 
         $gatewayConfig = $value->getGatewayConfig();
+        /** @psalm-suppress DeprecatedMethod */
         if ($gatewayConfig === null ||
             !in_array($gatewayConfig->getFactoryName(), [
                 PagolightApi::PAGOLIGHT_GATEWAY_CODE,
@@ -44,10 +45,12 @@ final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
             return;
         }
 
+        /** @var PaymentMethodInterface[] $paymentMethods */
         $paymentMethods = $this->paymentMethodRepository->findAll();
+        /** @psalm-suppress DeprecatedMethod */
         $paymentMethodsWithSameGatewayConfig = array_filter(
             $paymentMethods,
-            static fn (PaymentMethodInterface $paymentMethod) => $paymentMethod->getGatewayConfig()?->getFactoryName() === $gatewayConfig->getFactoryName()
+            static fn (PaymentMethodInterface $paymentMethod) => $paymentMethod->getGatewayConfig()?->getFactoryName() === $gatewayConfig->getFactoryName(),
         );
         if (count($paymentMethodsWithSameGatewayConfig) > 1 ||
             (count($paymentMethodsWithSameGatewayConfig) === 1 && reset($paymentMethodsWithSameGatewayConfig) !== $value)
