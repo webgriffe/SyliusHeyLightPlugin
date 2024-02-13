@@ -1,12 +1,11 @@
 {% extends '@SyliusShop/layout.html.twig' %}
 
 {% block content %}
-    <h1>Stiamo processando il tuo pagamento!</h1>
+    <h1>{{ 'webgriffe_sylius_pagolight.ui.processing_payment'|trans }}</h1>
 
-    <p>Per favore, attendi fino a quando non vedrai una nuova pagina di stato!</p>
+    <p>{{ 'webgriffe_sylius_pagolight.ui.please_wait'|trans }}</p>
 
-
-    <img src="{{ asset('build/shop/images/loading.gif', 'shop') }}" alt="Loading...">
+    <img src="{{ asset('build/shop/images/loading.gif', 'shop') }}" alt="{{ 'webgriffe_sylius_pagolight.ui.loading'|trans }}">
 {% endblock %}
 
 {% block javascripts %}

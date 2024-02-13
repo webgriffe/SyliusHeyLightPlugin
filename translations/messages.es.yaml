@@ -1,0 +1,5 @@
+webgriffe_sylius_pagolight:
+    ui:
+        processing_payment: '¡Estamos procesando tu pago!'
+        please_wait: '¡Espere hasta que vea una nueva página de estado!'
+        loading: 'Cargando'
