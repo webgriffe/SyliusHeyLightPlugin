@@ -14,7 +14,9 @@ use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
+use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
+use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
 use Twig\Environment;
@@ -86,7 +88,13 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $notifyUrl = $notifyToken->getTargetUrl();
 
         $additionalData = [];
-        if ($payment->getMethod()?->getCode() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE) {
+        $paymentMethod = $payment->getMethod();
+        Assert::isInstanceOf($paymentMethod, PaymentMethodInterface::class);
+        $gatewayConfig = $paymentMethod->getGatewayConfig();
+        /** @psalm-suppress DeprecatedMethod */
+        if ($gatewayConfig instanceof GatewayConfigInterface &&
+            $gatewayConfig->getFactoryName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
+        ) {
             $additionalData['pricing_structure_code'] = 'PC6';
         }
         $convertPaymentToContract = new ConvertPaymentToContract(
