@@ -13,6 +13,9 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\PayumPaymentTrait;
 use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
+use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
+use Webmozart\Assert\Assert;
 
 final class PagolightContext implements Context
 {
@@ -26,6 +29,7 @@ final class PagolightContext implements Context
         private readonly PaymentRepositoryInterface $paymentRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly ClientInterface $client,
+        private readonly WebhookTokenRepositoryInterface $webhookTokenRepository,
     ) {
         // TODO: Why config parameters are not loaded?
         $this->urlGenerator->setContext(new RequestContext('', 'GET', '127.0.0.1:8080', 'https'));
@@ -38,10 +42,12 @@ final class PagolightContext implements Context
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken, $paymentNotifySecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+        $webhookToken = $this->webhookTokenRepository->findOneByPayment($payment);
+        Assert::isInstanceOf($webhookToken, WebhookTokenInterface::class);
 
         $this->notifyPaymentState($paymentNotifySecurityToken, [
             'status' => PaymentState::SUCCESS,
-            'token' => 'pagolight',
+            'token' => $webhookToken->getToken(),
         ]);
     }
 

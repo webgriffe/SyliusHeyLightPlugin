@@ -6,6 +6,7 @@ namespace Webgriffe\SyliusPagolightPlugin\Doctrine\ORM;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken;
 use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
 use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
@@ -23,6 +24,17 @@ final class WebhookTokenRepository extends ServiceEntityRepository implements We
     public function add(WebhookTokenInterface $webhookToken): void
     {
         $this->getEntityManager()->persist($webhookToken);
+        $this->getEntityManager()->flush();
+    }
+
+    public function findOneByPayment(PaymentInterface $payment): ?WebhookTokenInterface
+    {
+        return $this->findOneBy(['payment' => $payment]);
+    }
+
+    public function remove(WebhookTokenInterface $webhookToken): void
+    {
+        $this->getEntityManager()->remove($webhookToken);
         $this->getEntityManager()->flush();
     }
 }

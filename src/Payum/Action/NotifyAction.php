@@ -8,10 +8,13 @@ use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
+use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusPagolightPlugin\Payum\Request\RemovePaymentWebhookToken;
+use Webgriffe\SyliusPagolightPlugin\Payum\Request\RetrievePaymentWebhookToken;
 use Webmozart\Assert\Assert;
 
 /**
@@ -36,8 +39,18 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         // This is needed to populate the http request with GET and POST params from current request
         $this->gateway->execute($httpRequest = new GetHttpRequest());
 
-        /** @var array<string, string> $requestParameters */
+        /** @var array{token: string, status: string} $requestParameters */
         $requestParameters = $httpRequest->request;
+
+        $this->gateway->execute($retrievePaymentWebhookToken = new RetrievePaymentWebhookToken($payment));
+
+        $webhookToken = $retrievePaymentWebhookToken->getWebhookToken();
+        if ($webhookToken === null ||
+            $webhookToken->getToken() !== $requestParameters['token']
+        ) {
+            // Throw a 404 to avoid leaking information about the existence of the payment or the correctness of the url
+            throw new HttpResponse('Not found', 404);
+        }
 
         /** @var PaymentDetails $paymentDetails */
         $paymentDetails = $payment->getDetails();
@@ -47,6 +60,8 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
             $paymentDetails,
             $requestParameters['status'],
         ));
+
+        $this->gateway->execute(new RemovePaymentWebhookToken($webhookToken));
     }
 
     public function supports($request): bool

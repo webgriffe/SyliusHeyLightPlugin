@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Webgriffe\SyliusPagolightPlugin\Factory;
 
 use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
+use Webmozart\Assert\Assert;
 
 final class WebhookTokenFactory implements WebhookTokenFactoryInterface
 {
@@ -18,6 +19,10 @@ final class WebhookTokenFactory implements WebhookTokenFactoryInterface
 
     public function createNew(): WebhookTokenInterface
     {
-        return new $this->webhookTokenClass();
+        /** @psalm-suppress MixedMethodCall */
+        $webhookToken = new $this->webhookTokenClass();
+        Assert::isInstanceOf($webhookToken, WebhookTokenInterface::class);
+
+        return $webhookToken;
     }
 }

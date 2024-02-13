@@ -16,9 +16,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('sylius.repository.payment'),
             service('router'),
             service('sylius.http_client'),
-            service('behat.mink.default_session'),
-            service('sylius.behat.page.shop.order.show'),
-            service('webgriffe_sylius_pagolight.behat.page.shop.payum.capture.do'),
+            service('webgriffe_sylius_pagolight.repository.webhook_token'),
         ])
     ;
 };
