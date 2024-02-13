@@ -27,7 +27,32 @@
    ```
    **NB:** you should avoid to have any param prefix in your routes, otherwise the plugin won't work properly.
 
-4. Run:
+4. Add the WebhookToken entity. Create a new file `src/Entity/Payment/WebhookToken.php` with the following content:
+   ```php
+    <?php
+
+    declare(strict_types=1);
+
+    namespace App\Entity\Payment;
+
+    use Doctrine\ORM\Mapping as ORM;
+    use Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken as BaseWebhookToken;
+    
+    /**
+     * @ORM\Entity
+     * @ORM\Table(name="webgriffe_sylius_pagolight_webhook_token")
+     */
+    class WebhookToken extends BaseWebhookToken
+    {
+    }
+    ```
+5. Run:
+    ```bash
+    php bin/console doctrine:migrations:diff
+    php bin/console doctrine:migrations:migrate
+    ```
+
+6. Run:
     ```bash
     php bin/console sylius:install:assets
    ```
