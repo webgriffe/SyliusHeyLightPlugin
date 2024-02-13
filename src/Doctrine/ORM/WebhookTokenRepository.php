@@ -19,4 +19,10 @@ final class WebhookTokenRepository extends ServiceEntityRepository implements We
     {
         parent::__construct($registry, WebhookToken::class);
     }
+
+    public function add(WebhookTokenInterface $webhookToken): void
+    {
+        $this->getEntityManager()->persist($webhookToken);
+        $this->getEntityManager()->flush();
+    }
 }

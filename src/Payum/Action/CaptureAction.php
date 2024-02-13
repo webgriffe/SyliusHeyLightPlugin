@@ -23,6 +23,7 @@ use Twig\Environment;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Generator\WebhookTokenGeneratorInterface;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
@@ -41,6 +42,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
     public function __construct(
         private readonly Environment $twig,
         private readonly RouterInterface $router,
+        private readonly WebhookTokenGeneratorInterface $webhookTokenGenerator,
     ) {
     }
 
@@ -103,7 +105,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             $cancelUrl,
             $cancelUrl,
             $notifyUrl,
-            'pagolight',
+            $this->webhookTokenGenerator->generateForPayment($payment)->getToken(),
             [3, 6, 12, 24],
             $additionalData,
         );
