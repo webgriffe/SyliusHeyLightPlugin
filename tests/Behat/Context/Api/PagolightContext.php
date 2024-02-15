@@ -58,10 +58,12 @@ final class PagolightContext implements Context
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken, $paymentNotifySecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
+        $webhookToken = $this->webhookTokenRepository->findOneByPayment($payment);
+        Assert::isInstanceOf($webhookToken, WebhookTokenInterface::class);
 
         $this->notifyPaymentState($paymentNotifySecurityToken, [
             'status' => PaymentState::CANCELLED,
-            'token' => 'pagolight',
+            'token' => $webhookToken->getToken(),
         ]);
     }
 
