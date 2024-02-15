@@ -11,7 +11,7 @@ final class PagolightApi
     public const PAGOLIGHT_PRO_GATEWAY_CODE = 'pagolight_pro';
 
     /**
-     * @param array{sandbox: bool, merchant_key: string} $config
+     * @param array{sandbox: bool, merchant_key: string, allowed_terms: array<array-key, int>} $config
      */
     public function __construct(private readonly array $config)
     {
@@ -25,5 +25,13 @@ final class PagolightApi
     public function isSandBox(): bool
     {
         return $this->config['sandbox'];
+    }
+
+    /**
+     * @return array<array-key, int>
+     */
+    public function getAllowedTerms(): array
+    {
+        return array_values($this->config['allowed_terms']);
     }
 }

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
+use Payum\Core\ApiAwareInterface;
+use Payum\Core\ApiAwareTrait;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
@@ -35,15 +37,16 @@ use Webmozart\Assert\Assert;
  *
  * @psalm-suppress PropertyNotSetInConstructor Api and gateway are injected via container configuration
  */
-final class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface
+final class CaptureAction implements ActionInterface, GatewayAwareInterface, GenericTokenFactoryAwareInterface, ApiAwareInterface
 {
-    use GatewayAwareTrait, GenericTokenFactoryAwareTrait;
+    use GatewayAwareTrait, GenericTokenFactoryAwareTrait, ApiAwareTrait;
 
     public function __construct(
         private readonly Environment $twig,
         private readonly RouterInterface $router,
         private readonly WebhookTokenGeneratorInterface $webhookTokenGenerator,
     ) {
+        $this->apiClass = PagolightApi::class;
     }
 
     /**
@@ -99,6 +102,10 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         ) {
             $additionalData['pricing_structure_code'] = 'PC6';
         }
+
+        $pagolightApi = $this->api;
+        Assert::isInstanceOf($pagolightApi, PagolightApi::class);
+
         $convertPaymentToContract = new ConvertPaymentToContract(
             $payment,
             $captureUrl,
@@ -106,7 +113,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             $cancelUrl,
             $notifyUrl,
             $this->webhookTokenGenerator->generateForPayment($payment)->getToken(),
-            [3, 6, 12, 24],
+            $pagolightApi->getAllowedTerms(),
             $additionalData,
         );
         $this->gateway->execute($convertPaymentToContract);
