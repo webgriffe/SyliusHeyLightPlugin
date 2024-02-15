@@ -40,6 +40,7 @@ final class PaymentContext implements Context
         $gatewayConfig->setConfig([
             'sandbox' => false,
             'merchant_key' => self::MERCHANT_KEY,
+            'allowed_terms' => [3, 6, 12, 24],
         ]);
 
         $this->paymentMethodManager->flush();
