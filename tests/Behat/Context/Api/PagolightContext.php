@@ -5,7 +5,8 @@ declare(strict_types=1);
 namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Api;
 
 use Behat\Behat\Context\Context;
-use GuzzleHttp\ClientInterface;
+use GuzzleHttp\Psr7\Request;
+use Psr\Http\Client\ClientInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
@@ -87,11 +88,16 @@ final class PagolightContext implements Context
 
     private function notifyPaymentState(PaymentSecurityTokenInterface $token, array $responsePayload): void
     {
-        $this->client->request(
+        $formParams = http_build_query($responsePayload);
+        $request = new Request(
             'POST',
             $this->getNotifyUrl($token),
-            ['form_params' => $responsePayload],
+            [
+                'Content-Type' => 'application/x-www-form-urlencoded',
+            ],
+            $formParams,
         );
+        $this->client->sendRequest($request);
     }
 
     private function getNotifyUrl(PaymentSecurityTokenInterface $token): string
