@@ -16,6 +16,9 @@ use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
  */
 final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
 {
+    /**
+     * @param PaymentMethodRepositoryInterface<PaymentMethodInterface> $paymentMethodRepository
+     */
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {
@@ -45,7 +48,6 @@ final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
             return;
         }
 
-        /** @var PaymentMethodInterface[] $paymentMethods */
         $paymentMethods = $this->paymentMethodRepository->findAll();
         /** @psalm-suppress DeprecatedMethod */
         $paymentMethodsWithSameGatewayConfig = array_filter(

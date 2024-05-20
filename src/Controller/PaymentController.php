@@ -21,6 +21,9 @@ use Webmozart\Assert\Assert;
  */
 final class PaymentController extends AbstractController
 {
+    /**
+     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
+     */
     public function __construct(
         private readonly PaymentRepositoryInterface $paymentRepository,
     ) {

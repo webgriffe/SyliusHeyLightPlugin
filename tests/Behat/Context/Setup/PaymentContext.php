@@ -17,6 +17,9 @@ final class PaymentContext implements Context
 {
     public const MERCHANT_KEY = '83Y4TDI8W7Y4EWIY48TWT';
 
+    /**
+     * @param PaymentMethodRepositoryInterface<PaymentMethodInterface> $paymentMethodRepository
+     */
     public function __construct(
         private readonly SharedStorageInterface $sharedStorage,
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,

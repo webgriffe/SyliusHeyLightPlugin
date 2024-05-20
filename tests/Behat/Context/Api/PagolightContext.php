@@ -7,6 +7,7 @@ namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Api;
 use Behat\Behat\Context\Context;
 use GuzzleHttp\ClientInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -23,6 +24,7 @@ final class PagolightContext implements Context
 
     /**
      * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
+     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
      */
     public function __construct(
         private readonly RepositoryInterface $paymentTokenRepository,
@@ -67,6 +69,9 @@ final class PagolightContext implements Context
         ]);
     }
 
+    /**
+     * @return PaymentRepositoryInterface<PaymentInterface>
+     */
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;

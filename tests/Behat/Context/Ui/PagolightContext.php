@@ -10,6 +10,7 @@ use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -25,6 +26,8 @@ final class PagolightContext implements Context
 
     /**
      * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
+     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
+     * @param OrderRepositoryInterface<OrderInterface> $orderRepository
      */
     public function __construct(
         private readonly RepositoryInterface $paymentTokenRepository,
@@ -108,6 +111,9 @@ final class PagolightContext implements Context
         Assert::true($this->orderShowPage->isOpen(['tokenValue' => $order->getTokenValue()]));
     }
 
+    /**
+     * @return PaymentRepositoryInterface<PaymentInterface>
+     */
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;
