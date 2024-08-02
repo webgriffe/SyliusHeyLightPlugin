@@ -1,2 +1,5 @@
 webgriffe_sylius_pagolight_plugin:
     resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"
+    prefix: /{_locale}
+    requirements:
+        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
