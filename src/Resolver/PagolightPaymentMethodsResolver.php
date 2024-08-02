@@ -18,9 +18,6 @@ use Webmozart\Assert\Assert;
 
 final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInterface
 {
-    /**
-     * @param PaymentMethodRepositoryInterface<PaymentMethodInterface> $paymentMethodRepository
-     */
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {

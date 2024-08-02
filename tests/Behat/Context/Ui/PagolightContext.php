@@ -10,7 +10,6 @@ use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Model\OrderInterface;
-use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Component\Resource\Repository\RepositoryInterface;
@@ -24,11 +23,6 @@ final class PagolightContext implements Context
 {
     use PayumPaymentTrait;
 
-    /**
-     * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
-     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
-     * @param OrderRepositoryInterface<OrderInterface> $orderRepository
-     */
     public function __construct(
         private readonly RepositoryInterface $paymentTokenRepository,
         private readonly PaymentRepositoryInterface $paymentRepository,
@@ -69,13 +63,11 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @Then I should be on the capture payment page
+     * @Then I should be on the waiting payment processing page
      */
-    public function iShouldBeOnTheCapturePaymentPage(): void
+    public function iShouldBeOnTheWaitingPaymentProcessingPage(): void
     {
         $payment = $this->getCurrentPayment();
-        [$paymentCaptureSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
-
         $this->paymentProcessPage->verify([
             'tokenValue' => $payment->getOrder()?->getTokenValue(),
         ]);
@@ -100,9 +92,9 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @Then /^I should be redirected to the order page page$/
+     * @Then /^I should be redirected to the order page/
      */
-    public function iShouldBeRedirectedToTheOrderPagePage(): void
+    public function iShouldBeRedirectedToTheOrderPage(): void
     {
         $this->paymentProcessPage->waitForRedirect();
         $orders = $this->orderRepository->findAll();
@@ -111,9 +103,6 @@ final class PagolightContext implements Context
         Assert::true($this->orderShowPage->isOpen(['tokenValue' => $order->getTokenValue()]));
     }
 
-    /**
-     * @return PaymentRepositoryInterface<PaymentInterface>
-     */
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;

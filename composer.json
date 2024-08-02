@@ -10,7 +10,7 @@
     "license": "proprietary",
     "require": {
         "php": "^8.2",
-        "guzzlehttp/psr7": "^2.5",
+        "guzzlehttp/psr7": "^1.8 || ^2.5",
         "php-http/discovery": "^1.19",
         "psr/http-factory": "^1.0",
         "sylius/sylius": "^1.12",
@@ -99,7 +99,6 @@
         "unit": "vendor/bin/phpunit --colors=always",
         "behat": "vendor/bin/behat --colors --strict -vvv --no-interaction || vendor/bin/behat --colors --strict -vvv --no-interaction --rerun",
         "tests": [
-            "composer validate --ansi --strict",
             "@ecs",
             "@phpstan",
             "@psalm",

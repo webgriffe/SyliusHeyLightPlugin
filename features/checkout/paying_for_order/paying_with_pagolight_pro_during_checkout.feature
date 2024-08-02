@@ -23,7 +23,7 @@ Feature: Paying with Pagolight PRO during checkout
         And I proceeded with "Free" shipping method and "Pagolight PRO" payment
         When I confirm my order
         And I complete the payment on Pagolight
-        Then I should be on the capture payment page
+        Then I should be on the waiting payment processing page
         When Pagolight notify the store about the successful payment
         Then I should be redirected to the thank you page
         And I should be notified that my payment has been completed
@@ -39,13 +39,13 @@ Feature: Paying with Pagolight PRO during checkout
         And I proceeded with "Free" shipping method and "Pagolight PRO" payment
         When I confirm my order
         And I complete the payment on Pagolight
-        Then I should be on the capture payment page
+        Then I should be on the waiting payment processing page
         When Pagolight notify the store about the failed payment
-        Then I should be redirected to the order page page
+        Then I should be redirected to the order page
         And I should be notified that my payment has been cancelled
         And I should be able to pay again
 
-    @ui
+    @ui @javascript
     Scenario: Cancelling the payment
         Given I added product "PHP T-Shirt" to the cart
         And I am at the checkout addressing step
@@ -54,7 +54,8 @@ Feature: Paying with Pagolight PRO during checkout
         And I proceeded with "Free" shipping method and "Pagolight PRO" payment
         When I confirm my order
         And I cancel the payment on Pagolight
-        Then I should be notified that my payment has been cancelled
+        Then I should be on the waiting payment processing page
+        And I should be redirected to the order page
         And I should be able to pay again
 
     @ui @javascript
@@ -66,6 +67,7 @@ Feature: Paying with Pagolight PRO during checkout
         And I proceeded with "Free" shipping method and "Pagolight PRO" payment
         And I have confirmed order
         But I have cancelled Pagolight payment
+        Then I should be redirected to the order page
         When I try to pay again with Pagolight
         And Pagolight notify the store about the successful payment
         Then I should be redirected to the thank you page
