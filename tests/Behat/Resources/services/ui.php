@@ -16,7 +16,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('sylius.repository.payment'),
             service('router'),
             service('behat.mink.default_session'),
-            service('webgriffe_sylius_pagolight.behat.page.shop.payum.capture.do'),
+            service('webgriffe_sylius_pagolight.behat.page.shop.payment.process'),
             service('sylius.behat.page.shop.order.thank_you'),
             service('sylius.behat.page.shop.order.show'),
             service('sylius.repository.order'),

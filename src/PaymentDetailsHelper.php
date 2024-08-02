@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin;
 
-use InvalidArgumentException;
 use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 use Webmozart\Assert\Assert;
+use Webmozart\Assert\InvalidArgumentException;
 
 /**
  * @psalm-type PaymentDetails array{contract_uuid: string, redirect_url: string, created_at: string, status?: string}
@@ -35,6 +35,8 @@ final class PaymentDetailsHelper
     }
 
     /**
+     * @phpstan-assert PaymentDetails $paymentDetails
+     *
      * @throws InvalidArgumentException
      */
     public static function assertPaymentDetailsAreValid(array $paymentDetails): void
@@ -76,5 +78,27 @@ final class PaymentDetailsHelper
     public static function getPaymentStatus(array $paymentDetails): ?string
     {
         return $paymentDetails[self::STATUS_KEY] ?? null;
+    }
+
+    /**
+     * @param PaymentDetails $paymentDetails
+     */
+    public static function getRedirectUrl(array $paymentDetails): string
+    {
+        return $paymentDetails[self::REDIRECT_URL_KEY];
+    }
+
+    /**
+     * @phpstan-assert-if-true PaymentDetails $storedPaymentDetails
+     */
+    public static function areValid(array $storedPaymentDetails): bool
+    {
+        try {
+            self::assertPaymentDetailsAreValid($storedPaymentDetails);
+        } catch (InvalidArgumentException) {
+            return false;
+        }
+
+        return true;
     }
 }

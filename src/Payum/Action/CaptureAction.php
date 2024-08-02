@@ -11,20 +11,22 @@ use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
 use Payum\Core\Reply\HttpRedirect;
-use Payum\Core\Reply\HttpResponse;
 use Payum\Core\Request\Capture;
 use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
+use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
-use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Twig\Environment;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusPagolightPlugin\Controller\PaymentController;
 use Webgriffe\SyliusPagolightPlugin\Generator\WebhookTokenGeneratorInterface;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
@@ -42,9 +44,10 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
     use GatewayAwareTrait, GenericTokenFactoryAwareTrait, ApiAwareTrait;
 
     public function __construct(
-        private readonly Environment $twig,
         private readonly RouterInterface $router,
         private readonly WebhookTokenGeneratorInterface $webhookTokenGenerator,
+        private readonly LoggerInterface $logger,
+        private readonly RequestStack $requestStack,
     ) {
         $this->apiClass = PagolightApi::class;
     }
@@ -62,26 +65,39 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         /** @var SyliusPaymentInterface $payment */
         $payment = $request->getModel();
 
+        /** @var string|int $paymentId */
+        $paymentId = $payment->getId();
+        $this->logger->info(sprintf(
+            'Start capture action for Sylius payment with ID "%s".',
+            $paymentId,
+        ));
+
         $captureToken = $request->getToken();
         Assert::isInstanceOf($captureToken, TokenInterface::class);
 
-        /** @var PaymentDetails|array{} $paymentDetails */
         $paymentDetails = $payment->getDetails();
 
         if ($paymentDetails !== []) {
-            $paymentStatusUrl = $this->router->generate(
-                'webgriffe_sylius_pagolight_plugin.payment.status',
-                ['paymentId' => $payment->getId()],
-                UrlGeneratorInterface::ABSOLUTE_URL,
+            if (!PaymentDetailsHelper::areValid($paymentDetails)) {
+                throw new RuntimeException('Payment details are already populated with others data. Maybe this payment should be marked as error');
+            }
+            $this->logger->info(
+                'Pagolight payment details are already valued, so no need to continue here. Redirecting the user to the Sylius Pagolight Payments waiting page.',
             );
 
-            throw new HttpResponse($this->twig->render(
-                '@WebgriffeSyliusPagolightPlugin/after_pay.html.twig',
-                [
-                    'afterUrl' => $captureToken->getAfterUrl(),
-                    'paymentStatusUrl' => $paymentStatusUrl,
-                ],
-            ));
+            $session = $this->requestStack->getSession();
+            $session->set(PaymentController::PAYMENT_ID_SESSION_KEY, $paymentId);
+            $session->set(PaymentController::TOKEN_HASH_SESSION_KEY, $captureToken->getHash());
+
+            $order = $payment->getOrder();
+            Assert::isInstanceOf($order, OrderInterface::class);
+
+            throw new HttpRedirect(
+                $this->router->generate('webgriffe_sylius_pagolight_plugin_payment_process', [
+                    'tokenValue' => $order->getTokenValue(),
+                    '_locale' => $order->getLocaleCode(),
+                ]),
+            );
         }
 
         $captureUrl = $captureToken->getTargetUrl();
@@ -128,6 +144,11 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $payment->setDetails(
             PaymentDetailsHelper::createFromContractCreateResult($contractCreateResult),
         );
+
+        $this->logger->info(sprintf(
+            'Redirecting the user to the Pagolight redirect URL "%s".',
+            $contractCreateResult->getRedirectUrl(),
+        ));
 
         throw new HttpRedirect($contractCreateResult->getRedirectUrl());
     }

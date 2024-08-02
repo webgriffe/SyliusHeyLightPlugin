@@ -4,12 +4,20 @@ declare(strict_types=1);
 
 namespace Webgriffe\SyliusPagolightPlugin\Controller;
 
+use Payum\Core\Model\Identity;
+use Payum\Core\Security\TokenInterface;
+use Payum\Core\Storage\StorageInterface;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
+use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
+use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Routing\RouterInterface;
 use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webmozart\Assert\Assert;
@@ -21,12 +29,74 @@ use Webmozart\Assert\Assert;
  */
 final class PaymentController extends AbstractController
 {
+    public const PAYMENT_ID_SESSION_KEY = 'webgriffe_pagolight_payment_id';
+
+    public const TOKEN_HASH_SESSION_KEY = 'webgriffe_pagolight_token_hash';
+
     /**
+     * @param OrderRepositoryInterface<OrderInterface> $orderRepository
      * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
      */
     public function __construct(
+        private readonly OrderRepositoryInterface $orderRepository,
+        private readonly RequestStack $requestStack,
+        private readonly StorageInterface $tokenStorage,
+        private readonly RouterInterface $router,
         private readonly PaymentRepositoryInterface $paymentRepository,
     ) {
+    }
+
+    public function processAction(string $tokenValue): Response
+    {
+        $session = $this->requestStack->getSession();
+        $paymentId = $session->get(self::PAYMENT_ID_SESSION_KEY);
+        $hash = $session->get(self::TOKEN_HASH_SESSION_KEY);
+
+        if (!is_string($hash) || $hash === '') {
+            throw $this->createNotFoundException();
+        }
+        if ((!is_string($paymentId) && !is_int($paymentId)) || $paymentId === '') {
+            throw $this->createNotFoundException();
+        }
+        $token = $this->tokenStorage->find($hash);
+        if (!$token instanceof TokenInterface) {
+            throw $this->createNotFoundException();
+        }
+
+        $paymentIdentity = $token->getDetails();
+        Assert::isInstanceOf($paymentIdentity, Identity::class);
+
+        $order = $this->orderRepository->findOneBy(['tokenValue' => $tokenValue]);
+        if (!$order instanceof OrderInterface) {
+            throw $this->createNotFoundException();
+        }
+        $syliusPayment = null;
+        foreach ($order->getPayments() as $orderPayment) {
+            if ($orderPayment->getId() === $paymentIdentity->getId()) {
+                $syliusPayment = $orderPayment;
+
+                break;
+            }
+        }
+        if (!$syliusPayment instanceof PaymentInterface) {
+            throw $this->createNotFoundException();
+        }
+        $storedPaymentDetails = $syliusPayment->getDetails();
+        if (!PaymentDetailsHelper::areValid($storedPaymentDetails)) {
+            throw $this->createNotFoundException();
+        }
+        $redirectUrl = PaymentDetailsHelper::getRedirectUrl($storedPaymentDetails);
+        $paymentStatusUrl = $this->router->generate(
+            'webgriffe_sylius_pagolight_plugin_payment_status',
+            ['paymentId' => $syliusPayment->getId()],
+            UrlGeneratorInterface::ABSOLUTE_URL,
+        );
+
+        return $this->render('@WebgriffeSyliusPagolightPlugin/Process/index.html.twig', [
+            'afterUrl' => $token->getAfterUrl(),
+            'paymentStatusUrl' => $paymentStatusUrl,
+            'redirectUrl' => $redirectUrl,
+        ]);
     }
 
     public function statusAction(mixed $paymentId): Response
@@ -50,9 +120,10 @@ final class PaymentController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        /** @var PaymentDetails $paymentDetails */
         $paymentDetails = $payment->getDetails();
-        PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
+        if (!PaymentDetailsHelper::areValid($paymentDetails)) {
+            throw $this->createAccessDeniedException();
+        }
 
         $paymentStatus = PaymentDetailsHelper::getPaymentStatus($paymentDetails);
 

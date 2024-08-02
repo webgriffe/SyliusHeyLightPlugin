@@ -17,7 +17,7 @@ use Sylius\Component\Resource\Repository\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
 use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\PayumPaymentTrait;
-use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payum\Capture\PayumCaptureDoPageInterface;
+use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payment\ProcessPageInterface;
 use Webmozart\Assert\Assert;
 
 final class PagolightContext implements Context
@@ -34,7 +34,7 @@ final class PagolightContext implements Context
         private readonly PaymentRepositoryInterface $paymentRepository,
         private readonly UrlGeneratorInterface $urlGenerator,
         private readonly Session $session,
-        private readonly PayumCaptureDoPageInterface $payumCaptureDoPage,
+        private readonly ProcessPageInterface $paymentProcessPage,
         private readonly ThankYouPageInterface $thankYouPage,
         private readonly ShowPageInterface $orderShowPage,
         private readonly OrderRepositoryInterface $orderRepository,
@@ -76,8 +76,8 @@ final class PagolightContext implements Context
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
 
-        $this->payumCaptureDoPage->verify([
-            'payum_token' => $paymentCaptureSecurityToken->getHash(),
+        $this->paymentProcessPage->verify([
+            'tokenValue' => $payment->getOrder()?->getTokenValue(),
         ]);
     }
 
@@ -86,7 +86,7 @@ final class PagolightContext implements Context
      */
     public function iShouldBeRedirectedToTheThankYouPage(): void
     {
-        $this->payumCaptureDoPage->waitForRedirect();
+        $this->paymentProcessPage->waitForRedirect();
         Assert::true($this->thankYouPage->hasThankYouMessage());
     }
 
@@ -104,7 +104,7 @@ final class PagolightContext implements Context
      */
     public function iShouldBeRedirectedToTheOrderPagePage(): void
     {
-        $this->payumCaptureDoPage->waitForRedirect();
+        $this->paymentProcessPage->waitForRedirect();
         $orders = $this->orderRepository->findAll();
         $order = reset($orders);
         Assert::isInstanceOf($order, OrderInterface::class);

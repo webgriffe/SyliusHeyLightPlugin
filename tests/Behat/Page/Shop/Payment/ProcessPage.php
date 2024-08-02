@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payum\Capture;
+namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payment;
 
 use Behat\Mink\Element\DocumentElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
 
-final class PayumCaptureDoPage extends SymfonyPage implements PayumCaptureDoPageInterface
+final class ProcessPage extends SymfonyPage implements ProcessPageInterface
 {
     public function getRouteName(): string
     {
-        return 'payum_capture_do';
+        return 'webgriffe_sylius_pagolight_plugin_payment_process';
     }
 
     public function waitForRedirect(): void

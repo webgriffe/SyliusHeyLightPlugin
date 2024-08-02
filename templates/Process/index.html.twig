@@ -6,6 +6,10 @@
     <p>{{ 'webgriffe_sylius_pagolight.ui.please_wait'|trans }}</p>
 
     <img src="{{ asset('build/shop/images/loading.gif', 'shop') }}" alt="{{ 'webgriffe_sylius_pagolight.ui.loading'|trans }}">
+
+    {% if redirectUrl %}
+        <p>{{ 'webgriffe_sylius_pagolight.ui.return_to_pagolight_checkout'|trans({'{redirectUrl}': redirectUrl})|raw }}</p>
+    {% endif %}
 {% endblock %}
 
 {% block javascripts %}

@@ -6,6 +6,7 @@ namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
+use Psr\Log\LoggerInterface;
 use Sylius\Bundle\PayumBundle\Request\GetStatus;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
@@ -17,6 +18,11 @@ use Webmozart\Assert\Assert;
  */
 final class StatusAction implements ActionInterface
 {
+    public function __construct(
+        private readonly LoggerInterface $logger,
+    ) {
+    }
+
     /**
      * @param GetStatus|mixed $request
      */
@@ -28,32 +34,45 @@ final class StatusAction implements ActionInterface
         /** @var SyliusPaymentInterface $payment */
         $payment = $request->getFirstModel();
 
-        /** @var PaymentDetails|array{} $paymentDetails */
+        $this->logger->info(sprintf(
+            'Start status action for Sylius payment with ID "%s".',
+            (string) $payment->getId(),
+        ));
+
         $paymentDetails = $payment->getDetails();
 
         if ($paymentDetails === []) {
+            $this->logger->info('Empty stored details.');
             $request->markNew();
 
             return;
         }
 
         if (!$request->isNew() && !$request->isUnknown()) {
+            $this->logger->info('Request new or unknown.', ['isNew' => $request->isNew(), 'isUnknown' => $request->isUnknown()]);
             // Payment status already set
             return;
         }
 
-        PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
+        if (!PaymentDetailsHelper::areValid($paymentDetails)) {
+            $this->logger->info('Payment details not valid. Payment marked as failed');
+            $request->markFailed();
+
+            return;
+        }
 
         /** @psalm-suppress InvalidArgument */
         $paymentStatus = PaymentDetailsHelper::getPaymentStatus($paymentDetails);
 
         if (in_array($paymentStatus, [PaymentState::CANCELLED, PaymentState::PENDING], true)) {
+            $this->logger->info('Payment cancelled or pending. Payment marked as canceled.');
             $request->markCanceled();
 
             return;
         }
 
         if (in_array($paymentStatus, [PaymentState::SUCCESS, PaymentState::AWAITING_CONFIRMATION], true)) {
+            $this->logger->info('Payment successfully or awaiting confirmation. Payment marked as captured.');
             $request->markCaptured();
 
             return;

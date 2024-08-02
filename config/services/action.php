@@ -21,9 +21,10 @@ return static function (ContainerConfigurator $containerConfigurator) {
     $services->set('webgriffe_sylius_pagolight.payum.action.capture', CaptureAction::class)
         ->public()
         ->args([
-            service('twig'),
             service('router'),
             service('webgriffe_sylius_pagolight.generator.webhook_token'),
+            service('webgriffe_sylius_pagolight.logger'),
+            service('request_stack'),
         ])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_GATEWAY_CODE, 'alias' => 'payum.action.capture'])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE, 'alias' => 'payum.action.capture'])
@@ -31,16 +32,27 @@ return static function (ContainerConfigurator $containerConfigurator) {
 
     $services->set('webgriffe_sylius_pagolight.payum.action.status', StatusAction::class)
         ->public()
+        ->args([
+            service('webgriffe_sylius_pagolight.logger'),
+        ])
     ;
 
     $services->set('webgriffe_sylius_pagolight.payum.action.cancel', CancelAction::class)
         ->public()
+        ->args([
+            service('webgriffe_sylius_pagolight.logger'),
+            service('request_stack'),
+            service('router'),
+        ])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_GATEWAY_CODE, 'alias' => 'payum.action.cancel'])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE, 'alias' => 'payum.action.cancel'])
     ;
 
     $services->set('webgriffe_sylius_pagolight.payum.action.notify', NotifyAction::class)
         ->public()
+        ->args([
+            service('webgriffe_sylius_pagolight.logger'),
+        ])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_GATEWAY_CODE, 'alias' => 'payum.action.notify'])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE, 'alias' => 'payum.action.notify'])
     ;

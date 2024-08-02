@@ -12,6 +12,10 @@ return static function (ContainerConfigurator $containerConfigurator) {
 
     $services->set('webgriffe_sylius_pagolight.controller.payment', PaymentController::class)
         ->args([
+            service('sylius.repository.order'),
+            service('request_stack'),
+            service('payum.security.token_storage'),
+            service('router'),
             service('sylius.repository.payment'),
         ])
         ->call('setContainer', [service('service_container')])
