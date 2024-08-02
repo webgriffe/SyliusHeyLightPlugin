@@ -1,5 +1,6 @@
 webgriffe_sylius_pagolight:
     ui:
+        return_to_pagolight_checkout: 'Return to Pagolight checkout'
         processing_payment: 'Your payment is being processed!'
         please_wait: 'Please wait until you see a new status page!'
         loading: 'Loading'

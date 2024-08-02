@@ -1,5 +1,6 @@
 webgriffe_sylius_pagolight:
     ui:
+        return_to_pagolight_checkout: 'Torna al checkout di Pagolight'
         processing_payment: 'Stiamo processando il tuo pagamento!'
         please_wait: 'Per favore, attendi fino a quando non vedrai una nuova pagina di stato!'
         loading: 'Caricamento in corso'
