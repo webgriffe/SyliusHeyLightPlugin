@@ -1,0 +1,3 @@
+webgriffe_sylius_pagolight:
+    payment_method:
+        unique: 'Für dieses Gateway sollte es nur eine Zahlungsmethode geben.'

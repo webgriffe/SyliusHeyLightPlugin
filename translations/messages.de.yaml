@@ -1,0 +1,11 @@
+webgriffe_sylius_pagolight:
+    ui:
+        processing_payment: 'Ihre Zahlung wird bearbeitet!'
+        please_wait: 'Bitte warten Sie, bis Sie eine neue Statusseite sehen!'
+        loading: 'Laden'
+    form:
+        gateway_configuration:
+            merchant_key: 'Händlerschlüssel'
+            sandbox: 'Sandbox-Modus'
+            allowed_terms: 'Zulässige Zahlungsbedingungen'
+            allowed_terms_help: 'Sie können eine oder mehrere Bedingungen auswählen, die dem Kunden angeboten werden sollen. Wenn Sie keine auswählen, werden alle Bedingungen angeboten, die standardmäßig in Ihrem Konto verfügbar sind.'
