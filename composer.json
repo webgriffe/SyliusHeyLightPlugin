@@ -13,7 +13,7 @@
         "guzzlehttp/psr7": "^2.5",
         "php-http/discovery": "^1.19",
         "psr/http-factory": "^1.0",
-        "sylius/sylius": "^1.13",
+        "sylius/sylius": "^1.12",
         "symfony/webpack-encore-bundle": "^1.17"
     },
     "require-dev": {
