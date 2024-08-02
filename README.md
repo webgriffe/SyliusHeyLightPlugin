@@ -20,14 +20,20 @@
    
    Normally, the plugin is automatically added to the `config/bundles.php` file by the `composer require` command. If it is not, you have to add it manually.
 
-3. Import the routes needed for cancelling the payments. Add the following to your config/routes.yaml file:
+3. Create a new file config/packages/webgriffe_sylius_pagolight_plugin.yaml:
+   ```yaml
+   imports:
+       - { resource: "@WebgriffeSyliusPagolightPlugin/config/config.php" }
+   ```
+
+4. Import the routes needed for cancelling the payments. Add the following to your config/routes.yaml file:
    ```yaml
    webgriffe_sylius_pagolight_plugin:
        resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"
    ```
    **NB:** you should avoid to have any param prefix in your routes, otherwise the plugin won't work properly.
 
-4. Add the WebhookToken entity. Create a new file `src/Entity/Payment/WebhookToken.php` with the following content:
+5. Add the WebhookToken entity. Create a new file `src/Entity/Payment/WebhookToken.php` with the following content:
    ```php
     <?php
 
@@ -46,13 +52,13 @@
     {
     }
     ```
-5. Run:
+6. Run:
     ```bash
     php bin/console doctrine:migrations:diff
     php bin/console doctrine:migrations:migrate
     ```
 
-6. Run:
+7. Run:
     ```bash
     php bin/console sylius:install:assets
    ```

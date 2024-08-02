@@ -1,0 +1,2 @@
+imports:
+    - { resource: "@WebgriffeSyliusPagolightPlugin/config/config.php" }
