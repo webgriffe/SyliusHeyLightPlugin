@@ -25,6 +25,7 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('webgriffe_sylius_pagolight.generator.webhook_token'),
             service('webgriffe_sylius_pagolight.logger'),
             service('request_stack'),
+            service('webgriffe_sylius_pagolight.repository.webhook_token'),
         ])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_GATEWAY_CODE, 'alias' => 'payum.action.capture'])
         ->tag('payum.action', ['factory' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE, 'alias' => 'payum.action.capture'])

@@ -24,6 +24,7 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
 use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
+use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
 use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
 use Webgriffe\SyliusPagolightPlugin\Controller\PaymentController;
@@ -32,6 +33,7 @@ use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
 use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
 use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
+use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -48,6 +50,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         private readonly WebhookTokenGeneratorInterface $webhookTokenGenerator,
         private readonly LoggerInterface $logger,
         private readonly RequestStack $requestStack,
+        private readonly WebhookTokenRepositoryInterface $webhookTokenRepository,
     ) {
         $this->apiClass = PagolightApi::class;
     }
@@ -122,17 +125,32 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $pagolightApi = $this->api;
         Assert::isInstanceOf($pagolightApi, PagolightApi::class);
 
+        $webhookToken = $this->getWebhookToken($payment);
         $convertPaymentToContract = new ConvertPaymentToContract(
             $payment,
             $captureUrl,
             $cancelUrl,
             $cancelUrl,
             $notifyUrl,
-            $this->webhookTokenGenerator->generateForPayment($payment)->getToken(),
+            $webhookToken,
             $pagolightApi->getAllowedTerms(),
             $additionalData,
         );
-        $this->gateway->execute($convertPaymentToContract);
+
+        try {
+            $this->gateway->execute($convertPaymentToContract);
+        } catch (\Throwable $e) {
+            $this->logger->error(sprintf(
+                'An error occurred while converting the payment to a contract: %s',
+                $e->getMessage(),
+            ), $e->getTrace());
+            $payment->setDetails(PaymentDetailsHelper::addPaymentStatus(
+                $paymentDetails,
+                PaymentState::CANCELLED,
+            ));
+
+            return;
+        }
         $contract = $convertPaymentToContract->getContract();
         Assert::isInstanceOf($contract, Contract::class);
 
@@ -159,5 +177,15 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             $request instanceof Capture &&
             $request->getModel() instanceof SyliusPaymentInterface
         ;
+    }
+
+    private function getWebhookToken(SyliusPaymentInterface $payment): string
+    {
+        $webhookToken = $this->webhookTokenRepository->findOneByPayment($payment);
+        if ($webhookToken !== null) {
+            return $webhookToken->getToken();
+        }
+
+        return $this->webhookTokenGenerator->generateForPayment($payment)->getToken();
     }
 }
