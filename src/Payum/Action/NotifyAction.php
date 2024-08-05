@@ -70,7 +70,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         ) {
             // Throw a 404 to avoid leaking information about the existence of the payment or the correctness of the url
             $this->logger->info(sprintf(
-                'Klarna notification for payment with ID "%s" has incorrect token.',
+                'Pagolight notification for payment with ID "%s" has incorrect token.',
                 $paymentId,
             ));
 

@@ -54,7 +54,7 @@ final class CancelAction implements ActionInterface
         $paymentDetails = $payment->getDetails();
         PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
-        $this->logger->info('Redirecting the user to the Sylius Klarna Payments waiting page.');
+        $this->logger->info('Redirecting the user to the Sylius Pagolight waiting page.');
 
         $session = $this->requestStack->getSession();
         $session->set(PaymentController::PAYMENT_ID_SESSION_KEY, $paymentId);
