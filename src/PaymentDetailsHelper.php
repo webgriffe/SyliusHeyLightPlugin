@@ -65,7 +65,7 @@ final class PaymentDetailsHelper
     }
 
     /**
-     * @param PaymentDetails|array{} $paymentDetails
+     * @param PaymentDetails|array $paymentDetails
      */
     public static function addPaymentStatus(array $paymentDetails, string $status): array
     {

@@ -8,7 +8,9 @@
     <img src="{{ asset('build/shop/images/loading.gif', 'shop') }}" alt="{{ 'webgriffe_sylius_pagolight.ui.loading'|trans }}">
 
     {% if redirectUrl %}
-        <p>{{ 'webgriffe_sylius_pagolight.ui.return_to_pagolight_checkout'|trans({'{redirectUrl}': redirectUrl})|raw }}</p>
+        <a href="{{ redirectUrl }}">
+            {{ 'webgriffe_sylius_pagolight.ui.return_to_pagolight_checkout'|trans }}
+        </a>
     {% endif %}
 {% endblock %}
 

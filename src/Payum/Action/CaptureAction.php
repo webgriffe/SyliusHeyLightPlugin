@@ -16,7 +16,6 @@ use Payum\Core\Security\GenericTokenFactoryAwareInterface;
 use Payum\Core\Security\GenericTokenFactoryAwareTrait;
 use Payum\Core\Security\TokenInterface;
 use Psr\Log\LoggerInterface;
-use RuntimeException;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
 use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
@@ -82,7 +81,13 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
 
         if ($paymentDetails !== []) {
             if (!PaymentDetailsHelper::areValid($paymentDetails)) {
-                throw new RuntimeException('Payment details are already populated with others data. Maybe this payment should be marked as error');
+                $this->logger->error('Payment details are already populated with others data. Maybe this payment should be marked as error');
+                $payment->setDetails(PaymentDetailsHelper::addPaymentStatus(
+                    $paymentDetails,
+                    PaymentState::CANCELLED,
+                ));
+
+                return;
             }
             $this->logger->info(
                 'Pagolight payment details are already valued, so no need to continue here. Redirecting the user to the Sylius Pagolight Payments waiting page.',
@@ -119,7 +124,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         if ($gatewayConfig instanceof GatewayConfigInterface &&
             $gatewayConfig->getFactoryName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
         ) {
-            $additionalData['pricing_structure_code'] = 'PC6';
+            $additionalData['pricing_structure_code'] = 'PC7';
         }
 
         $pagolightApi = $this->api;

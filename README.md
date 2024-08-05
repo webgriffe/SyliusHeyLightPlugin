@@ -28,10 +28,21 @@
 
 4. Import the routes needed for cancelling the payments. Add the following to your config/routes.yaml file:
    ```yaml
-   webgriffe_sylius_pagolight_plugin:
+   webgriffe_sylius_pagolight_plugin_shop:
        resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"
+       prefix: /{_locale}
+       requirements:
+           _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+   webgriffe_sylius_pagolight_plugin_ajax:
+       resource: "@WebgriffeSyliusPagolightPlugin/config/shop_ajax_routing.php"
+
+   sylius_shop_payum_cancel:
+       resource: "@PayumBundle/Resources/config/routing/cancel.xml"
+
    ```
-   **NB:** you should avoid to have any param prefix in your routes, otherwise the plugin won't work properly.
+   **NB:** The file shop_routing needs to be after the prefix _locale, so that messages can be displayed in the right
+   language. You should also include the cancel routes from the Payum bundle if you do not have it already!
 
 5. Add the WebhookToken entity. Create a new file `src/Entity/Payment/WebhookToken.php` with the following content:
    ```php

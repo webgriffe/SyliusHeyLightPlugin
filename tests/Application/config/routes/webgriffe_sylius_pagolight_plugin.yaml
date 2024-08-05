@@ -1,5 +1,11 @@
-webgriffe_sylius_pagolight_plugin:
+webgriffe_sylius_pagolight_plugin_shop:
     resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"
     prefix: /{_locale}
     requirements:
-        _locale: ^[a-z]{2}(?:_[A-Z]{2})?$
+        _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
+
+webgriffe_sylius_pagolight_plugin_ajax:
+    resource: "@WebgriffeSyliusPagolightPlugin/config/shop_ajax_routing.php"
+
+sylius_shop_payum_cancel:
+    resource: "@PayumBundle/Resources/config/routing/cancel.xml"
