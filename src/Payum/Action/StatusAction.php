@@ -50,6 +50,7 @@ final class StatusAction implements ActionInterface
 
         if (!$request->isNew() && !$request->isUnknown()) {
             $this->logger->info('Request new or unknown.', ['isNew' => $request->isNew(), 'isUnknown' => $request->isUnknown()]);
+
             // Payment status already set
             return;
         }
