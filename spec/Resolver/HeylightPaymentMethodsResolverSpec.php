@@ -28,8 +28,8 @@ final class HeylightPaymentMethodsResolverSpec extends ObjectBehavior
         ChannelInterface $channel,
         AddressInterface $billingAddress,
         AddressInterface $shippingAddress,
-        GatewayConfigInterface $heylightGatewayConfig,
-        GatewayConfigInterface $heylightProGatewayConfig,
+        GatewayConfigInterface $heylightBnplGatewayConfig,
+        GatewayConfigInterface $heylightFinancingGatewayConfig,
         GatewayConfigInterface $otherGatewayConfig,
     ): void {
         $billingAddress->getCountryCode()->willReturn('IT');
@@ -44,14 +44,16 @@ final class HeylightPaymentMethodsResolverSpec extends ObjectBehavior
         $payment->getOrder()->willReturn($order);
         $payment->getMethod()->willReturn($heylightPaymentMethod);
 
-        $heylightGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE);
-        $heylightProGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE);
+        $heylightBnplGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE);
+        $heylightBnplGatewayConfig->getConfig()->willReturn(['allowed_terms' => []]);
+        $heylightFinancingGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE);
+        $heylightFinancingGatewayConfig->getConfig()->willReturn(['allowed_terms' => []]);
         $otherGatewayConfig->getFactoryName()->willReturn('other');
 
         $heylightPaymentMethod->getCode()->willReturn('HEYLIGHT_PAYMENT_METHOD_CODE');
-        $heylightPaymentMethod->getGatewayConfig()->willReturn($heylightGatewayConfig);
+        $heylightPaymentMethod->getGatewayConfig()->willReturn($heylightBnplGatewayConfig);
         $heylightProPaymentMethod->getCode()->willReturn('HEYLIGHT_PRO_PAYMENT_METHOD_CODE');
-        $heylightProPaymentMethod->getGatewayConfig()->willReturn($heylightProGatewayConfig);
+        $heylightProPaymentMethod->getGatewayConfig()->willReturn($heylightFinancingGatewayConfig);
         $otherPaymentMethod->getCode()->willReturn('other_payment_method');
         $otherPaymentMethod->getGatewayConfig()->willReturn($otherGatewayConfig);
 
@@ -87,7 +89,7 @@ final class HeylightPaymentMethodsResolverSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_resolve_heylight_pro_payment_method_if_order_amount_is_equal_or_under_100(
+    public function it_does_not_resolve_heylight_financing_payment_method_if_order_amount_is_equal_or_under_100(
         PaymentInterface $payment,
         PaymentMethodInterface $heylightPaymentMethod,
         PaymentMethodInterface $otherPaymentMethod,
@@ -129,6 +131,40 @@ final class HeylightPaymentMethodsResolverSpec extends ObjectBehavior
         ]);
 
         $shippingAddress->getCountryCode()->willReturn('US');
+        $this->getSupportedMethods($payment)->shouldReturn([
+            2 => $otherPaymentMethod,
+        ]);
+    }
+
+    public function it_resolves_heylight_payment_methods_if_term_amount_is_equals_or_greater_than_minimum(
+        PaymentInterface $payment,
+        PaymentMethodInterface $heylightPaymentMethod,
+        PaymentMethodInterface $otherPaymentMethod,
+        GatewayConfigInterface $heylightBnplGatewayConfig,
+        GatewayConfigInterface $heylightFinancingGatewayConfig,
+        OrderInterface $order,
+    ): void {
+        $order->getTotal()->willReturn(6000);
+        $heylightBnplGatewayConfig->getConfig()->willReturn(['allowed_terms' => [3,4,5]]);
+        $heylightFinancingGatewayConfig->getConfig()->willReturn(['allowed_terms' => [3,4,5]]);
+
+        $this->getSupportedMethods($payment)->shouldReturn([
+            0 => $heylightPaymentMethod,
+            2 => $otherPaymentMethod,
+        ]);
+    }
+
+    public function it_does_not_resolve_heylight_payment_methods_if_term_amount_is_less_than_minimum(
+        PaymentInterface $payment,
+        PaymentMethodInterface $otherPaymentMethod,
+        GatewayConfigInterface $heylightBnplGatewayConfig,
+        GatewayConfigInterface $heylightFinancingGatewayConfig,
+        OrderInterface $order,
+    ): void {
+        $order->getTotal()->willReturn(5900);
+        $heylightBnplGatewayConfig->getConfig()->willReturn(['allowed_terms' => [3,4,5]]);
+        $heylightFinancingGatewayConfig->getConfig()->willReturn(['allowed_terms' => [3,4,5]]);
+
         $this->getSupportedMethods($payment)->shouldReturn([
             2 => $otherPaymentMethod,
         ]);

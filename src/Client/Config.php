@@ -57,4 +57,6 @@ final class Config
     ];
 
     public const HEYLIGHT_FINANCING_MINIMUM_AMOUNT = 100;
+
+    public const HEYLIGHT_MINIMUM_TERM_AMOUNT = 20;
 }

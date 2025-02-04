@@ -70,6 +70,12 @@ final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInte
                 if (!in_array($currencyCode, Config::ALLOWED_CURRENCY_CODES, true)) {
                     return false;
                 }
+                /** @var array<array-key, int> $allowedTerms */
+                $allowedTerms = $gatewayConfig->getConfig()['allowed_terms'];
+                if ($allowedTerms !== [] && !self::hasAtLeastOneAllowedTerm($orderAmount, $allowedTerms)) {
+                    return false;
+                }
+
                 /** @psalm-suppress DeprecatedMethod */
                 if ($orderAmount <= (Config::HEYLIGHT_FINANCING_MINIMUM_AMOUNT * 100) &&
                     $gatewayConfig->getFactoryName() === HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE
@@ -110,5 +116,20 @@ final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInte
         $currencyCode = $order->getCurrencyCode();
 
         return $currencyCode !== null;
+    }
+
+    /**
+     * @param int[] $allowedTerms
+     */
+    private static function hasAtLeastOneAllowedTerm(int $orderAmount, array $allowedTerms): bool
+    {
+        foreach ($allowedTerms as $allowedTerm) {
+            $termAmount = $orderAmount / $allowedTerm;
+            if ($termAmount >= (Config::HEYLIGHT_MINIMUM_TERM_AMOUNT * 100)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 }
