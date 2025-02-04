@@ -94,11 +94,11 @@
 
 ## Usage
 
-Access to the admin panel and go to the `Payment methods` section. Create a new payment method and select `HeyLight dilazione`
-or `HeyLight finanziamento` as the gateway. Then, configure the payment method with the required parameters.
+Access to the admin panel and go to the `Payment methods` section. Create a new payment method and select `HeyLight BNPL`
+or `HeyLight Financing` as the gateway. Then, configure the payment method with the required parameters.
 
 Automatically, the plugin will hide the payment method if the currency is not EUR, GBP or CH or if the country is not
-Italy or Switzerland. HeyLight finanziamento will also be visible only if the order total amount is greater than 100 EUR.
+Italy or Switzerland. HeyLight Financing will also be visible only if the order total amount is greater than 100 EUR.
 
 ## Contributing
 
