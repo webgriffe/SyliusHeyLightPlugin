@@ -17,3 +17,4 @@
 /.php-version
 /php.ini
 /docker-compose.override.yml
+/compose.override.yaml
