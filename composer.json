@@ -57,6 +57,9 @@
             "phpstan/extension-installer": true,
             "symfony/flex": false,
             "php-http/discovery": false
+        },
+        "replace": {
+            "webgriffe/sylius-pagolight-plugin": "*"
         }
     },
     "extra": {
