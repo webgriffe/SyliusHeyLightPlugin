@@ -18,8 +18,8 @@ return static function (ContainerConfigurator $containerConfigurator) {
             service('sylius.fixture.example_factory.payment_method'),
             service('sylius.manager.payment_method'),
             [
-                HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE => 'Heylight',
-                HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE => 'Heylight PRO',
+                HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE => 'Heylight BNPL',
+                HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE => 'Heylight Financing',
             ],
         ])
     ;
