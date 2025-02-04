@@ -1,11 +1,12 @@
 {
-    "name": "webgriffe/sylius-pagolight-plugin",
-    "description": "Sylius plugin for Pagolight and Pagolight Pro payment gateway",
+    "name": "webgriffe/sylius-heylight-plugin",
+    "description": "Sylius plugin for HeyLight payment gateway (ex PagoLight BNPL and PagoLight PRO)",
     "type": "sylius-plugin",
     "keywords": [
         "sylius",
-        "pagolight",
-        "sylius-plugin"
+        "heylight",
+        "sylius-plugin",
+        "pagolight"
     ],
     "license": "proprietary",
     "require": {
@@ -54,8 +55,8 @@
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": false,
             "phpstan/extension-installer": true,
-            "symfony/flex": true,
-            "php-http/discovery": true
+            "symfony/flex": false,
+            "php-http/discovery": false
         }
     },
     "extra": {
