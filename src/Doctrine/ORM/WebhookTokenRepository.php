@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Doctrine\ORM;
+namespace Webgriffe\SyliusHeylightPlugin\Doctrine\ORM;
 
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
-use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookToken;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusHeylightPlugin\Repository\WebhookTokenRepositoryInterface;
 
 /**
  * @extends ServiceEntityRepository<WebhookTokenInterface>

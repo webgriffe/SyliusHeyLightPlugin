@@ -2,19 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Validator;
+namespace Webgriffe\SyliusHeylightPlugin\Validator;
 
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 use Symfony\Component\Validator\Constraint;
 use Symfony\Component\Validator\ConstraintValidator;
 use Symfony\Component\Validator\Exception\UnexpectedValueException;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
 
 /**
  * @psalm-suppress PropertyNotSetInConstructor
  */
-final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
+final class HeylightPaymentMethodUniqueValidator extends ConstraintValidator
 {
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
@@ -30,16 +30,16 @@ final class PagolightPaymentMethodUniqueValidator extends ConstraintValidator
             throw new UnexpectedValueException($value, PaymentMethodInterface::class);
         }
 
-        if (!$constraint instanceof PagolightPaymentMethodUnique) {
-            throw new UnexpectedValueException($constraint, PagolightPaymentMethodUnique::class);
+        if (!$constraint instanceof HeylightPaymentMethodUnique) {
+            throw new UnexpectedValueException($constraint, HeylightPaymentMethodUnique::class);
         }
 
         $gatewayConfig = $value->getGatewayConfig();
         /** @psalm-suppress DeprecatedMethod */
         if ($gatewayConfig === null ||
             !in_array($gatewayConfig->getFactoryName(), [
-                PagolightApi::PAGOLIGHT_GATEWAY_CODE,
-                PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE,
+                HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE,
+                HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE,
             ], true)
         ) {
             return;

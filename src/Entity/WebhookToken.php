@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Entity;
+namespace Webgriffe\SyliusHeylightPlugin\Entity;
 
 use Sylius\Component\Core\Model\PaymentInterface;
 

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum;
+namespace Webgriffe\SyliusHeylightPlugin\Payum;
 
 use ArrayObject;
 use Payum\Core\Bridge\Spl\ArrayObject as PayumArrayObject;
 use Payum\Core\GatewayFactory;
 
-final class PagolightGatewayFactory extends GatewayFactory
+final class HeylightFinancingGatewayFactory extends GatewayFactory
 {
     protected function populateConfig(PayumArrayObject $config): void
     {
         $config->defaults([
-            'payum.factory_name' => PagolightApi::PAGOLIGHT_GATEWAY_CODE,
-            'payum.factory_title' => 'Pagolight',
-            'payum.action.status' => '@webgriffe_sylius_pagolight.payum.action.status',
+            'payum.factory_name' => HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE,
+            'payum.factory_title' => 'HeyLight Financing',
+            'payum.action.status' => '@webgriffe_sylius_heylight.payum.action.status',
         ]);
 
         if (false === (bool) $config['payum.api']) {
@@ -29,7 +29,7 @@ final class PagolightGatewayFactory extends GatewayFactory
              *
              * @phpstan-ignore-next-line
              */
-            $config['payum.api'] = static fn (ArrayObject $config): PagolightApi => new PagolightApi((array) $config);
+            $config['payum.api'] = static fn (ArrayObject $config): HeylightApi => new HeylightApi((array) $config);
         }
     }
 }

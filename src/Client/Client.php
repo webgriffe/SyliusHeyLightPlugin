@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client;
+namespace Webgriffe\SyliusHeylightPlugin\Client;
 
 use DateTimeImmutable;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientInterface;
@@ -11,14 +11,14 @@ use GuzzleHttp\Psr7\ServerRequest;
 use const JSON_THROW_ON_ERROR;
 use JsonException;
 use Psr\Log\LoggerInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ApplicationStatusFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\AuthFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ContractCreateFailedException;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ApplicationStatus;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ApplicationStatusResult;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusHeylightPlugin\Client\Exception\ApplicationStatusFailedException;
+use Webgriffe\SyliusHeylightPlugin\Client\Exception\AuthFailedException;
+use Webgriffe\SyliusHeylightPlugin\Client\Exception\ClientException;
+use Webgriffe\SyliusHeylightPlugin\Client\Exception\ContractCreateFailedException;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ApplicationStatus;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ApplicationStatusResult;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ContractCreateResult;
 
 final class Client implements ClientInterface
 {

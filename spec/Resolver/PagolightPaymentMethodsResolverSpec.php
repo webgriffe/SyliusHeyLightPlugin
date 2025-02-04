@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace spec\Webgriffe\SyliusPagolightPlugin\Resolver;
+namespace spec\Webgriffe\SyliusHeylightPlugin\Resolver;
 
 use PhpSpec\ObjectBehavior;
 use Sylius\Bundle\PayumBundle\Model\GatewayConfigInterface;
@@ -13,23 +13,23 @@ use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
-use Webgriffe\SyliusPagolightPlugin\Resolver\PagolightPaymentMethodsResolver;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
+use Webgriffe\SyliusHeylightPlugin\Resolver\HeylightPaymentMethodsResolver;
 
-final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
+final class HeylightPaymentMethodsResolverSpec extends ObjectBehavior
 {
     public function let(
         PaymentMethodRepositoryInterface $paymentMethodRepository,
         PaymentInterface $payment,
-        PaymentMethodInterface $pagolightPaymentMethod,
-        PaymentMethodInterface $pagolightProPaymentMethod,
+        PaymentMethodInterface $heylightPaymentMethod,
+        PaymentMethodInterface $heylightProPaymentMethod,
         PaymentMethodInterface $otherPaymentMethod,
         OrderInterface $order,
         ChannelInterface $channel,
         AddressInterface $billingAddress,
         AddressInterface $shippingAddress,
-        GatewayConfigInterface $pagolightGatewayConfig,
-        GatewayConfigInterface $pagolightProGatewayConfig,
+        GatewayConfigInterface $heylightGatewayConfig,
+        GatewayConfigInterface $heylightProGatewayConfig,
         GatewayConfigInterface $otherGatewayConfig,
     ): void {
         $billingAddress->getCountryCode()->willReturn('IT');
@@ -42,22 +42,22 @@ final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
         $order->getTotal()->willReturn(19000);
 
         $payment->getOrder()->willReturn($order);
-        $payment->getMethod()->willReturn($pagolightPaymentMethod);
+        $payment->getMethod()->willReturn($heylightPaymentMethod);
 
-        $pagolightGatewayConfig->getFactoryName()->willReturn(PagolightApi::PAGOLIGHT_GATEWAY_CODE);
-        $pagolightProGatewayConfig->getFactoryName()->willReturn(PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE);
+        $heylightGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE);
+        $heylightProGatewayConfig->getFactoryName()->willReturn(HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE);
         $otherGatewayConfig->getFactoryName()->willReturn('other');
 
-        $pagolightPaymentMethod->getCode()->willReturn('PAGOLIGHT_PAYMENT_METHOD_CODE');
-        $pagolightPaymentMethod->getGatewayConfig()->willReturn($pagolightGatewayConfig);
-        $pagolightProPaymentMethod->getCode()->willReturn('PAGOLIGHT_PRO_PAYMENT_METHOD_CODE');
-        $pagolightProPaymentMethod->getGatewayConfig()->willReturn($pagolightProGatewayConfig);
+        $heylightPaymentMethod->getCode()->willReturn('HEYLIGHT_PAYMENT_METHOD_CODE');
+        $heylightPaymentMethod->getGatewayConfig()->willReturn($heylightGatewayConfig);
+        $heylightProPaymentMethod->getCode()->willReturn('HEYLIGHT_PRO_PAYMENT_METHOD_CODE');
+        $heylightProPaymentMethod->getGatewayConfig()->willReturn($heylightProGatewayConfig);
         $otherPaymentMethod->getCode()->willReturn('other_payment_method');
         $otherPaymentMethod->getGatewayConfig()->willReturn($otherGatewayConfig);
 
         $paymentMethodRepository->findEnabledForChannel($channel)->willReturn([
-            $pagolightPaymentMethod,
-            $pagolightProPaymentMethod,
+            $heylightPaymentMethod,
+            $heylightProPaymentMethod,
             $otherPaymentMethod,
         ]);
 
@@ -66,7 +66,7 @@ final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
 
     public function it_is_initializable(): void
     {
-        $this->shouldHaveType(PagolightPaymentMethodsResolver::class);
+        $this->shouldHaveType(HeylightPaymentMethodsResolver::class);
     }
 
     public function it_implements_payment_methods_resolver_interface(): void
@@ -74,39 +74,39 @@ final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
         $this->shouldImplement(PaymentMethodsResolverInterface::class);
     }
 
-    public function it_resolves_pagolight_payment_methods_if_eligible(
+    public function it_resolves_heylight_payment_methods_if_eligible(
         PaymentInterface $payment,
-        PaymentMethodInterface $pagolightPaymentMethod,
-        PaymentMethodInterface $pagolightProPaymentMethod,
+        PaymentMethodInterface $heylightPaymentMethod,
+        PaymentMethodInterface $heylightProPaymentMethod,
         PaymentMethodInterface $otherPaymentMethod,
     ): void {
         $this->getSupportedMethods($payment)->shouldReturn([
-            0 => $pagolightPaymentMethod,
-            1 => $pagolightProPaymentMethod,
+            0 => $heylightPaymentMethod,
+            1 => $heylightProPaymentMethod,
             2 => $otherPaymentMethod,
         ]);
     }
 
-    public function it_does_not_resolve_pagolight_pro_payment_method_if_order_amount_is_equal_or_under_100(
+    public function it_does_not_resolve_heylight_pro_payment_method_if_order_amount_is_equal_or_under_100(
         PaymentInterface $payment,
-        PaymentMethodInterface $pagolightPaymentMethod,
+        PaymentMethodInterface $heylightPaymentMethod,
         PaymentMethodInterface $otherPaymentMethod,
         OrderInterface $order,
     ): void {
         $order->getTotal()->willReturn(10000);
         $this->getSupportedMethods($payment)->shouldReturn([
-            0 => $pagolightPaymentMethod,
+            0 => $heylightPaymentMethod,
             2 => $otherPaymentMethod,
         ]);
 
         $order->getTotal()->willReturn(9900);
         $this->getSupportedMethods($payment)->shouldReturn([
-            0 => $pagolightPaymentMethod,
+            0 => $heylightPaymentMethod,
             2 => $otherPaymentMethod,
         ]);
     }
 
-    public function it_does_not_resolve_pagolight_payment_methods_if_order_currency_is_not_supported(
+    public function it_does_not_resolve_heylight_payment_methods_if_order_currency_is_not_supported(
         PaymentInterface $payment,
         PaymentMethodInterface $otherPaymentMethod,
         OrderInterface $order,
@@ -117,7 +117,7 @@ final class PagolightPaymentMethodsResolverSpec extends ObjectBehavior
         ]);
     }
 
-    public function it_does_not_resolve_pagolight_payment_methods_if_country_code_is_not_supported(
+    public function it_does_not_resolve_heylight_payment_methods_if_country_code_is_not_supported(
         PaymentInterface $payment,
         PaymentMethodInterface $otherPaymentMethod,
         AddressInterface $billingAddress,

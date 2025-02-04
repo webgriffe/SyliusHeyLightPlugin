@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -13,9 +13,9 @@ use Payum\Core\Request\GetHttpRequest;
 use Payum\Core\Request\Notify;
 use Psr\Log\LoggerInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\RemovePaymentWebhookToken;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\RetrievePaymentWebhookToken;
+use Webgriffe\SyliusHeylightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\RemovePaymentWebhookToken;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\RetrievePaymentWebhookToken;
 use Webmozart\Assert\Assert;
 
 /**
@@ -58,7 +58,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         $requestParameters = $httpRequest->request;
 
         $this->logger->info(sprintf(
-            'Received Pagolight notification for payment with ID "%s".',
+            'Received Heylight notification for payment with ID "%s".',
             $paymentId,
         ), ['Request parameters' => $requestParameters]);
 
@@ -70,7 +70,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         ) {
             // Throw a 404 to avoid leaking information about the existence of the payment or the correctness of the url
             $this->logger->info(sprintf(
-                'Pagolight notification for payment with ID "%s" has incorrect token.',
+                'Heylight notification for payment with ID "%s" has incorrect token.',
                 $paymentId,
             ));
 

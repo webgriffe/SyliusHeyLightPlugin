@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
-use Webgriffe\SyliusPagolightPlugin\Form\Type\SyliusPagolightGatewayConfigurationType;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusHeylightPlugin\Form\Type\SyliusHeylightGatewayConfigurationType;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
-    $services->set('webgriffe_sylius_pagolight.form.type.gateway_configuration', SyliusPagolightGatewayConfigurationType::class)
-        ->tag('sylius.gateway_configuration_type', ['type' => PagolightApi::PAGOLIGHT_GATEWAY_CODE, 'label' => 'Pagolight'])
-        ->tag('sylius.gateway_configuration_type', ['type' => PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE, 'label' => 'Pagolight Pro'])
+    $services->set('webgriffe_sylius_heylight.form.type.gateway_configuration', SyliusHeylightGatewayConfigurationType::class)
+        ->tag('sylius.gateway_configuration_type', ['type' => HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE, 'label' => 'HeyLight BNPL (0%)'])
+        ->tag('sylius.gateway_configuration_type', ['type' => HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE, 'label' => 'Heylight Financing'])
         ->tag('form.type')
     ;
 };

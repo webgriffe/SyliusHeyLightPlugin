@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum;
+namespace Webgriffe\SyliusHeylightPlugin\Payum;
 
-final class PagolightApi
+final class HeylightApi
 {
-    public const PAGOLIGHT_GATEWAY_CODE = 'pagolight';
+    public const HEYLIGHT_BNPL_GATEWAY_CODE = 'heylight_bnpl';
 
-    public const PAGOLIGHT_PRO_GATEWAY_CODE = 'pagolight_pro';
+    public const HEYLIGHT_FINANCING_GATEWAY_CODE = 'heylight_financing';
 
     /**
      * @param array{sandbox: bool, merchant_key: string, allowed_terms: array<array-key, int>} $config

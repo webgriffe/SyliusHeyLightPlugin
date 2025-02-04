@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\App\Entity\Payment;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\App\Entity\Payment;
 
 use Doctrine\ORM\Mapping as ORM;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken as BaseWebhookToken;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookToken as BaseWebhookToken;
 
 /**
  * @ORM\Entity
- * @ORM\Table(name="webgriffe_sylius_pagolight_webhook_token")
+ * @ORM\Table(name="webgriffe_sylius_heylight_webhook_token")
  */
 class WebhookToken extends BaseWebhookToken
 {

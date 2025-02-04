@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Converter;
+namespace Webgriffe\SyliusHeylightPlugin\Converter;
 
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\CustomerInterface;
@@ -11,15 +11,15 @@ use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Model\ProductInterface;
 use Sylius\Component\Core\Model\ProductVariantInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\Config;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Address;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Amount;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ClientMetadata;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\CustomerDetails;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\ProductInformation;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\RedirectUrls;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Webhooks;
+use Webgriffe\SyliusHeylightPlugin\Client\Config;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Address;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Amount;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\ClientMetadata;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\CustomerDetails;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\ProductInformation;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\RedirectUrls;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Webhooks;
 use Webmozart\Assert\Assert;
 
 final class ContractConverter implements ContractConverterInterface
@@ -50,7 +50,7 @@ final class ContractConverter implements ContractConverterInterface
         Assert::isInstanceOf($customer, CustomerInterface::class);
 
         $emailAddress = $customer->getEmail();
-        Assert::stringNotEmpty($emailAddress, 'Email is required to create a contract on Pagolight');
+        Assert::stringNotEmpty($emailAddress, 'Email is required to create a contract on Heylight');
 
         $webhooks = null;
         if ($webhookUrl !== null && $webhookToken !== null) {

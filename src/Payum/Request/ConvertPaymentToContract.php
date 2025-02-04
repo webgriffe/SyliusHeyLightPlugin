@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Request;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Request;
 
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
 
 final class ConvertPaymentToContract
 {

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\RetrievePaymentWebhookToken;
-use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\RetrievePaymentWebhookToken;
+use Webgriffe\SyliusHeylightPlugin\Repository\WebhookTokenRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 final class RetrievePaymentWebhookTokenAction implements ActionInterface

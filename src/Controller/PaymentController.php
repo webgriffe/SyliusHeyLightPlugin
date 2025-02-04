@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Controller;
+namespace Webgriffe\SyliusHeylightPlugin\Controller;
 
 use Payum\Core\Model\Identity;
 use Payum\Core\Security\TokenInterface;
@@ -18,8 +18,8 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RouterInterface;
-use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusHeylightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
 use Webmozart\Assert\Assert;
 
 /**
@@ -29,9 +29,9 @@ use Webmozart\Assert\Assert;
  */
 final class PaymentController extends AbstractController
 {
-    public const PAYMENT_ID_SESSION_KEY = 'webgriffe_pagolight_payment_id';
+    public const PAYMENT_ID_SESSION_KEY = 'webgriffe_heylight_payment_id';
 
-    public const TOKEN_HASH_SESSION_KEY = 'webgriffe_pagolight_token_hash';
+    public const TOKEN_HASH_SESSION_KEY = 'webgriffe_heylight_token_hash';
 
     public function __construct(
         private readonly OrderRepositoryInterface $orderRepository,
@@ -83,12 +83,12 @@ final class PaymentController extends AbstractController
         }
         $redirectUrl = PaymentDetailsHelper::getRedirectUrl($storedPaymentDetails);
         $paymentStatusUrl = $this->router->generate(
-            'webgriffe_sylius_pagolight_plugin_payment_status',
+            'webgriffe_sylius_heylight_plugin_payment_status',
             ['paymentId' => $syliusPayment->getId()],
             UrlGeneratorInterface::ABSOLUTE_URL,
         );
 
-        return $this->render('@WebgriffeSyliusPagolightPlugin/Process/index.html.twig', [
+        return $this->render('@WebgriffeSyliusHeylightPlugin/Process/index.html.twig', [
             'afterUrl' => $token->getAfterUrl(),
             'paymentStatusUrl' => $paymentStatusUrl,
             'redirectUrl' => $redirectUrl,
@@ -112,7 +112,7 @@ final class PaymentController extends AbstractController
             throw $this->createAccessDeniedException();
         }
         /** @psalm-suppress DeprecatedMethod */
-        if (!in_array($paymentGatewayConfig->getFactoryName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
+        if (!in_array($paymentGatewayConfig->getFactoryName(), [HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE, HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE], true)) {
             throw $this->createAccessDeniedException();
         }
 

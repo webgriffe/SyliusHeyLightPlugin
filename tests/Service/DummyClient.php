@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Service;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Service;
 
 use DateTimeImmutable;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\ClientInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ApplicationStatusResult;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusHeylightPlugin\Client\ClientInterface;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ApplicationStatusResult;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ContractCreateResult;
 
 final class DummyClient implements ClientInterface
 {

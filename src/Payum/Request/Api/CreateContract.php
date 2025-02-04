@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Request\Api;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Request\Api;
 
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ContractCreateResult;
 
 final class CreateContract
 {

@@ -7,5 +7,5 @@ namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
-    $services->alias('webgriffe_sylius_pagolight.cache', 'cache.app');
+    $services->alias('webgriffe_sylius_heylight.cache', 'cache.app');
 };

@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
-use Webgriffe\SyliusPagolightPlugin\Converter\ContractConverterInterface;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
+use Webgriffe\SyliusHeylightPlugin\Converter\ContractConverterInterface;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\ConvertPaymentToContract;
 use Webmozart\Assert\Assert;
 
 final class ConvertPaymentToContractAction implements ActionInterface

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context;
 
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Model\PaymentInterface;

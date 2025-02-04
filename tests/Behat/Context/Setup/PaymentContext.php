@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Setup;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\Setup;
 
 use Behat\Behat\Context\Context;
 use Doctrine\Persistence\ObjectManager;
@@ -27,7 +27,7 @@ final class PaymentContext implements Context
     }
 
     /**
-     * @Given the store has (also) a payment method :paymentMethodName with a code :paymentMethodCode and Pagolight Payment Checkout gateway
+     * @Given the store has (also) a payment method :paymentMethodName with a code :paymentMethodCode and Heylight Payment Checkout gateway
      */
     public function theStoreHasPaymentMethodWithCodeAndPaypalExpressCheckoutGateway(
         string $paymentMethodName,
@@ -49,7 +49,7 @@ final class PaymentContext implements Context
     private function createPaymentMethod(
         string $name,
         string $code,
-        string $gatewayFactory = 'Pagolight',
+        string $gatewayFactory = 'Heylight',
         string $description = '',
         bool $addForCurrentChannel = true,
         ?int $position = null,

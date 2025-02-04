@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payment;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Page\Shop\Payment;
 
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPageInterface;
 

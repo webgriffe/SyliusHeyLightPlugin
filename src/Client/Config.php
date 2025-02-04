@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client;
+namespace Webgriffe\SyliusHeylightPlugin\Client;
 
 final class Config
 {
@@ -56,5 +56,5 @@ final class Config
         self::IT_LANGUAGE_CODE,
     ];
 
-    public const PAGOLIGHT_PRO_MINIMUM_AMOUNT = 100;
+    public const HEYLIGHT_FINANCING_MINIMUM_AMOUNT = 100;
 }

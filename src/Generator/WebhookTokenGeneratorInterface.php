@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Generator;
+namespace Webgriffe\SyliusHeylightPlugin\Generator;
 
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookTokenInterface;
 
 interface WebhookTokenGeneratorInterface
 {

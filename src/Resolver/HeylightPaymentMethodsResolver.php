@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Resolver;
+namespace Webgriffe\SyliusHeylightPlugin\Resolver;
 
 use Sylius\Component\Core\Model\AddressInterface;
 use Sylius\Component\Core\Model\ChannelInterface;
@@ -12,11 +12,11 @@ use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Sylius\Component\Core\Repository\PaymentMethodRepositoryInterface;
 use Sylius\Component\Payment\Model\PaymentInterface as BasePaymentInterface;
 use Sylius\Component\Payment\Resolver\PaymentMethodsResolverInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\Config;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusHeylightPlugin\Client\Config;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
 use Webmozart\Assert\Assert;
 
-final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInterface
+final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInterface
 {
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
@@ -58,7 +58,7 @@ final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInt
                     return false;
                 }
                 /** @psalm-suppress DeprecatedMethod */
-                if (!in_array($gatewayConfig->getFactoryName(), [PagolightApi::PAGOLIGHT_GATEWAY_CODE, PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE], true)) {
+                if (!in_array($gatewayConfig->getFactoryName(), [HeylightApi::HEYLIGHT_BNPL_GATEWAY_CODE, HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE], true)) {
                     return true;
                 }
                 if (!in_array($billingAddress->getCountryCode(), Config::ALLOWED_COUNTRY_CODES, true)) {
@@ -71,8 +71,8 @@ final class PagolightPaymentMethodsResolver implements PaymentMethodsResolverInt
                     return false;
                 }
                 /** @psalm-suppress DeprecatedMethod */
-                if ($orderAmount <= (Config::PAGOLIGHT_PRO_MINIMUM_AMOUNT * 100) &&
-                    $gatewayConfig->getFactoryName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
+                if ($orderAmount <= (Config::HEYLIGHT_FINANCING_MINIMUM_AMOUNT * 100) &&
+                    $gatewayConfig->getFactoryName() === HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE
                 ) {
                     return false;
                 }

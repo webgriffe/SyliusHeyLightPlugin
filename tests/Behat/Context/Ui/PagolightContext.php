@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Ui;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\Ui;
 
 if (!interface_exists(\Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class)) {
     class_alias(\Sylius\Component\Resource\Repository\RepositoryInterface::class, \Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class);
@@ -18,11 +18,11 @@ use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
-use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\PayumPaymentTrait;
-use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payment\ProcessPageInterface;
+use Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\PayumPaymentTrait;
+use Tests\Webgriffe\SyliusHeylightPlugin\Behat\Page\Shop\Payment\ProcessPageInterface;
 use Webmozart\Assert\Assert;
 
-final class PagolightContext implements Context
+final class HeylightContext implements Context
 {
     use PayumPaymentTrait;
 
@@ -41,27 +41,27 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @When I complete the payment on Pagolight
+     * @When I complete the payment on Heylight
      */
-    public function iCompleteThePaymentOnPagolight(): void
+    public function iCompleteThePaymentOnHeylight(): void
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
 
-        // Simulate coming back from Pagolight after completed checkout
+        // Simulate coming back from Heylight after completed checkout
         $this->session->getDriver()->visit($paymentCaptureSecurityToken->getTargetUrl());
     }
 
     /**
-     * @Given I have cancelled Pagolight payment
-     * @When I cancel the payment on Pagolight
+     * @Given I have cancelled Heylight payment
+     * @When I cancel the payment on Heylight
      */
-    public function iCancelThePaymentOnPagolight(): void
+    public function iCancelThePaymentOnHeylight(): void
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken, $paymentNotifySecurityToken, $paymentCancelSecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
 
-        // Simulate coming back from Pagolight after clicking on cancel link
+        // Simulate coming back from Heylight after clicking on cancel link
         $this->session->getDriver()->visit($paymentCancelSecurityToken->getTargetUrl());
     }
 
@@ -86,12 +86,12 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @When I try to pay again with Pagolight
+     * @When I try to pay again with Heylight
      */
-    public function iTryToPayAgainWithPagolight(): void
+    public function iTryToPayAgainWithHeylight(): void
     {
         $this->orderShowPage->pay();
-        $this->iCompleteThePaymentOnPagolight();
+        $this->iCompleteThePaymentOnHeylight();
     }
 
     /**
