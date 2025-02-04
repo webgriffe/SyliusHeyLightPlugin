@@ -66,13 +66,13 @@
     },
     "autoload": {
         "psr-4": {
-            "Webgriffe\\SyliusPagolightPlugin\\": "src/",
-            "Tests\\Webgriffe\\SyliusPagolightPlugin\\": "tests/"
+            "Webgriffe\\SyliusHeylightPlugin\\": "src/",
+            "Tests\\Webgriffe\\SyliusHeylightPlugin\\": "tests/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Tests\\Webgriffe\\SyliusPagolightPlugin\\App\\": "tests/Application/src"
+            "Tests\\Webgriffe\\SyliusHeylightPlugin\\App\\": "tests/Application/src"
         },
         "classmap": [
             "tests/Application/Kernel.php"

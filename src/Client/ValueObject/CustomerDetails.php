@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject;
+namespace Webgriffe\SyliusHeylightPlugin\Client\ValueObject;
 
 use DateTimeInterface;
 

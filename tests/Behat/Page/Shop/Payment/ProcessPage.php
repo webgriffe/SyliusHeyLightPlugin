@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Page\Shop\Payment;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Page\Shop\Payment;
 
 use Behat\Mink\Element\DocumentElement;
 use FriendsOfBehat\PageObjectExtension\Page\SymfonyPage;
@@ -11,7 +11,7 @@ final class ProcessPage extends SymfonyPage implements ProcessPageInterface
 {
     public function getRouteName(): string
     {
-        return 'webgriffe_sylius_pagolight_plugin_payment_process';
+        return 'webgriffe_sylius_heylight_plugin_payment_process';
     }
 
     public function waitForRedirect(): void

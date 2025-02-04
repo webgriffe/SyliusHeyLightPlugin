@@ -1,6 +1,6 @@
-webgriffe_sylius_pagolight:
+webgriffe_sylius_heylight:
     ui:
-        return_to_pagolight_checkout: 'Retour au paiement Pagolight'
+        return_to_heylight_checkout: 'Retour au paiement Heylight'
         processing_payment: 'Nous traitons votre paiement!'
         please_wait: 'Veuillez attendre de voir une nouvelle page de statut!'
         loading: 'Chargement en cours'

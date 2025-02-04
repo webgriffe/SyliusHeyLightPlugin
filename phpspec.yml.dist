@@ -1,4 +1,4 @@
 suites:
     main:
-        namespace: Webgriffe\SyliusPagolightPlugin
-        psr4_prefix: Webgriffe\SyliusPagolightPlugin
+        namespace: Webgriffe\SyliusHeylightPlugin
+        psr4_prefix: Webgriffe\SyliusHeylightPlugin

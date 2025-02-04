@@ -2,21 +2,21 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Request\Api;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Request\Api;
 
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
 
 final class Auth
 {
     private ?string $bearerToken = null;
 
-    public function __construct(private readonly PagolightApi $pagolightApi)
+    public function __construct(private readonly HeylightApi $heylightApi)
     {
     }
 
-    public function getPagolightApi(): PagolightApi
+    public function getHeylightApi(): HeylightApi
     {
-        return $this->pagolightApi;
+        return $this->heylightApi;
     }
 
     public function getBearerToken(): ?string

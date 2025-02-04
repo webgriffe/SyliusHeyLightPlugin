@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -22,17 +22,17 @@ use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Sylius\Component\Core\Model\PaymentMethodInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\Exception\ClientException;
-use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Contract;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
-use Webgriffe\SyliusPagolightPlugin\Controller\PaymentController;
-use Webgriffe\SyliusPagolightPlugin\Generator\WebhookTokenGeneratorInterface;
-use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\ConvertPaymentToContract;
-use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
+use Webgriffe\SyliusHeylightPlugin\Client\Exception\ClientException;
+use Webgriffe\SyliusHeylightPlugin\Client\PaymentState;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Contract;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusHeylightPlugin\Controller\PaymentController;
+use Webgriffe\SyliusHeylightPlugin\Generator\WebhookTokenGeneratorInterface;
+use Webgriffe\SyliusHeylightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\Api\CreateContract;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\ConvertPaymentToContract;
+use Webgriffe\SyliusHeylightPlugin\Repository\WebhookTokenRepositoryInterface;
 use Webmozart\Assert\Assert;
 
 /**
@@ -51,7 +51,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         private readonly RequestStack $requestStack,
         private readonly WebhookTokenRepositoryInterface $webhookTokenRepository,
     ) {
-        $this->apiClass = PagolightApi::class;
+        $this->apiClass = HeylightApi::class;
     }
 
     /**
@@ -90,7 +90,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
                 return;
             }
             $this->logger->info(
-                'Pagolight payment details are already valued, so no need to continue here. Redirecting the user to the Sylius Pagolight Payments waiting page.',
+                'Heylight payment details are already valued, so no need to continue here. Redirecting the user to the Sylius Heylight Payments waiting page.',
             );
 
             $session = $this->requestStack->getSession();
@@ -101,7 +101,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             Assert::isInstanceOf($order, OrderInterface::class);
 
             throw new HttpRedirect(
-                $this->router->generate('webgriffe_sylius_pagolight_plugin_payment_process', [
+                $this->router->generate('webgriffe_sylius_heylight_plugin_payment_process', [
                     'tokenValue' => $order->getTokenValue(),
                     '_locale' => $order->getLocaleCode(),
                 ]),
@@ -122,13 +122,13 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         $gatewayConfig = $paymentMethod->getGatewayConfig();
         /** @psalm-suppress DeprecatedMethod */
         if ($gatewayConfig instanceof GatewayConfigInterface &&
-            $gatewayConfig->getFactoryName() === PagolightApi::PAGOLIGHT_PRO_GATEWAY_CODE
+            $gatewayConfig->getFactoryName() === HeylightApi::HEYLIGHT_FINANCING_GATEWAY_CODE
         ) {
             $additionalData['pricing_structure_code'] = 'PC7';
         }
 
-        $pagolightApi = $this->api;
-        Assert::isInstanceOf($pagolightApi, PagolightApi::class);
+        $heylightApi = $this->api;
+        Assert::isInstanceOf($heylightApi, HeylightApi::class);
 
         $webhookToken = $this->getWebhookToken($payment);
         $convertPaymentToContract = new ConvertPaymentToContract(
@@ -138,7 +138,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
             $cancelUrl,
             $notifyUrl,
             $webhookToken,
-            $pagolightApi->getAllowedTerms(),
+            $heylightApi->getAllowedTerms(),
             $additionalData,
         );
 
@@ -169,7 +169,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         );
 
         $this->logger->info(sprintf(
-            'Redirecting the user to the Pagolight redirect URL "%s".',
+            'Redirecting the user to the Heylight redirect URL "%s".',
             $contractCreateResult->getRedirectUrl(),
         ));
 

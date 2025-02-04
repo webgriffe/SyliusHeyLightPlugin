@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin;
+namespace Webgriffe\SyliusHeylightPlugin;
 
-use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
-use Webgriffe\SyliusPagolightPlugin\Client\ValueObject\Response\ContractCreateResult;
+use Webgriffe\SyliusHeylightPlugin\Client\PaymentState;
+use Webgriffe\SyliusHeylightPlugin\Client\ValueObject\Response\ContractCreateResult;
 use Webmozart\Assert\Assert;
 use Webmozart\Assert\InvalidArgumentException;
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject;
+namespace Webgriffe\SyliusHeylightPlugin\Client\ValueObject;
 
-use Webgriffe\SyliusPagolightPlugin\Client\Config;
+use Webgriffe\SyliusHeylightPlugin\Client\Config;
 use Webmozart\Assert\Assert;
 
 final class Contract
@@ -135,7 +135,7 @@ final class Contract
     }
 
     /**
-     * @return array<string, mixed> The array representation of the contract to send to Pagolight API
+     * @return array<string, mixed> The array representation of the contract to send to Heylight API
      */
     public function toArrayParams(): array
     {

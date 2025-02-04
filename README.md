@@ -15,26 +15,26 @@
     composer require webgriffe/sylius-heylight-plugin
    ```
 
-2. Add `Webgriffe\SyliusPagolightPlugin\WebgriffeSyliusPagolightPlugin::class => ['all' => true]` to your `config/bundles.php`.
+2. Add `Webgriffe\SyliusHeylightPlugin\WebgriffeSyliusHeylightPlugin::class => ['all' => true]` to your `config/bundles.php`.
    
    Normally, the plugin is automatically added to the `config/bundles.php` file by the `composer require` command. If it is not, you have to add it manually.
 
-3. Create a new file config/packages/webgriffe_sylius_pagolight_plugin.yaml:
+3. Create a new file config/packages/webgriffe_sylius_heylight_plugin.yaml:
    ```yaml
    imports:
-       - { resource: "@WebgriffeSyliusPagolightPlugin/config/config.php" }
+       - { resource: "@WebgriffeSyliusHeylightPlugin/config/config.php" }
    ```
 
 4. Import the routes needed for cancelling the payments. Add the following to your config/routes.yaml file:
    ```yaml
-   webgriffe_sylius_pagolight_plugin_shop:
-       resource: "@WebgriffeSyliusPagolightPlugin/config/shop_routing.php"
+   webgriffe_sylius_heylight_plugin_shop:
+       resource: "@WebgriffeSyliusHeylightPlugin/config/shop_routing.php"
        prefix: /{_locale}
        requirements:
            _locale: ^[A-Za-z]{2,4}(_([A-Za-z]{4}|[0-9]{3}))?(_([A-Za-z]{2}|[0-9]{3}))?$
 
-   webgriffe_sylius_pagolight_plugin_ajax:
-       resource: "@WebgriffeSyliusPagolightPlugin/config/shop_ajax_routing.php"
+   webgriffe_sylius_heylight_plugin_ajax:
+       resource: "@WebgriffeSyliusHeylightPlugin/config/shop_ajax_routing.php"
 
    sylius_shop_payum_cancel:
        resource: "@PayumBundle/Resources/config/routing/cancel.xml"
@@ -52,11 +52,11 @@
     namespace App\Entity\Payment;
 
     use Doctrine\ORM\Mapping as ORM;
-    use Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken as BaseWebhookToken;
+    use Webgriffe\SyliusHeylightPlugin\Entity\WebhookToken as BaseWebhookToken;
     
     /**
      * @ORM\Entity
-     * @ORM\Table(name="webgriffe_sylius_pagolight_webhook_token")
+     * @ORM\Table(name="webgriffe_sylius_heylight_webhook_token")
      */
     class WebhookToken extends BaseWebhookToken
     {
@@ -75,11 +75,11 @@
    Or, you can add the entry to your webpack.config.js file:
     ```javascript
     .addEntry(
-        'webgriffe-sylius-pagolight-entry',
-        './vendor/webgriffe/sylius-pagolight-plugin/public/poll_payment.js'
+        'webgriffe-sylius-heylight-entry',
+        './vendor/webgriffe/sylius-heylight-plugin/public/poll_payment.js'
     )
     ```
-   And then override the template `WebgriffeSyliusPagolightPlugin/after_pay.html.twig` to include the entry:
+   And then override the template `WebgriffeSyliusHeylightPlugin/after_pay.html.twig` to include the entry:
     ```twig
     {% block javascripts %}
         {{ parent() }}
@@ -88,17 +88,17 @@
             window.afterUrl = "{{ afterUrl }}";
             window.paymentStatusUrl = "{{ paymentStatusUrl }}";
         </script>
-        {{ encore_entry_script_tags('webgriffe-sylius-pagolight-entry', null, 'sylius.shop') }}
+        {{ encore_entry_script_tags('webgriffe-sylius-heylight-entry', null, 'sylius.shop') }}
     {% endblock %}
     ```
 
 ## Usage
 
-Access to the admin panel and go to the `Payment methods` section. Create a new payment method and select `HeyLight dilazione`
-or `HeyLight finanziamento` as the gateway. Then, configure the payment method with the required parameters.
+Access to the admin panel and go to the `Payment methods` section. Create a new payment method and select `HeyLight BNPL`
+or `HeyLight Financing` as the gateway. Then, configure the payment method with the required parameters.
 
 Automatically, the plugin will hide the payment method if the currency is not EUR, GBP or CH or if the country is not
-Italy or Switzerland. HeyLight finanziamento will also be visible only if the order total amount is greater than 100 EUR.
+Italy or Switzerland. HeyLight Financing will also be visible only if the order total amount is greater than 100 EUR.
 
 ## Contributing
 

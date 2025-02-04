@@ -5,8 +5,8 @@
                   xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping
                                       http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
 
-    <mapped-superclass name="Webgriffe\SyliusPagolightPlugin\Entity\WebhookToken"
-                       table="webgriffe_sylius_pagolight_webhook_token">
+    <mapped-superclass name="Webgriffe\SyliusHeylightPlugin\Entity\WebhookToken"
+                       table="webgriffe_sylius_heylight_webhook_token">
         <unique-constraints>
             <unique-constraint columns="payment_id" name="payment_idx"/>
         </unique-constraints>

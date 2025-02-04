@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
@@ -14,9 +14,9 @@ use Sylius\Component\Core\Model\OrderInterface;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\Routing\RouterInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
-use Webgriffe\SyliusPagolightPlugin\Controller\PaymentController;
-use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusHeylightPlugin\Client\PaymentState;
+use Webgriffe\SyliusHeylightPlugin\Controller\PaymentController;
+use Webgriffe\SyliusHeylightPlugin\PaymentDetailsHelper;
 use Webmozart\Assert\Assert;
 
 /**
@@ -54,7 +54,7 @@ final class CancelAction implements ActionInterface
         $paymentDetails = $payment->getDetails();
         PaymentDetailsHelper::assertPaymentDetailsAreValid($paymentDetails);
 
-        $this->logger->info('Redirecting the user to the Sylius Pagolight waiting page.');
+        $this->logger->info('Redirecting the user to the Sylius Heylight waiting page.');
 
         $session = $this->requestStack->getSession();
         $session->set(PaymentController::PAYMENT_ID_SESSION_KEY, $paymentId);
@@ -72,7 +72,7 @@ final class CancelAction implements ActionInterface
         $payment->setDetails($paymentDetails);
 
         throw new HttpRedirect(
-            $this->router->generate('webgriffe_sylius_pagolight_plugin_payment_process', [
+            $this->router->generate('webgriffe_sylius_heylight_plugin_payment_process', [
                 'tokenValue' => $order->getTokenValue(),
                 '_locale' => $order->getLocaleCode(),
             ]),

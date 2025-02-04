@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\Api;
+namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\Api;
 
 if (!interface_exists(\Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class)) {
     class_alias(\Sylius\Component\Resource\Repository\RepositoryInterface::class, \Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class);
@@ -16,13 +16,13 @@ use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Routing\RequestContext;
-use Tests\Webgriffe\SyliusPagolightPlugin\Behat\Context\PayumPaymentTrait;
-use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
-use Webgriffe\SyliusPagolightPlugin\Repository\WebhookTokenRepositoryInterface;
+use Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\PayumPaymentTrait;
+use Webgriffe\SyliusHeylightPlugin\Client\PaymentState;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusHeylightPlugin\Repository\WebhookTokenRepositoryInterface;
 use Webmozart\Assert\Assert;
 
-final class PagolightContext implements Context
+final class HeylightContext implements Context
 {
     use PayumPaymentTrait;
 
@@ -38,9 +38,9 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @When Pagolight notify the store about the successful payment
+     * @When Heylight notify the store about the successful payment
      */
-    public function pagolightNotifyTheStoreAboutTheSuccessfulPayment(): void
+    public function heylightNotifyTheStoreAboutTheSuccessfulPayment(): void
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken, $paymentNotifySecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);
@@ -54,9 +54,9 @@ final class PagolightContext implements Context
     }
 
     /**
-     * @When /^Pagolight notify the store about the failed payment$/
+     * @When /^Heylight notify the store about the failed payment$/
      */
-    public function pagolightNotifyTheStoreAboutTheFailedPayment(): void
+    public function heylightNotifyTheStoreAboutTheFailedPayment(): void
     {
         $payment = $this->getCurrentPayment();
         [$paymentCaptureSecurityToken, $paymentNotifySecurityToken] = $this->getCurrentPaymentSecurityTokens($payment);

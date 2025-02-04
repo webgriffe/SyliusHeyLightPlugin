@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action\Api;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action\Api;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\ApiAwareInterface;
@@ -10,10 +10,10 @@ use Payum\Core\ApiAwareTrait;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Payum\Core\GatewayAwareInterface;
 use Payum\Core\GatewayAwareTrait;
-use Webgriffe\SyliusPagolightPlugin\Client\ClientInterface;
-use Webgriffe\SyliusPagolightPlugin\Payum\PagolightApi;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\Auth;
-use Webgriffe\SyliusPagolightPlugin\Payum\Request\Api\CreateContract;
+use Webgriffe\SyliusHeylightPlugin\Client\ClientInterface;
+use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\Api\Auth;
+use Webgriffe\SyliusHeylightPlugin\Payum\Request\Api\CreateContract;
 use Webmozart\Assert\Assert;
 
 /**
@@ -26,7 +26,7 @@ final class CreateContractAction implements ActionInterface, GatewayAwareInterfa
     public function __construct(
         private readonly ClientInterface $client,
     ) {
-        $this->apiClass = PagolightApi::class;
+        $this->apiClass = HeylightApi::class;
     }
 
     /**
@@ -37,14 +37,14 @@ final class CreateContractAction implements ActionInterface, GatewayAwareInterfa
         RequestNotSupportedException::assertSupports($this, $request);
         Assert::isInstanceOf($request, CreateContract::class);
 
-        $pagolightApi = $this->api;
-        Assert::isInstanceOf($pagolightApi, PagolightApi::class);
+        $heylightApi = $this->api;
+        Assert::isInstanceOf($heylightApi, HeylightApi::class);
 
-        $this->gateway->execute($auth = new Auth($pagolightApi));
+        $this->gateway->execute($auth = new Auth($heylightApi));
         $bearerToken = $auth->getBearerToken();
         Assert::stringNotEmpty($bearerToken);
 
-        $this->client->setSandbox($pagolightApi->isSandBox());
+        $this->client->setSandbox($heylightApi->isSandBox());
         $contractCreateResult = $this->client->contractCreate($request->getContract(), $bearerToken);
 
         $request->setResult($contractCreateResult);

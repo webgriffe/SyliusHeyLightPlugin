@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Action;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Action;
 
 use Payum\Core\Action\ActionInterface;
 use Payum\Core\Exception\RequestNotSupportedException;
 use Psr\Log\LoggerInterface;
 use Sylius\Bundle\PayumBundle\Request\GetStatus;
 use Sylius\Component\Core\Model\PaymentInterface as SyliusPaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Client\PaymentState;
-use Webgriffe\SyliusPagolightPlugin\PaymentDetailsHelper;
+use Webgriffe\SyliusHeylightPlugin\Client\PaymentState;
+use Webgriffe\SyliusHeylightPlugin\PaymentDetailsHelper;
 use Webmozart\Assert\Assert;
 
 /**

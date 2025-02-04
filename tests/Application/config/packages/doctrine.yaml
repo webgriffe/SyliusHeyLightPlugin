@@ -18,10 +18,10 @@ doctrine:
             default:
                 auto_mapping: true
                 mappings:
-                    Tests\Webgriffe\SyliusPagolightPlugin\App:
+                    Tests\Webgriffe\SyliusHeylightPlugin\App:
                         is_bundle: false
                         type: annotation
                         dir: '%kernel.project_dir%/src/Entity'
-                        prefix: 'Tests\Webgriffe\SyliusPagolightPlugin\App\Entity'
-                        alias: Tests\Webgriffe\SyliusPagolightPlugin\App
+                        prefix: 'Tests\Webgriffe\SyliusHeylightPlugin\App\Entity'
+                        alias: Tests\Webgriffe\SyliusHeylightPlugin\App
 

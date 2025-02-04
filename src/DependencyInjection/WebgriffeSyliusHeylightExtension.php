@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\DependencyInjection;
+namespace Webgriffe\SyliusHeylightPlugin\DependencyInjection;
 
 use Sylius\Bundle\CoreBundle\DependencyInjection\PrependDoctrineMigrationsTrait;
 use Sylius\Bundle\ResourceBundle\DependencyInjection\Extension\AbstractResourceExtension;
@@ -11,7 +11,7 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\Loader\PhpFileLoader;
 
-final class WebgriffeSyliusPagolightExtension extends AbstractResourceExtension implements PrependExtensionInterface
+final class WebgriffeSyliusHeylightExtension extends AbstractResourceExtension implements PrependExtensionInterface
 {
     use PrependDoctrineMigrationsTrait;
 
@@ -34,7 +34,7 @@ final class WebgriffeSyliusPagolightExtension extends AbstractResourceExtension 
 
     protected function getMigrationsDirectory(): string
     {
-        return '@WebgriffeSyliusPagolightPlugin/migrations';
+        return '@WebgriffeSyliusHeylightPlugin/migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array

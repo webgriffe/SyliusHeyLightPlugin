@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Payum\Request;
+namespace Webgriffe\SyliusHeylightPlugin\Payum\Request;
 
 use Sylius\Component\Core\Model\PaymentInterface;
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookTokenInterface;
 
 final class RetrievePaymentWebhookToken
 {

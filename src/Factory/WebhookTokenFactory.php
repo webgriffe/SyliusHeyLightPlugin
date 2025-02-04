@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Factory;
+namespace Webgriffe\SyliusHeylightPlugin\Factory;
 
-use Webgriffe\SyliusPagolightPlugin\Entity\WebhookTokenInterface;
+use Webgriffe\SyliusHeylightPlugin\Entity\WebhookTokenInterface;
 use Webmozart\Assert\Assert;
 
 final class WebhookTokenFactory implements WebhookTokenFactoryInterface

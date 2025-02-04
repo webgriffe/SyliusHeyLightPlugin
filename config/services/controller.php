@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace Symfony\Component\DependencyInjection\Loader\Configurator;
 
 use Psr\Container\ContainerInterface;
-use Webgriffe\SyliusPagolightPlugin\Controller\PaymentController;
+use Webgriffe\SyliusHeylightPlugin\Controller\PaymentController;
 
 return static function (ContainerConfigurator $containerConfigurator) {
     $services = $containerConfigurator->services();
 
-    $services->set('webgriffe_sylius_pagolight.controller.payment', PaymentController::class)
+    $services->set('webgriffe_sylius_heylight.controller.payment', PaymentController::class)
         ->args([
             service('sylius.repository.order'),
             service('request_stack'),

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client\Exception;
+namespace Webgriffe\SyliusHeylightPlugin\Client\Exception;
 
 use RuntimeException;
 

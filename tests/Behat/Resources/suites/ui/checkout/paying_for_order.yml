@@ -30,7 +30,7 @@ default:
                 - sylius.behat.context.setup.shop_security
                 - sylius.behat.context.setup.taxation
                 - sylius.behat.context.setup.user
-                - webgriffe_sylius_pagolight.behat.context.setup.payment
+                - webgriffe_sylius_heylight.behat.context.setup.payment
 
                 - sylius.behat.context.ui.paypal
                 - sylius.behat.context.ui.shop.account
@@ -42,8 +42,8 @@ default:
                 - sylius.behat.context.ui.shop.checkout.payment
                 - sylius.behat.context.ui.shop.checkout.shipping
                 - sylius.behat.context.ui.shop.checkout.thank_you
-                - webgriffe_sylius_pagolight.behat.context.ui.pagolight
-                - webgriffe_sylius_pagolight.behat.context.api.pagolight
+                - webgriffe_sylius_heylight.behat.context.ui.heylight
+                - webgriffe_sylius_heylight.behat.context.api.heylight
 
             filters:
                 tags: "@paying_for_order&&@ui"

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Webgriffe\SyliusPagolightPlugin\Client\ValueObject;
+namespace Webgriffe\SyliusHeylightPlugin\Client\ValueObject;
 
-use Webgriffe\SyliusPagolightPlugin\Client\Config;
+use Webgriffe\SyliusHeylightPlugin\Client\Config;
 use Webmozart\Assert\Assert;
 
 final class Amount
