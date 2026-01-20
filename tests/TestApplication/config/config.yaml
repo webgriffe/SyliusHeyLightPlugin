@@ -13,3 +13,14 @@ monolog:
             path: "%kernel.logs_dir%/payum_%kernel.environment%.log"
             level: debug
             channels: ['payum']
+
+doctrine:
+    orm:
+        entity_managers:
+            default:
+                mappings:
+                    TestApplication:
+                        is_bundle: false
+                        type: attribute
+                        dir: '%kernel.project_dir%/../../../tests/TestApplication/src/Entity'
+                        prefix: Tests\Webgriffe\SyliusHeylightPlugin
