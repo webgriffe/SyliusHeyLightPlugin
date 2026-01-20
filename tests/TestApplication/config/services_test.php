@@ -13,7 +13,7 @@ return static function (ContainerConfigurator $container) {
         $container->import('@WebgriffeSyliusHeylightPlugin/tests/Behat/Resources/services.php');
         $services = $container->services();
 
-        $services->set('webgriffe_sylius_klarna_payments.client', DummyClient::class)
+        $services->set('webgriffe_sylius_heylight.client', DummyClient::class)
             ->args([
                 service('router'),
             ])
