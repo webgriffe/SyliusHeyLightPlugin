@@ -1,2 +1,0 @@
-imports:
-    - { resource: "@WebgriffeSyliusHeylightPlugin/config/config.php" }
