@@ -109,6 +109,22 @@ final class HeylightContext implements Context
         Assert::true($this->orderShowPage->isOpen(['tokenValue' => $order->getTokenValue()]));
     }
 
+    /**
+     * @Given /^I should be notified that my payment has been completed$/
+     */
+    public function iShouldBeNotifiedThatMyPaymentHasBeenCompleted(): void
+    {
+        $this->assertNotification('Payment has been completed.');
+    }
+
+    /**
+     * @Given I should be notified that my payment has been cancelled
+     */
+    public function iShouldBeNotifiedThatMyPaymentHasBeenCancelled(): void
+    {
+        $this->assertNotification('Payment has been cancelled.');
+    }
+
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;
@@ -120,5 +136,20 @@ final class HeylightContext implements Context
     protected function getPaymentTokenRepository(): RepositoryInterface
     {
         return $this->paymentTokenRepository;
+    }
+
+    private function assertNotification(string $expectedNotification): void
+    {
+        $notifications = $this->orderShowPage->getNotifications();
+        $hasNotifications = '';
+
+        foreach ($notifications as $notification) {
+            $hasNotifications .= $notification;
+            if ($notification === $expectedNotification) {
+                return;
+            }
+        }
+
+        throw new \RuntimeException(sprintf('There is no notification with "%s". Got "%s"', $expectedNotification, $hasNotifications));
     }
 }
