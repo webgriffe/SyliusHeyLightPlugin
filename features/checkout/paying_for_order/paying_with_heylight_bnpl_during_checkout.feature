@@ -20,7 +20,7 @@ Feature: Paying with Heylight BNPL during checkout
         And I am at the checkout addressing step
         And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
         And I complete the addressing step
-        And I proceeded with "Free" shipping method and "Heylight BNPL" payment
+        And I have proceeded order with "Free" shipping method and "Heylight BNPL" payment
         When I confirm my order
         And I complete the payment on Heylight
         Then I should be on the waiting payment processing page
@@ -28,7 +28,7 @@ Feature: Paying with Heylight BNPL during checkout
         Then I should be redirected to the thank you page
         And I should be notified that my payment has been completed
         When I am viewing the summary of my last order
-        Then I should see its payment status as "Completed"
+        Then I should see its order's payment status as "Paid"
 
     @ui @javascript
     Scenario: Failed payment
@@ -36,7 +36,7 @@ Feature: Paying with Heylight BNPL during checkout
         And I am at the checkout addressing step
         And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
         And I complete the addressing step
-        And I proceeded with "Free" shipping method and "Heylight BNPL" payment
+        And I have proceeded order with "Free" shipping method and "Heylight BNPL" payment
         When I confirm my order
         And I complete the payment on Heylight
         Then I should be on the waiting payment processing page
@@ -51,7 +51,7 @@ Feature: Paying with Heylight BNPL during checkout
         And I am at the checkout addressing step
         And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
         And I complete the addressing step
-        And I proceeded with "Free" shipping method and "Heylight BNPL" payment
+        And I have proceeded order with "Free" shipping method and "Heylight BNPL" payment
         When I confirm my order
         And I cancel the payment on Heylight
         Then I should be on the waiting payment processing page
@@ -64,7 +64,7 @@ Feature: Paying with Heylight BNPL during checkout
         And I am at the checkout addressing step
         And I specify the billing address as "Via Franceschini 3", "Casalgrande", "42013", "Italy" for "Mario Rossi"
         And I complete the addressing step
-        And I proceeded with "Free" shipping method and "Heylight BNPL" payment
+        And I have proceeded order with "Free" shipping method and "Heylight BNPL" payment
         And I have confirmed order
         But I have cancelled Heylight payment
         Then I should be redirected to the order page
