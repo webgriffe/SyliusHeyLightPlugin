@@ -32,7 +32,7 @@ final class WebgriffeSyliusHeylightExtension extends AbstractResourceExtension i
     #[\Override]
     protected function getMigrationsNamespace(): string
     {
-        return 'DoctrineMigrations';
+        return 'Webgriffe\SyliusHeylightPlugin\Migrations';
     }
 
     #[\Override]
