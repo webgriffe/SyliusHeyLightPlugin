@@ -34,7 +34,7 @@ final class WebgriffeSyliusHeylightExtension extends AbstractResourceExtension i
 
     protected function getMigrationsDirectory(): string
     {
-        return '@WebgriffeSyliusHeylightPlugin/migrations';
+        return '@WebgriffeSyliusHeylightPlugin/src/Migrations';
     }
 
     protected function getNamespacesOfMigrationsExecutedBefore(): array
