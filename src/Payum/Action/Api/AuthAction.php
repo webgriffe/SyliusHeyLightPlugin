@@ -28,6 +28,7 @@ final class AuthAction implements ActionInterface
     /**
      * @param Auth|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -48,6 +49,7 @@ final class AuthAction implements ActionInterface
         $request->setBearerToken($bearerToken);
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof Auth;

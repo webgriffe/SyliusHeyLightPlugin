@@ -17,6 +17,7 @@ final class WebhookTokenFactory implements WebhookTokenFactoryInterface
     ) {
     }
 
+    #[\Override]
     public function createNew(): WebhookTokenInterface
     {
         /** @psalm-suppress MixedMethodCall */

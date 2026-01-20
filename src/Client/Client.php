@@ -29,11 +29,13 @@ final class Client implements ClientInterface
     ) {
     }
 
+    #[\Override]
     public function setSandbox(bool $isSandBox): void
     {
         $this->sandbox = $isSandBox;
     }
 
+    #[\Override]
     public function auth(string $merchantKey): string
     {
         try {
@@ -111,6 +113,7 @@ final class Client implements ClientInterface
         return $serializedResponse['data']['token'];
     }
 
+    #[\Override]
     public function contractCreate(Contract $contract, string $bearerToken): ContractCreateResult
     {
         try {
@@ -193,6 +196,7 @@ final class Client implements ClientInterface
         );
     }
 
+    #[\Override]
     public function applicationStatus(array $contractsUuid, string $bearerToken): ApplicationStatusResult
     {
         try {

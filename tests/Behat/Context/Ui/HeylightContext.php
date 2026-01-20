@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\Ui;
 
-if (!interface_exists(\Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class)) {
-    class_alias(\Sylius\Component\Resource\Repository\RepositoryInterface::class, \Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class);
-}
 use Behat\Behat\Context\Context;
 use Behat\Mink\Session;
 use Sylius\Behat\Page\Shop\Order\ShowPageInterface;
 use Sylius\Behat\Page\Shop\Order\ThankYouPageInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
 use Sylius\Component\Core\Model\OrderInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\OrderRepositoryInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
@@ -26,6 +24,11 @@ final class HeylightContext implements Context
 {
     use PayumPaymentTrait;
 
+    /**
+     * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
+     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
+     * @param OrderRepositoryInterface<OrderInterface> $orderRepository
+     */
     public function __construct(
         private readonly RepositoryInterface $paymentTokenRepository,
         private readonly PaymentRepositoryInterface $paymentRepository,

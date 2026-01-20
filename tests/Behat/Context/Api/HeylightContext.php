@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace Tests\Webgriffe\SyliusHeylightPlugin\Behat\Context\Api;
 
-if (!interface_exists(\Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class)) {
-    class_alias(\Sylius\Component\Resource\Repository\RepositoryInterface::class, \Sylius\Resource\Doctrine\Persistence\RepositoryInterface::class);
-}
 use Behat\Behat\Context\Context;
 use GuzzleHttp\Client;
 use GuzzleHttp\Psr7\Request;
 use Psr\Http\Client\ClientInterface;
 use Sylius\Bundle\PayumBundle\Model\PaymentSecurityTokenInterface;
+use Sylius\Component\Core\Model\PaymentInterface;
 use Sylius\Component\Core\Repository\PaymentRepositoryInterface;
 use Sylius\Resource\Doctrine\Persistence\RepositoryInterface;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -26,6 +24,10 @@ final class HeylightContext implements Context
 {
     use PayumPaymentTrait;
 
+    /**
+     * @param RepositoryInterface<PaymentSecurityTokenInterface> $paymentTokenRepository
+     * @param PaymentRepositoryInterface<PaymentInterface> $paymentRepository
+     */
     public function __construct(
         private readonly RepositoryInterface $paymentTokenRepository,
         private readonly PaymentRepositoryInterface $paymentRepository,
@@ -69,6 +71,9 @@ final class HeylightContext implements Context
         ]);
     }
 
+    /**
+     * @return PaymentRepositoryInterface<PaymentInterface>
+     */
     protected function getPaymentRepository(): PaymentRepositoryInterface
     {
         return $this->paymentRepository;

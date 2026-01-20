@@ -34,6 +34,7 @@ final class CancelAction implements ActionInterface
     /**
      * @param Cancel|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -79,6 +80,7 @@ final class CancelAction implements ActionInterface
         );
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof Cancel &&

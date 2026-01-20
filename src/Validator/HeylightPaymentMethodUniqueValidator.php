@@ -16,6 +16,9 @@ use Webgriffe\SyliusHeylightPlugin\Payum\HeylightApi;
  */
 final class HeylightPaymentMethodUniqueValidator extends ConstraintValidator
 {
+    /**
+     * @param PaymentMethodRepositoryInterface<PaymentMethodInterface> $paymentMethodRepository
+     */
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {
@@ -24,6 +27,7 @@ final class HeylightPaymentMethodUniqueValidator extends ConstraintValidator
     /**
      * @param mixed|PaymentMethodInterface $value
      */
+    #[\Override]
     public function validate(mixed $value, Constraint $constraint): void
     {
         if (!$value instanceof PaymentMethodInterface) {

@@ -13,6 +13,7 @@ final class HeylightPaymentMethodUnique extends Constraint
 {
     public string $message = 'webgriffe_sylius_heylight.payment_method.unique';
 
+    #[\Override]
     public function getTargets(): string
     {
         return self::CLASS_CONSTRAINT;

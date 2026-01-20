@@ -20,6 +20,7 @@ final class ConvertPaymentToContractAction implements ActionInterface
     /**
      * @param ConvertPaymentToContract|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -39,6 +40,7 @@ final class ConvertPaymentToContractAction implements ActionInterface
         $request->setContract($contract);
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof ConvertPaymentToContract;

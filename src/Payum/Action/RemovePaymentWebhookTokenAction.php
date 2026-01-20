@@ -17,6 +17,7 @@ final class RemovePaymentWebhookTokenAction implements ActionInterface
     ) {
     }
 
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -25,6 +26,7 @@ final class RemovePaymentWebhookTokenAction implements ActionInterface
         $this->webhookTokenRepository->remove($request->getWebhookToken());
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof RemovePaymentWebhookToken;

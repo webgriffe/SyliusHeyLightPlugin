@@ -32,6 +32,7 @@ final class CreateContractAction implements ActionInterface, GatewayAwareInterfa
     /**
      * @param CreateContract|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -50,6 +51,7 @@ final class CreateContractAction implements ActionInterface, GatewayAwareInterfa
         $request->setResult($contractCreateResult);
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof CreateContract;
