@@ -92,7 +92,7 @@ final class PaymentController extends AbstractController
             UrlGeneratorInterface::ABSOLUTE_URL,
         );
 
-        return $this->render('@WebgriffeSyliusHeylightPlugin/Process/index.html.twig', [
+        return $this->render('@WebgriffeSyliusHeylightPlugin/shop/payment/process.html.twig', [
             'afterUrl' => $token->getAfterUrl(),
             'paymentStatusUrl' => $paymentStatusUrl,
             'redirectUrl' => $redirectUrl,
