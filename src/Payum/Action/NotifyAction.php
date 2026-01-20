@@ -35,6 +35,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
     /**
      * @param Notify|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -89,6 +90,7 @@ final class NotifyAction implements ActionInterface, GatewayAwareInterface
         $this->gateway->execute(new RemovePaymentWebhookToken($webhookToken));
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof Notify &&

@@ -10,6 +10,7 @@ use Payum\Core\GatewayFactory;
 
 final class HeylightBnplGatewayFactory extends GatewayFactory
 {
+    #[\Override]
     protected function populateConfig(PayumArrayObject $config): void
     {
         $config->defaults([

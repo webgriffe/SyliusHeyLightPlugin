@@ -20,6 +20,7 @@ final class RetrievePaymentWebhookTokenAction implements ActionInterface
     /**
      * @param RetrievePaymentWebhookToken|mixed $request
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -30,6 +31,7 @@ final class RetrievePaymentWebhookTokenAction implements ActionInterface
         $request->setWebhookToken($webhookToken);
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return $request instanceof RetrievePaymentWebhookToken;

@@ -24,6 +24,7 @@ use Webmozart\Assert\Assert;
 
 final class ContractConverter implements ContractConverterInterface
 {
+    #[\Override]
     public function convertFromPayment(
         PaymentInterface $payment,
         string $successUrl,

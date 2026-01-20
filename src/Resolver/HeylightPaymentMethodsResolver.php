@@ -18,6 +18,9 @@ use Webmozart\Assert\Assert;
 
 final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInterface
 {
+    /**
+     * @param PaymentMethodRepositoryInterface<PaymentMethodInterface> $paymentMethodRepository
+     */
     public function __construct(
         private readonly PaymentMethodRepositoryInterface $paymentMethodRepository,
     ) {
@@ -28,6 +31,7 @@ final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInte
      *
      * @return PaymentMethodInterface[]
      */
+    #[\Override]
     public function getSupportedMethods(BasePaymentInterface $subject): array
     {
         Assert::true($this->supports($subject), 'This payment method is not support by resolver');
@@ -88,6 +92,7 @@ final class HeylightPaymentMethodsResolver implements PaymentMethodsResolverInte
         );
     }
 
+    #[\Override]
     public function supports(BasePaymentInterface $subject): bool
     {
         if (!$subject instanceof PaymentInterface) {

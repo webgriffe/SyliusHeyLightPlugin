@@ -17,6 +17,7 @@ final class WebhookTokenGenerator implements WebhookTokenGeneratorInterface
     ) {
     }
 
+    #[\Override]
     public function generateForPayment(PaymentInterface $payment): WebhookTokenInterface
     {
         $webhookToken = $this->webhookTokenFactory->createNew();

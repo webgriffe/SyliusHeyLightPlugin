@@ -15,6 +15,7 @@ final class WebgriffeSyliusHeylightExtension extends AbstractResourceExtension i
 {
     use PrependDoctrineMigrationsTrait;
 
+    #[\Override]
     public function load(array $configs, ContainerBuilder $container): void
     {
         $loader = new PhpFileLoader($container, new FileLocator(__DIR__ . '/../../config'));
@@ -22,21 +23,25 @@ final class WebgriffeSyliusHeylightExtension extends AbstractResourceExtension i
         $loader->load('services.php');
     }
 
+    #[\Override]
     public function prepend(ContainerBuilder $container): void
     {
         $this->prependDoctrineMigrations($container);
     }
 
+    #[\Override]
     protected function getMigrationsNamespace(): string
     {
         return 'DoctrineMigrations';
     }
 
+    #[\Override]
     protected function getMigrationsDirectory(): string
     {
         return '@WebgriffeSyliusHeylightPlugin/src/Migrations';
     }
 
+    #[\Override]
     protected function getNamespacesOfMigrationsExecutedBefore(): array
     {
         return [

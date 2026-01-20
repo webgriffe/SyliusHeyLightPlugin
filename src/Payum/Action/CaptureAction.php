@@ -59,6 +59,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
      *
      * @throws ClientException
      */
+    #[\Override]
     public function execute($request): void
     {
         RequestNotSupportedException::assertSupports($this, $request);
@@ -176,6 +177,7 @@ final class CaptureAction implements ActionInterface, GatewayAwareInterface, Gen
         throw new HttpRedirect($contractCreateResult->getRedirectUrl());
     }
 
+    #[\Override]
     public function supports($request): bool
     {
         return
