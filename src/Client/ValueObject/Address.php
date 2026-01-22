@@ -21,8 +21,13 @@ final class Address
         private readonly ?string $regionCode,
         private readonly ?string $subRegionCode,
     ) {
-        Assert::lengthBetween($this->zipCode, 4, 5);
         Assert::oneOf($this->countryCode, Config::ALLOWED_COUNTRY_CODES);
+        if ($this->countryCode === Config::CH_COUNTRY_CODE) {
+            Assert::length($this->zipCode, 4);
+        }
+        if ($this->countryCode === Config::IT_COUNTRY_CODE) {
+            Assert::length($this->zipCode, 5);
+        }
     }
 
     public function getStreetNumber(): ?string
